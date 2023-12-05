@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- tree view          -->
+    <record id="um_student_registration_tree_view_record_id" model="ir.ui.view">
+        <field name="name">student.registration.tree</field>
+        <field name="model">student.registration</field>
+        <field name="arch" type="xml">
+            <tree> 
+                <field name="name"/>      
+                <field name="student_id"/>      
+                <field name="age"/>      
+                <field name="gender"/>
+                <field name="total_salary"/>    
+                <field name="ssc_result"/>      
+                <field name="hsc_result"/>      
+                <field name="contact_number"/>      
+                <field name="email"/>        
+            </tree>
+        </field>
+    </record>   
+
+
+    <!-- form view -->
+    <record id="um_student_info_form_view_record_id" model="ir.ui.view">
+        <field name="name">student.registration.form</field>
+        <field name="model">student.registration</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet string="Student Information">
+                    <group>
+                        <group col="4">
+                            <field name="name" placeholder="Sunny Leone"/>
+                            <field name="age"/>
+                            <field name="student_id"/>
+                            <field name="gender"/>
+                            <field name="birth_date"/>
+                        </group>
+                        <group>
+                            <field name="image"/>
+                            <field name="email" placeholder="example@gmail.com"/>
+                            <field name="contact_number" placeholder="01XXXXXX"/>
+                            <field name="english_proficiency"/>
+                        </group>
+                    </group>
+
+
+                    <notebook>
+                        
+                        <page string="Address">
+                                <group>
+                                    <group>
+                                        <field name="emergency_contact"/>
+                                        <field name="nid"/>
+                                        <field name="address"/>                                    
+                                    </group>
+                                    
+                                    <group>
+                                        <field name="religion"/>
+                                        <field name="nationality"/>
+                                        <field name="home_city"/>
+                                    </group>
+                                    
+                                </group>
+                        </page>
+
+
+                        <page string="Family Information">
+                            <group>
+                                <group string="Father Information">
+                                    <field name="father_name"/>
+                                    <field name="father_occupation"/>
+                                    <field name="father_salary"/>
+                                </group>
+                                <group string="Mother Information">
+                                    <field name="mother_name"/>
+                                    <field name="mother_occupation"/>
+                                    <field name="mother_salary"/>
+                                </group>
+                            </group>
+                            <group>
+                                <group string="Guardian Information">
+                                    <field name="guardian_name"/>
+                                    <field name="guardian_relation"/>
+                                    <field name="guardian_contact"/>
+                                </group>
+                                <group string="Other Information">
+                                    <field name="total_salary"/>
+                                    <field name="home_contact"/>
+                                    <field name="f_email"/>
+                                </group>
+                            </group>
+                        </page>
+
+
+                        <page string="Academic Information">
+                            
+                            <group>
+                                <group string="HSC Board Result">
+                                    <field name="hsc_result"/>        
+                                    <field name="hsc_group"/>
+                                </group>
+                                
+                                <group string="SSC Board Result">
+                                    <field name="ssc_result"/>        
+                                    <field name="ssc_group"/>
+                                </group>
+
+                            </group>
+                                         
+
+                            <group>
+
+                                <group string="HSC Subject Result">
+                                    <field name="hsc_math_grade" attrs="{'readonly':[('hsc_group', '!=', 'science')]}"/>
+                                    <field name="hsc_physics_grade" attrs="{'readonly':[('hsc_group', '!=', 'science')]}"/>
+                                    <field name="hsc_chemisty_grade" attrs="{'readonly':[('hsc_group', '!=', 'science')]}"/>
+                                    <field name="hsc_biology_grade" attrs="{'readonly':[('hsc_group', '!=', 'science')]}"/>
+                                    <field name="hsc_english_grade" />
+                                    <field name="hsc_finance_grade" attrs="{'readonly':[('hsc_group', '!=', 'commerce')]}"/>
+                                    <field name="hsc_accounting_grade" attrs="{'readonly':[('hsc_group', '!=', 'commerce')]}"/>
+                                </group>
+                                <group string="SSC Subject Result">
+                                    <field name="ssc_math_grade" attrs="{'readonly':[('ssc_group', '!=', 'science')]}"/>
+                                    <field name="ssc_physics_grade" attrs="{'readonly':[('ssc_group', '!=', 'science')]}"/>
+                                    <field name="ssc_chemisty_grade" attrs="{'readonly':[('ssc_group', '!=', 'science')]}"/>
+                                    <field name="ssc_biology_grade" attrs="{'readonly':[('ssc_group', '!=', 'science')]}"/>
+                                    <field name="ssc_english_grade" />
+                                    <field name="ssc_finance_grade" attrs="{'readonly':[('ssc_group', '!=', 'commerce')]}"/>
+                                    <field name="ssc_accounting_grade" attrs="{'readonly':[('ssc_group', '!=', 'commerce')]}"/>
+                                </group>
+                            </group>
+                            <group string="Previous Institute">
+                                <group>
+                                    <field name="collage_name" />
+                                </group>
+                                <group>
+                                    <field name="school_name" />
+                                </group>
+                            </group>
+                        </page>
+
+                        <page string="Social Platform">
+                            <group>
+                                <field name="linkedin_id"/>
+                                <field name="meta_id"/>
+                                <field name="codeforce_id"/>
+                                <field name="leetcode_id"/>
+                                <field name="instagram_id"/>
+                            </group>
+                        </page>
+
+                    </notebook>
+
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+
+    <!-- Action to open the tree view -->
+    <record id="um_student_registration_view_record_idss" model="ir.actions.act_window">
+        <field name="name">student registration view</field>
+        <field name="res_model">student.registration</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- <menuitem id="um_student_registration_menus_id" name="student registration" action="um_student_registration_view_record_idss"/> -->
+
+
+</odoo>

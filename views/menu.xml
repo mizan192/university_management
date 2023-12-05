@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+     <menuitem id="um_super_parent_menu_bar_id" name="student registration" sequence="2">
+        <menuitem id="um_student_registration_menus_id" name="student registration" action="um_student_registration_view_record_idss"/>
+        <menuitem id="um_department_info_menus_id" name="department information" action="um_department_information_view_record_id_two"/>
+
+    </menuitem> 
+
+
+    
+</odoo>

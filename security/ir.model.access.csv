@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_student_registration_model,access_university_management_student.registration,university_management.model_student_registration,,1,1,1,1
+access_department_information_model,access_university_management_department.information,university_management.model_department_information,,1,1,1,1

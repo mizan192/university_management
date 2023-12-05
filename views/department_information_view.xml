@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- tree view          -->
+    <record id="um_department_info_tree_view_record_id" model="ir.ui.view">
+        <field name="name">department.information.tree</field>
+        <field name="model">department.information</field>
+        <field name="arch" type="xml">
+            <tree> 
+                <field name="department_name"/>      
+                <field name="faculty"/>      
+                <field name="available_seats"/>
+                <field name="ssc_min_grade"/>      
+                <field name="hsc_min_grade"/>        
+                <field name="phone"/>    
+                <field name="email"/>       
+            </tree>
+        </field>
+    </record>   
+
+
+    <!-- form view -->
+    <record id="um_department_info_form_view_record_id" model="ir.ui.view">
+        <field name="name">department.information.form</field>
+        <field name="model">department.information</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet string="Department Information">
+                    <group>
+                        <group col="4">
+                            <field name="department_name" placeholder="CSE"/>
+                            <field name="faculty" placeholder="Engineering"/>
+                            <field name="available_seats"/>
+                        </group>
+                        <group>
+                            <field name="logo"/>
+                            <field name="phone" placeholder="01XXXXXX"/>
+                            <field name="email" placeholder="example@gmail.com"/>
+                        </group>
+                    </group>
+
+
+                    <notebook>
+                
+                        <page string="Grade Required">
+                            
+                            <group>
+                                <group string="HSC Board Result">
+                                    <field name="hsc_min_grade"/>        
+                                </group>
+                                
+                                <group string="SSC Board Result">
+                                    <field name="ssc_min_grade"/>        
+                                </group>
+
+                            </group>
+                                         
+
+                            <group>
+
+                                <group string="HSC Subject Result">
+                                    <field name="hsc_math_min_grade" attrs="{'readonly':[('faculty', '!=', 'engineering')]}"/>
+                                    <field name="hsc_physics_min_grade" attrs="{'readonly':[('faculty', '!=', 'engineering')]}"/>
+                                    <field name="hsc_chemisty_min_grade" attrs="{'readonly':[('faculty', '!=', 'engineering')]}"/>
+                                    <field name="hsc_biology_min_grade" attrs="{'readonly':[('faculty', '!=', 'engineering')]}"/>
+                                    <field name="hsc_english_min_grade" />
+                                    <field name="hsc_finance_min_grade" attrs="{'readonly':[('faculty', '!=', 'business')]}"/>
+                                    <field name="hsc_accounting_min_grade" attrs="{'readonly':[('faculty', '!=', 'business')]}"/>
+                                </group>
+                                <group string="SSC Subject Result">
+                                    <field name="ssc_math_min_grade" attrs="{'readonly':[('faculty', '!=', 'engineering')]}"/>
+                                    <field name="ssc_physics_min_grade" attrs="{'readonly':[('faculty', '!=', 'engineering')]}"/>
+                                    <field name="ssc_chemisty_min_grade" attrs="{'readonly':[('faculty', '!=', 'engineering')]}"/>
+                                    <field name="ssc_biology_min_grade" attrs="{'readonly':[('faculty', '!=', 'engineering')]}"/>
+                                    <field name="ssc_english_min_grade" />
+                                    <field name="ssc_finance_min_grade" attrs="{'readonly':[('faculty', '!=', 'business')]}"/>
+                                    <field name="ssc_accounting_min_grade" attrs="{'readonly':[('faculty', '!=', 'business')]}"/>
+                                </group>
+                            </group>
+                            
+
+                        </page>
+
+
+                    </notebook>
+
+                </sheet>
+
+            </form>
+        </field>
+    </record>
+
+
+
+
+
+
+    <!-- Action to open the tree view -->
+    <record id="um_department_information_view_record_id_two" model="ir.actions.act_window">
+        <field name="name">department information view</field>
+        <field name="res_model">department.information</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- <menuitem id="um_department_info_menus_id" name="department information" action="um_department_information_view_record_id_two"/> -->
+
+
+</odoo>
