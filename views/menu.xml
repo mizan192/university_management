@@ -5,6 +5,14 @@
         <menuitem id="um_student_registration_menus_id" name="student registration" action="um_student_registration_view_record_idss"/>
         <menuitem id="um_department_info_menus_id" name="department information" action="um_department_information_view_record_id_two"/>
 
+        <!-- facuclty and department menu  -->
+        <menuitem  id="faculty_info_menu" name="Faculty">
+            <menuitem  id="faculty_engineering_info_menu" name="Engineering" sequence="1" action="um_engineering_faculty_tree_view"/>
+            <menuitem  id="faculty_business_info_menu" name="Business" sequence="2" action="um_business_faculty_tree_view"/>
+            <menuitem  id="faculty_arts_info_menu" name="Arts" sequence="3" action="um_arts_faculty_tree_view"/>
+        </menuitem>
+
+
     </menuitem> 
 
 

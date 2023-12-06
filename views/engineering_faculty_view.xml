@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- tree view          -->
+    <record id="um_engineering_faculty_view_record" model="ir.ui.view">
+        <field name="name">engineering.faculty.tree</field>
+        <field name="model">engineering.faculty</field>
+        <field name="arch" type="xml">
+            <tree> 
+                <field name="department_name"/>      
+                <field name="available_seats"/>      
+                <field name="hsc_min_grade"/>
+                <field name="ssc_min_grade"/>      
+                <field name="hsc_math_min_grade"/>      
+                <field name="hsc_physics_min_grade"/>      
+                <field name="hsc_chemisty_min_grade"/>      
+                <field name="hsc_biology_min_grade"/>      
+                <field name="hsc_english_min_grade"/>
+                <field name="ssc_math_min_grade"/>      
+                <field name="ssc_physics_min_grade"/>      
+                <field name="ssc_chemisty_min_grade"/>      
+                <field name="ssc_biology_min_grade"/>      
+                <field name="ssc_english_min_grade"/>      
+            </tree>
+        </field>
+    </record>   
+
+
+
+    <!-- Action to open the tree view -->
+    <record id="um_engineering_faculty_tree_view" model="ir.actions.act_window">
+        <field name="name">engineering.faculty.tree</field>
+        <field name="res_model">engineering.faculty</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <!-- <menuitem  id="faculty_engineering_info_menu" name="Engineering" action="um_engineering_faculty_tree_view"/> -->
+
+
+</odoo>

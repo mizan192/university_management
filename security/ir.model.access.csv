@@ -1,3 +1,7 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
 access_student_registration_model,access_university_management_student.registration,university_management.model_student_registration,,1,1,1,1
 access_department_information_model,access_university_management_department.information,university_management.model_department_information,,1,1,1,1
+
+access_engineering_faculty_model,access_university_management_engineering.faculty,university_management.model_engineering_faculty,,1,1,1,1
+access_business_faculty_model,access_university_management_business.faculty,university_management.model_business_faculty,,1,1,1,1
+access_arts_faculty_model,access_university_management_arts.faculty,university_management.model_arts_faculty,,1,1,1,1

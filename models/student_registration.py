@@ -27,8 +27,8 @@ class StudentRegistration(models.Model):
     nationality=fields.Char(string="Nationality")
     
 # family information 
-    father_name=fields.Char(string='Father Name', required=True)
-    mother_name=fields.Char(string='Mother Name', required=True)
+    father_name=fields.Char(string='Father Name')
+    mother_name=fields.Char(string='Mother Name')
     father_occupation=fields.Char(string='Father Occupation')
     mother_occupation=fields.Char(string='Mother Occupation')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
@@ -76,6 +76,28 @@ class StudentRegistration(models.Model):
     github_id=fields.Char(string="Github Profile")
 
     
+#department selection 
+    faculty_name=fields.Selection([('engineering','Engineering'),('business', 'business'), ('arts', 'Arts')], string='Select Faculty', default='arts')
+    # selected_faculty=fields.Char(string="Faculty Name", default="arts.faculty")
+    # department_ids=fields.One2many(
+    #     comodel_name=selected_faculty,
+    #     inverse_name='student_id',
+    #     string='Department List'
+    # )
+    
+
+    # @api.onchange('faculty_name')
+    # def update_selected_faculty(self):
+    #     for record in self.faculty_name:
+    #         record.selected_faculty=record.faculty_name+".faculty"
+
+
+
+
+
+
+
+
 
 
 #calculate age and show in age field and check min age requirement
@@ -116,5 +138,5 @@ class StudentRegistration(models.Model):
     #id generate
     # student id will be generated via department selection 
     def _generate_id(self):
-        pass
-
+        for record in self:
+            record.student_id=record.ids

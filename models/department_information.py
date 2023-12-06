@@ -35,3 +35,64 @@ class DepartmentInformation(models.Model):
     ssc_accounting_min_grade=fields.Selection(grade_domain,string='SSC Accounting Grade Required',default='b')
 
 
+    # student_list=fields.Many2one()
+
+
+
+    ##add department according to faculty type
+
+    @api.model
+    def department_add_in_faculty(self,faculty,department_name, available_seats,hsc_min_grade,ssc_min_grade,hsc_math_min_grade,hsc_physics_min_grade,hsc_chemisty_min_grade,hsc_english_min_grade,hsc_finance_min_grade,hsc_accounting_min_grade,hsc_biology_min_grade,ssc_math_min_grade,ssc_physics_min_grade,ssc_chemisty_min_grade,ssc_english_min_grade,ssc_finance_min_grade,ssc_accounting_min_grade,ssc_biology_min_grade):
+        
+        if faculty=='engineering':
+            self.env['engineering.faculty'].create({
+                'department_name':department_name,
+                'available_seats':available_seats,
+                'hsc_min_grade':hsc_min_grade,
+                'ssc_min_grade':ssc_min_grade,
+                'hsc_math_min_grade':hsc_math_min_grade,
+                'hsc_physics_min_grade':hsc_physics_min_grade,
+                'hsc_chemisty_min_grade':hsc_chemisty_min_grade,
+                'hsc_biology_min_grade':hsc_biology_min_grade,
+                'hsc_english_min_grade':hsc_english_min_grade,
+                'ssc_math_min_grade':ssc_math_min_grade,
+                'ssc_physics_min_grade':ssc_physics_min_grade,
+                'ssc_chemisty_min_grade':ssc_chemisty_min_grade,
+                'ssc_biology_min_grade':ssc_biology_min_grade,
+                'ssc_english_min_grade':ssc_english_min_grade,
+            })
+        if faculty=='business':
+            self.env['business.faculty'].create({
+                'department_name':department_name,
+                'available_seats':available_seats,
+                'hsc_min_grade':hsc_min_grade,
+                'ssc_min_grade':ssc_min_grade,
+                'hsc_english_min_grade':hsc_english_min_grade,
+                'hsc_finance_min_grade':hsc_finance_min_grade,
+                'hsc_accounting_min_grade':hsc_accounting_min_grade,
+                'ssc_english_min_grade':ssc_english_min_grade,
+                'ssc_finance_min_grade':ssc_finance_min_grade,
+                'ssc_accounting_min_grade':ssc_accounting_min_grade,
+            })
+        if faculty=='arts':
+            self.env['arts.faculty'].create({
+                'department_name':department_name,
+                'available_seats':available_seats,
+                'hsc_min_grade':hsc_min_grade,
+                'ssc_min_grade':ssc_min_grade,
+                'hsc_english_min_grade':hsc_english_min_grade,
+                'ssc_english_min_grade':ssc_english_min_grade,
+            })
+        
+
+    ##while creating department it will store in faculty wise
+
+    @api.model
+    def create(self,val):
+        ctx = self.env.context.copy()
+
+        rec=super(DepartmentInformation,self.with_context(ctx)).create(val)
+
+        #after create a record it will department_add_in_faculty
+        self.department_add_in_faculty(rec.faculty,rec.department_name, rec.available_seats,rec.hsc_min_grade,rec.ssc_min_grade,rec.hsc_math_min_grade,rec.hsc_physics_min_grade,rec.hsc_chemisty_min_grade,rec.hsc_english_min_grade,rec.hsc_finance_min_grade,rec.hsc_accounting_min_grade,rec.hsc_biology_min_grade,rec.ssc_math_min_grade,rec.ssc_physics_min_grade,rec.ssc_chemisty_min_grade,rec.ssc_english_min_grade,rec.ssc_finance_min_grade,rec.ssc_accounting_min_grade,rec.ssc_biology_min_grade)
+        return rec   

@@ -7,10 +7,14 @@
     'author':'Mizan',
     'depends':["base"],
     'data':[
+        'security/ir.model.access.csv',
         'views/menu.xml',
         'views/student_registration_view.xml',
         'views/department_information_view.xml',
-        'security/ir.model.access.csv',
+        'views/engineering_faculty_view.xml',
+        'views/business_faculty_view.xml',
+        'views/arts_faculty_view.xml',
+        
     ],
     
     'installable': True,

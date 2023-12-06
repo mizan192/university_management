@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- tree view          -->
+    <record id="um_business_faculty_view_record" model="ir.ui.view">
+        <field name="name">business.faculty.tree</field>
+        <field name="model">business.faculty</field>
+        <field name="arch" type="xml">
+            <tree> 
+                <field name="department_name"/>      
+                <field name="available_seats"/>      
+                <field name="hsc_min_grade"/>
+                <field name="ssc_min_grade"/>      
+                <field name="hsc_finance_min_grade"/>      
+                <field name="hsc_accounting_min_grade"/>         
+                <field name="hsc_english_min_grade"/>
+                <field name="ssc_english_min_grade"/>      
+                <field name="ssc_finance_min_grade"/>      
+                <field name="ssc_accounting_min_grade"/>      
+            </tree>
+        </field>
+    </record>   
+
+
+
+    <!-- Action to open the tree view -->
+    <record id="um_business_faculty_tree_view" model="ir.actions.act_window">
+        <field name="name">business.faculty.tree</field>
+        <field name="res_model">business.faculty</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <!-- <menuitem  id="faculty_business_info_menu" name="Business" action="um_business_faculty_tree_view"/> -->
+
+</odoo>

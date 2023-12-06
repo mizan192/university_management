@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- tree view          -->
+    <record id="um_arts_faculty_view_record" model="ir.ui.view">
+        <field name="name">arts.faculty.tree</field>
+        <field name="model">arts.faculty</field>
+        <field name="arch" type="xml">
+            <tree> 
+                <field name="department_name"/>      
+                <field name="available_seats"/>      
+                <field name="hsc_min_grade"/>
+                <field name="ssc_min_grade"/>            
+                <field name="hsc_english_min_grade"/>
+                <field name="ssc_english_min_grade"/>      
+            </tree>
+        </field>
+    </record>   
+
+
+
+    <!-- Action to open the tree view -->
+    <record id="um_arts_faculty_tree_view" model="ir.actions.act_window">
+        <field name="name">arts.faculty.tree</field>
+        <field name="res_model">arts.faculty</field>
+        <field name="view_mode">tree</field>
+    </record>
+    
+    <!-- <menuitem  id="faculty_arts_info_menu" name="Arts" action="um_arts_faculty_tree_view"/> -->
+
+</odoo>

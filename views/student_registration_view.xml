@@ -27,6 +27,9 @@
         <field name="model">student.registration</field>
         <field name="arch" type="xml">
             <form>
+
+            
+
                 <sheet string="Student Information">
                     <group>
                         <group col="4">
@@ -150,9 +153,19 @@
                             </group>
                         </page>
 
+                        <page string="Department Select">
+                            <group>
+                                <field name="faculty_name"/>
+                                <!-- <field name="department_list" widget="many2one_tags" /> -->
+                            </group>
+                        </page>
+
+
                     </notebook>
 
                 </sheet>
+            
+         
 
             </form>
         </field>
