@@ -81,7 +81,7 @@ class StudentRegistration(models.Model):
     
 #department selection 
 
-    faculty_name=fields.Selection([('engineering','Engineering'),('business', 'business'), ('arts', 'Arts')], string='Select Faculty', default='arts')
+    faculty_name=fields.Selection([('engineering','Engineering'),('business', 'business'), ('arts', 'Arts')], string='Select Faculty')
 
     engineering_departments=fields.Many2one(
         comodel_name='engineering.faculty',
@@ -116,7 +116,7 @@ class StudentRegistration(models.Model):
     # it will create a error message 
     #next confirm button for generating course list for this department
 
-    
+
 
 
 
@@ -267,16 +267,40 @@ class StudentRegistration(models.Model):
             self.accepted_faculty=self.faculty_name
             self.accepted_department=choosed_department.department_name
             self.congres_group="congress"
-            self.department_obj=choosed_department
+            self.department_obj=choosed_department.id
             
 
 
 
+    # decrease seat for selecting department 
+    def decrease_department_seat(self):
+        if self.accepted_faculty=='engineering':
+            rec = self.env['engineering.faculty'].browse(int(self.department_obj))
+            new_seats = rec.available_seats-1
+            rec.write({'available_seats':new_seats})
+        if self.accepted_faculty=='business':
+            rec = self.env['business.faculty'].browse(int(self.department_obj))
+            new_seats = rec.available_seats-1
+            rec.write({'available_seats':new_seats})
+        if self.accepted_faculty=='arts':
+            rec = self.env['arts.faculty'].browse(int(self.department_obj))
+            new_seats = rec.available_seats-1
+            rec.write({'available_seats':new_seats})
+            
+
 
     # after confirm seat will be decrease 
     def confirm_department_registration(self):
+        if self.is_admitted==True:
+            raise ValidationError("You have alreadey admitted in a department!!!")
         self.is_admitted=True
+        self.decrease_department_seat()
         
-
-
-
+        #add student in profile
+        self.env['student.profile'].create({
+            'name':self.name,
+            'student_id':self.student_id,
+            'accepted_faculty':self.accepted_faculty,
+            'accepted_department':self.accepted_department,
+        })
+       

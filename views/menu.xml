@@ -4,7 +4,8 @@
      <menuitem id="um_super_parent_menu_bar_id" name="student registration" sequence="2">
         <menuitem id="um_student_registration_menus_id" name="student registration" action="um_student_registration_view_record_idss"/>
         <menuitem id="um_department_info_menus_id" name="department information" action="um_department_information_view_record_id_two"/>
-
+        <menuitem  id="students_profile_info_menu_ids" name="student profile" action="um_students_profile_tree_view"/>
+        <menuitem  id="course_lists_info_menu" name="Courses" action="um_course_lists_view_recored_id"/>
         <!-- facuclty and department menu  -->
         <menuitem  id="faculty_info_menu" name="Faculty">
             <menuitem  id="faculty_engineering_info_menu" name="Engineering" sequence="1" action="um_engineering_faculty_tree_view"/>
@@ -14,6 +15,10 @@
 
 
     </menuitem> 
+
+    <menuitem id="um_department_migration_super_view" name="Department Migration" sequence="3"> 
+        <menuitem  id="um_department_migration_view__info_menu" name="Migration" action="um_department_migration_view_recored_id"/>
+    </menuitem>
 
 
     

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- tree view          -->
+    <record id="um_course_lists_view_record" model="ir.ui.view">
+        <field name="name">course.list.tree</field>
+        <field name="model">course.list</field>
+        <field name="arch" type="xml">
+            <tree> 
+                <field name="course_name"/>      
+                <field name="course_faculty"/>      
+                <field name="credit_hour"/>      
+                <field name="credit_unit"/>      
+                <field name="credit_hour_fee"/>      
+                <field name="lab_fee"/>      
+            </tree>
+        </field>
+    </record>   
+
+    <record id="um_course_lists_form_view_record" model="ir.ui.view">
+        <field name="name">course.list.form</field>
+        <field name="model">course.list</field>
+        <field name="arch" type="xml">
+            <form> 
+                <sheet>
+                    <group>
+                        <field name="course_name"/>      
+                        <field name="course_faculty"/>      
+                        <field name="credit_hour"/>      
+                        <field name="credit_unit"/>      
+                        <field name="credit_hour_fee"/>      
+                        <field name="lab_fee"/>      
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>  
+
+
+
+    <!-- Action to open the tree view -->
+    <record id="um_course_lists_view_recored_id" model="ir.actions.act_window">
+        <field name="name">course.list.view</field>
+        <field name="res_model">course.list</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- <menuitem  id="course_lists_info_menu" name="Courses" action="um_course_lists_view_recored_id"/> -->
+
+
+</odoo>

@@ -169,7 +169,7 @@
 
                         <page string="Department Select">
                             <group>
-                                <field name="faculty_name" string="Select Faculty" />
+                                <field name="faculty_name" placeholder="select your desired faculty" string="Select Faculty" />
                             </group>
                             
                             <group col="3" string="Department List"> 
@@ -203,7 +203,7 @@
 
                             <separator></separator>
 
-                            <group>
+                            <group col="2">
                                 <group> 
                                     <button string="Select Department" type="object" name="department_check_according_to_grade" class="oe_highlight"/>
                                 </group>

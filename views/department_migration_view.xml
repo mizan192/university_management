@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <!-- tree view          -->
+    <record id="um_department_migration_view_record" model="ir.ui.view">
+        <field name="name">department.migration.tree</field>
+        <field name="model">department.migration</field>
+        <field name="arch" type="xml">
+            <tree> 
+                <field name="student_name"/>
+                <field name="student_id"/>
+                <field name="previous_faculty"/>
+                <field name="previous_department"/>
+            </tree>
+        </field>
+    </record>   
+
+    <record id="um_department_migration_form_view_record" model="ir.ui.view">
+        <field name="name">department.migration.tree</field>
+        <field name="model">department.migration</field>
+         <field name="arch" type="xml">
+            <form> 
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="student_info" widget="selection" options="{'no_create':True}"/>
+                            <field name="student_name"/>
+                            <field name="student_id"/>
+                        </group>
+                        <group>
+                            <field name="previous_faculty"/>
+                            <field name="previous_department"/>
+                        </group>
+                    </group>
+
+
+                    
+                    <group>
+                        <field name="faculty_name" placeholder="select your desired faculty" string="Select Faculty" />
+                    </group>
+                    
+                    <group col="3" string="Department List"> 
+                            <group>   
+                                <field name="engineering_departments" placeholder="select department" widget="selection" options="{'no_create':True}" attrs="{'readonly':[('faculty_name', '!=', 'engineering')]}"/>
+                            </group>
+
+                            <group>
+                                <field name="business_departments" placeholder="select department" widget="selection" options="{'no_create':True}" attrs="{'readonly':[('faculty_name', '!=', 'business')]}"/>
+                            </group>
+
+                            <group>
+                                <field name="arts_departments" placeholder="select department" widget="selection" options="{'no_create':True}" attrs="{'readonly':[('faculty_name', '!=', 'arts')]}"/>
+                            </group>
+                     
+                    </group>
+
+
+
+
+
+                </sheet>
+            </form>
+        </field>
+    </record>  
+
+
+
+    <!-- Action to open the tree view -->
+    <record id="um_department_migration_view_recored_id" model="ir.actions.act_window">
+        <field name="name">department.migration.view</field>
+        <field name="res_model">department.migration</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <!-- <menuitem  id="um_department_migration_view__info_menu" name="Migration" action="um_department_migration_view_recored_id"/> -->
+
+
+</odoo>
