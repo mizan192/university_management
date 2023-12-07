@@ -21,4 +21,7 @@ class BusinessFaculty(models.Model):
     ssc_finance_min_grade=fields.Char(string="SSC Finance Grade")
     ssc_accounting_min_grade=fields.Char(string="SSC Accounting Grade")
 
+    #many2one field with student model
+    business_student_id=fields.Many2one('student.registration', string="Student Id")
+
     

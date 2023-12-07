@@ -78,18 +78,45 @@ class StudentRegistration(models.Model):
     
 #department selection 
     faculty_name=fields.Selection([('engineering','Engineering'),('business', 'business'), ('arts', 'Arts')], string='Select Faculty', default='arts')
-    # selected_faculty=fields.Char(string="Faculty Name", default="arts.faculty")
-    # department_ids=fields.One2many(
-    #     comodel_name=selected_faculty,
-    #     inverse_name='student_id',
-    #     string='Department List'
-    # )
+
+    engineering_departments=fields.Many2one(
+        comodel_name='engineering.faculty',
+        # inverse_name='eng_student_id',
+        string='Engineering Department'
+    )
+    business_departments=fields.Many2one(
+        comodel_name='business.faculty',
+        # inverse_name='business_student_id',
+        string="Business Department"
+    )
+    arts_departments=fields.Many2one(
+        comodel_name='arts.faculty',
+        # inverse_name='arts_student_id',
+        string="Arts Department"
+    )
     
 
-    # @api.onchange('faculty_name')
-    # def update_selected_faculty(self):
-    #     for record in self.faculty_name:
-    #         record.selected_faculty=record.faculty_name+".faculty"
+    
+
+
+
+
+    # next step : there will three one2many field 
+    # for three faculty class, according to selection 
+    # faculty , res two field will be readonly(not accessable vai xml attrs)
+    # and  accroding to student result i will check all department and
+    # collect all department which are possible for her,, this
+    # list will show in text field for her view,, if he select
+    # any field in selection which is not possible for her, then 
+    # it will create a error message 
+    #next confirm button for generating course list for this department
+
+    
+
+
+
+  
+
 
 
 
@@ -140,3 +167,7 @@ class StudentRegistration(models.Model):
     def _generate_id(self):
         for record in self:
             record.student_id=record.ids
+
+
+
+

@@ -27,6 +27,5 @@ class EngineeringFaculty(models.Model):
 
 
     #many2one field with student model
-    student_id=fields.Many2one('student.registration', string="Student Id")
+    eng_student_id=fields.Many2one('student.registration', string="Student Id")
 
-    

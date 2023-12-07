@@ -17,3 +17,7 @@ class ArtsFaculty(models.Model):
     hsc_english_min_grade=fields.Char(string="HSC English Grade")
     ssc_english_min_grade=fields.Char(string="SSC English Grade")
     
+    #many2one field with student model
+    arts_student_id=fields.Many2one('student.registration', string="Student Id")
+
+    
