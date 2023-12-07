@@ -13,26 +13,27 @@ class DepartmentInformation(models.Model):
     email=fields.Char(string="Email")
     department_description=fields.Text(string="Department Description")
     #minimum result required
-    hsc_min_grade=fields.Char(string="HSC Grade Required", default="3.50")
-    ssc_min_grade=fields.Char(string="SSC Grade Required", default="3.00")
+    hsc_min_grade=fields.Float(string="HSC Grade Required", default="3.50")
+    ssc_min_grade=fields.Float(string="SSC Grade Required", default="3.00")
     faculty=fields.Selection([('engineering','Engineering'),('business', 'business'), ('arts', 'Arts')], string='Faculty Type', default='arts')
 
     # minimum grade requirements
-    grade_domain=[('a+','A+'),('a','A'),('a-','A-'),('b','B'),('c','C'),('d','D')]
-    hsc_math_min_grade=fields.Selection(grade_domain,string='HSC Math Grade Required',default='a')
-    hsc_physics_min_grade=fields.Selection(grade_domain,string='HSC Physics Grade Required',default='a-')
-    hsc_chemisty_min_grade=fields.Selection(grade_domain,string='HSC Chemisty Grade Required',default='a-')
-    hsc_english_min_grade=fields.Selection(grade_domain,string='HSC English Grade Required',default='b')
-    hsc_biology_min_grade=fields.Selection(grade_domain,string='HSC Biology Grade Required',default='b')
-    hsc_finance_min_grade=fields.Selection(grade_domain,string='HSC Finance Grade Required',default='a-')
-    hsc_accounting_min_grade=fields.Selection(grade_domain,string='HSC Accounting Grade Required',default='b')
-    ssc_math_min_grade=fields.Selection(grade_domain,string='SSC Math Grade Required',default='a')
-    ssc_physics_min_grade=fields.Selection(grade_domain,string='SSC Physics Grade Required',default='a-')
-    ssc_chemisty_min_grade=fields.Selection(grade_domain,string='SSC Chemisty Grade Required',default='a-')
-    ssc_english_min_grade=fields.Selection(grade_domain,string='SSC English Grade Required',default='b')
-    ssc_biology_min_grade=fields.Selection(grade_domain,string='SSC Biology Grade Required',default='b')
-    ssc_finance_min_grade=fields.Selection(grade_domain,string='SSC Finance Grade Required',default='a-')
-    ssc_accounting_min_grade=fields.Selection(grade_domain,string='SSC Accounting Grade Required',default='b')
+    # grade_domain=[('a+','A+'),('a','A'),('a-','A-'),('b','B'),('c','C'),('d','D')]
+    grade_domain=[('5.0','A+'),('4.5','A'),('4.0','A-'),('3.5','B'),('3.0','C'),('2.0','D')]
+    hsc_math_min_grade=fields.Selection(grade_domain,string='HSC Math Grade Required',default='4.0')
+    hsc_physics_min_grade=fields.Selection(grade_domain,string='HSC Physics Grade Required',default='3.5')
+    hsc_chemisty_min_grade=fields.Selection(grade_domain,string='HSC Chemisty Grade Required',default='3.0')
+    hsc_english_min_grade=fields.Selection(grade_domain,string='HSC English Grade Required',default='3.5')
+    hsc_biology_min_grade=fields.Selection(grade_domain,string='HSC Biology Grade Required',default='3.0')
+    hsc_finance_min_grade=fields.Selection(grade_domain,string='HSC Finance Grade Required',default='3.0')
+    hsc_accounting_min_grade=fields.Selection(grade_domain,string='HSC Accounting Grade Required',default='3.0')
+    ssc_math_min_grade=fields.Selection(grade_domain,string='SSC Math Grade Required',default='4.0')
+    ssc_physics_min_grade=fields.Selection(grade_domain,string='SSC Physics Grade Required',default='3.0')
+    ssc_chemisty_min_grade=fields.Selection(grade_domain,string='SSC Chemisty Grade Required',default='3.0')
+    ssc_english_min_grade=fields.Selection(grade_domain,string='SSC English Grade Required',default='3.5')
+    ssc_biology_min_grade=fields.Selection(grade_domain,string='SSC Biology Grade Required',default='2.0')
+    ssc_finance_min_grade=fields.Selection(grade_domain,string='SSC Finance Grade Required',default='2.0')
+    ssc_accounting_min_grade=fields.Selection(grade_domain,string='SSC Accounting Grade Required',default='2.0')
 
 
     # student_list=fields.Many2one()

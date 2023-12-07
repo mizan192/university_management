@@ -10,8 +10,8 @@ class ArtsFaculty(models.Model):
     department_name=fields.Char(string="Department Name")
     available_seats=fields.Integer(string="Available Seat", default=20)
     
-    hsc_min_grade=fields.Char(string="HSC Grade Required", default="3.50")
-    ssc_min_grade=fields.Char(string="SSC Grade Required", default="3.00")
+    hsc_min_grade=fields.Float(string="HSC Grade Required", default="3.50")
+    ssc_min_grade=fields.Float(string="SSC Grade Required", default="3.00")
     
     
     hsc_english_min_grade=fields.Char(string="HSC English Grade")
