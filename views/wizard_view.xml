@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <!-- wizard view for course selection -->
+    <record id="course_selection_wizard_view" model="ir.ui.view">
+        <field name="name">student.registration.model.form</field>
+        <field name="model">student.registration</field>
+        <field name="arch" type="xml">
+           <form>
+                
+                <sheet>
+
+                    <group string="Student Information">
+                        <group>
+                            <field name="name" readonly='1'/>
+                            <field name="student_id" />
+                        </group>
+                        <group>
+                            <field name="accepted_faculty" string="Faculty" readonly='1'/>
+                            <field name="accepted_department" string="Department" readonly='1'/>
+                        </group>
+                    </group>        
+                    
+                    <group string="Course Selection Panel">
+                        <field name="course_ids" display_name='True' widget="many2many_tags" options="{'no_create':True}" string="select course"/>
+                        
+                    </group>
+
+                    <notebook>
+                        <page string="Selected Courses">
+                            <group>
+                                <!-- <field name='course_ids' string=""/> -->
+                                <!-- below will work for this don't need to readonly in group  -->
+                                <field name='course_ids' options="{'no_create': True, 'create': false}" string=""/>
+                            
+                            </group>
+
+                            <group col="2">
+                                <group></group>
+                                <group><field name='course_cost' string='Total Cost' /> </group>
+                            </group>
+
+
+                        </page>
+
+
+                    </notebook>
+
+
+                </sheet>
+                
+ 
+            </form> 
+        </field>
+    </record>
+
+
+
+
+
+
+
+</odoo>

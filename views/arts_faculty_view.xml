@@ -9,6 +9,7 @@
             <tree> 
                 <field name="department_name"/>      
                 <field name="available_seats"/>      
+                <field name="total_students"/>      
                 <field name="hsc_min_grade"/>
                 <field name="ssc_min_grade"/>            
                 <field name="hsc_english_min_grade"/>

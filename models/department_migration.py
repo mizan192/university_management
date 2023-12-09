@@ -8,8 +8,8 @@ class DepartmentMigration(models.Model):
 
     student_name=fields.Char(related='student_info.name',string='Student Name')
     student_id=fields.Char(related='student_info.student_id',string='Student ID')
-    previous_faculty=fields.Char(related='student_info.accepted_faculty',string="Faculty")
-    previous_department=fields.Char(related='student_info.accepted_department',string="Department")
+    previous_faculty=fields.Char(related='student_info.accepted_faculty',string="Previous Faculty")
+    previous_department=fields.Char(related='student_info.accepted_department',string="Previous Department")
 
     faculty_name=fields.Selection([('engineering','Engineering'),('business', 'business'), ('arts', 'Arts')], string='Select Faculty')
 

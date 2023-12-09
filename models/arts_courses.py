@@ -7,7 +7,7 @@ class ArtsCourses(models.Model):
 
     course_name=fields.Char(string="Course Name")
     credit_hour = fields.Integer(string="Credit Hour")
-    credit_unit=fields.Float(string="Credit Unit")
     credit_hour_fee=fields.Integer(string="Hour Fee")
     lab_fee=fields.Integer(string="Lab Fee")
+    single_course_fee=fields.Float(string='Subtotal', default=0, compute="_single_course_cost")
 

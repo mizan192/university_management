@@ -11,7 +11,7 @@ class StudentRegistration(models.Model):
 
 # personal information 
     name=fields.Char(string='Name', required=True)
-    student_id=fields.Char(string='Student ID', compute="_generate_id")
+    student_id=fields.Char(string='Student ID', readonly=True)
     birth_date=fields.Date(string='Birth Date', default=fields.Date.today)
     gender = fields.Selection([('male','Male'),('female', 'Female'), ('other', 'Other')], string='Gender')
     image=fields.Binary(string='Image')
@@ -81,7 +81,7 @@ class StudentRegistration(models.Model):
     
 #department selection 
 
-    faculty_name=fields.Selection([('engineering','Engineering'),('business', 'business'), ('arts', 'Arts')], string='Select Faculty')
+    faculty_name=fields.Selection([('engineering','Engineering'),('business', 'business'), ('arts', 'Arts')], default='arts', string='Select Faculty' )
 
     engineering_departments=fields.Many2one(
         comodel_name='engineering.faculty',
@@ -98,12 +98,40 @@ class StudentRegistration(models.Model):
         # inverse_name='arts_student_id',
         string="Arts Department"
     )
+
+
+# select department with one field from department model using domain 
+    select_department = fields.Many2one(
+        comodel_name='department.information',
+        domain="[('faculty', '=', faculty_name)]",
+        string="department select"  
+    )
+
     
     accepted_faculty=fields.Char(string="Faculty", readonly=True)
     accepted_department=fields.Char(string="Department",readonly=True)
     congres_group=fields.Char(default="not_confirm")
     is_admitted=fields.Boolean(default=False)
     department_obj =fields.Char(string="Object")
+
+
+
+
+
+    # course selection after confirm 
+
+    course_ids=fields.One2many(
+        comodel_name='course.list',
+        inverse_name='students_id',
+        domain="['|',('course_faculty', '=', 'all'),('course_faculty', '=', accepted_faculty)]",
+        # string="select course"  
+    )
+
+    course_cost=fields.Float(string='Course Cost', default=0, readonly='1')
+    credit_hour=fields.Float(string='Credit Hour')
+    max_credit_hour=fields.Float(string='Max Credit', compute="_set_max_credit_limit", store=True)
+
+
 
 
     # next step : there will three one2many field 
@@ -168,19 +196,32 @@ class StudentRegistration(models.Model):
             record.total_salary=record.father_salary+record.mother_salary
 
    
+
+    def calculate_credit(self):
+        credit = 15
+        max_cr = 26
+        if self.hsc_group=='commerce':
+            credit=credit+3
+        if self.hsc_group=='scienc':
+            credit=credit+6
+        if self.hsc_result == 5.00:
+            credit=credit+5
+        elif self.hsc_group>= 4.5:
+            credit=credit+3
+        elif self.hsc_group>= 4:
+            credit=credit+2
+        return credit
+    
+
+
+#    set maximum credit limit for student 
+    @api.depends('hsc_result','hsc_group')
+    def _set_max_credit_limit(self):
+        self.max_credit_hour=0
+        for rec in self:
+            rec.max_credit_hour=self.calculate_credit()
+
    
-   
-    #id generate
-    # student id will be generated via department selection 
-    def _generate_id(self):
-        for record in self:
-            record.student_id=record.ids
-
-
-
-
-
-
 
 
     # generate department list comparing with academic result and department requirements
@@ -273,20 +314,40 @@ class StudentRegistration(models.Model):
 
 
     # decrease seat for selecting department 
-    def decrease_department_seat(self):
-        if self.accepted_faculty=='engineering':
-            rec = self.env['engineering.faculty'].browse(int(self.department_obj))
-            new_seats = rec.available_seats-1
-            rec.write({'available_seats':new_seats})
-        if self.accepted_faculty=='business':
-            rec = self.env['business.faculty'].browse(int(self.department_obj))
-            new_seats = rec.available_seats-1
-            rec.write({'available_seats':new_seats})
-        if self.accepted_faculty=='arts':
-            rec = self.env['arts.faculty'].browse(int(self.department_obj))
-            new_seats = rec.available_seats-1
-            rec.write({'available_seats':new_seats})
-            
+    # def decrease_seat_and_increase_student_count_in_department(self):
+    #     if self.accepted_faculty=='engineering':
+    #         rec = self.env['engineering.faculty'].browse(int(self.department_obj))
+    #         new_seats = rec.available_seats-1
+    #         rec.write({'available_seats':new_seats})
+    #     if self.accepted_faculty=='business':
+    #         rec = self.env['business.faculty'].browse(int(self.department_obj))
+    #         new_seats = rec.available_seats-1
+    #         rec.write({'available_seats':new_seats})
+    #     if self.accepted_faculty=='arts':
+    #         rec = self.env['arts.faculty'].browse(int(self.department_obj))
+    #         new_seats = rec.available_seats-1
+    #         rec.write({'available_seats':new_seats})
+
+
+
+    def decrease_seat_and_increase_student_count_in_department(self):
+        # update in department table 
+        d_name = self.accepted_department
+        domain = [("department_name", "=", d_name)]
+        record = self.env["department.information"].search(domain)
+        new_seats=record.available_seats-1
+        student_count=record.total_students+1
+        record.write({'available_seats':new_seats,'total_students':student_count})
+        # update in faculty based table 
+        f_name = self.accepted_faculty+".faculty"
+        
+        domain = [("department_name", "=", d_name)]
+        rec= self.env[f_name].search(domain)
+        rec.write({'available_seats':new_seats,'total_students':student_count})
+
+        #set student id while confirm : department_name_student_count
+        self.student_id=self.accepted_department+"_"+str(student_count)
+
 
 
     # after confirm seat will be decrease 
@@ -294,7 +355,7 @@ class StudentRegistration(models.Model):
         if self.is_admitted==True:
             raise ValidationError("You have alreadey admitted in a department!!!")
         self.is_admitted=True
-        self.decrease_department_seat()
+        self.decrease_seat_and_increase_student_count_in_department()
         
         #add student in profile
         self.env['student.profile'].create({
@@ -303,4 +364,39 @@ class StudentRegistration(models.Model):
             'accepted_faculty':self.accepted_faculty,
             'accepted_department':self.accepted_department,
         })
-       
+    
+
+
+    # select course 
+    def open_course_selection_wizard_form(self):
+        context = {
+        'default_name': self.name,
+        'default_student_id': self.student_id,
+        'default_accepted_faculty': self.accepted_faculty,
+        'default_accepted_department': self.accepted_department,
+        }
+
+        return {
+            'name': "Course Selection Panel",
+            'type': 'ir.actions.act_window',
+            'res_model': 'student.registration',
+            'view_mode': 'form',
+            'view_id': self.env.ref('university_management.course_selection_wizard_view').id,
+            'target': 'new',
+            'context': context,
+        }
+    
+
+    #course fee calcualtion     
+
+    @api.onchange('course_ids')
+    def calculate_course_cost_and_credit_hour(self):
+        total_cost=0
+        total_credit_hour=0
+        for rec in self.course_ids:
+            total_cost=total_cost+rec.lab_fee+(rec.credit_hour*rec.credit_hour_fee)
+            total_credit_hour=total_credit_hour+rec.credit_hour
+        # if self.credit_hour>self.max_credit_hour:
+        #     ValidationError("You Cannot ")
+        self.course_cost=total_cost
+        self.credit_hour=total_credit_hour

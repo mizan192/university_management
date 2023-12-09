@@ -16,6 +16,7 @@
         'views/student_profile_view.xml',
         'views/course_list_view.xml',
         'views/department_migration_view.xml',
+        'views/wizard_view.xml',
         'views/menu.xml',
     ],
     

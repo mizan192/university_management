@@ -1,4 +1,5 @@
 from odoo import fields,models,api
+from odoo.exceptions import AccessError, UserError, ValidationError
 
 class DepartmentInformation(models.Model):
     _name="department.information"
@@ -16,6 +17,7 @@ class DepartmentInformation(models.Model):
     hsc_min_grade=fields.Float(string="HSC Grade Required", default="3.50")
     ssc_min_grade=fields.Float(string="SSC Grade Required", default="3.00")
     faculty=fields.Selection([('engineering','Engineering'),('business', 'business'), ('arts', 'Arts')], string='Faculty Type', default='arts')
+    total_students=fields.Integer(string="Department Students", default=0)
 
     # minimum grade requirements
     # grade_domain=[('a+','A+'),('a','A'),('a-','A-'),('b','B'),('c','C'),('d','D')]
@@ -43,12 +45,13 @@ class DepartmentInformation(models.Model):
     ##add department according to faculty type
 
     @api.model
-    def department_add_in_faculty(self,faculty,department_name, available_seats,hsc_min_grade,ssc_min_grade,hsc_math_min_grade,hsc_physics_min_grade,hsc_chemisty_min_grade,hsc_english_min_grade,hsc_finance_min_grade,hsc_accounting_min_grade,hsc_biology_min_grade,ssc_math_min_grade,ssc_physics_min_grade,ssc_chemisty_min_grade,ssc_english_min_grade,ssc_finance_min_grade,ssc_accounting_min_grade,ssc_biology_min_grade):
+    def department_add_in_faculty(self,faculty,department_name, available_seats,total_students,hsc_min_grade,ssc_min_grade,hsc_math_min_grade,hsc_physics_min_grade,hsc_chemisty_min_grade,hsc_english_min_grade,hsc_finance_min_grade,hsc_accounting_min_grade,hsc_biology_min_grade,ssc_math_min_grade,ssc_physics_min_grade,ssc_chemisty_min_grade,ssc_english_min_grade,ssc_finance_min_grade,ssc_accounting_min_grade,ssc_biology_min_grade):
         
         if faculty=='engineering':
             self.env['engineering.faculty'].create({
                 'department_name':department_name,
                 'available_seats':available_seats,
+                'total_students':total_students,
                 'hsc_min_grade':hsc_min_grade,
                 'ssc_min_grade':ssc_min_grade,
                 'hsc_math_min_grade':hsc_math_min_grade,
@@ -66,6 +69,7 @@ class DepartmentInformation(models.Model):
             self.env['business.faculty'].create({
                 'department_name':department_name,
                 'available_seats':available_seats,
+                'total_students':total_students,
                 'hsc_min_grade':hsc_min_grade,
                 'ssc_min_grade':ssc_min_grade,
                 'hsc_english_min_grade':hsc_english_min_grade,
@@ -79,6 +83,7 @@ class DepartmentInformation(models.Model):
             self.env['arts.faculty'].create({
                 'department_name':department_name,
                 'available_seats':available_seats,
+                'total_students':total_students,
                 'hsc_min_grade':hsc_min_grade,
                 'ssc_min_grade':ssc_min_grade,
                 'hsc_english_min_grade':hsc_english_min_grade,
@@ -91,9 +96,20 @@ class DepartmentInformation(models.Model):
     @api.model
     def create(self,val):
         ctx = self.env.context.copy()
-
         rec=super(DepartmentInformation,self.with_context(ctx)).create(val)
 
         #after create a record it will department_add_in_faculty
-        self.department_add_in_faculty(rec.faculty,rec.department_name, rec.available_seats,rec.hsc_min_grade,rec.ssc_min_grade,rec.hsc_math_min_grade,rec.hsc_physics_min_grade,rec.hsc_chemisty_min_grade,rec.hsc_english_min_grade,rec.hsc_finance_min_grade,rec.hsc_accounting_min_grade,rec.hsc_biology_min_grade,rec.ssc_math_min_grade,rec.ssc_physics_min_grade,rec.ssc_chemisty_min_grade,rec.ssc_english_min_grade,rec.ssc_finance_min_grade,rec.ssc_accounting_min_grade,rec.ssc_biology_min_grade)
+        self.department_add_in_faculty(rec.faculty,rec.department_name, rec.available_seats,rec.total_students,rec.hsc_min_grade,rec.ssc_min_grade,rec.hsc_math_min_grade,rec.hsc_physics_min_grade,rec.hsc_chemisty_min_grade,rec.hsc_english_min_grade,rec.hsc_finance_min_grade,rec.hsc_accounting_min_grade,rec.hsc_biology_min_grade,rec.ssc_math_min_grade,rec.ssc_physics_min_grade,rec.ssc_chemisty_min_grade,rec.ssc_english_min_grade,rec.ssc_finance_min_grade,rec.ssc_accounting_min_grade,rec.ssc_biology_min_grade)
         return rec   
+    
+
+
+    # duplicate record check 
+    @api.constrains('department_name')
+    def _check_duplicate_name(self):
+        for record in self:
+            if record.search_count([('department_name', 'ilike', record.department_name)]) > 1:
+                raise ValidationError("Duplicate record with the same name found!")
+
+    
+    

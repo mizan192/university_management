@@ -10,6 +10,7 @@
                 <field name="department_name"/>      
                 <field name="faculty"/>      
                 <field name="available_seats"/>
+                <field name="total_students"/>
                 <field name="ssc_min_grade"/>      
                 <field name="hsc_min_grade"/>        
                 <field name="phone"/>    
