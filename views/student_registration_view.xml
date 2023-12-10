@@ -14,6 +14,7 @@
                 <field name="total_salary"/>    
                 <field name="ssc_result"/>      
                 <field name="hsc_result"/>      
+                <field name="course_cost"/>      
                 <field name="contact_number"/>      
                 <field name="email"/>        
             </tree>
@@ -28,7 +29,9 @@
         <field name="arch" type="xml">
             <form>
 
-            
+                <header>
+                    <button string="Action Button Render View File" type="action" name="%(search_result_view)d" class="oe_highlight"/>
+                </header>
 
                 <sheet string="Student Information">
                     <group>
@@ -44,6 +47,7 @@
                             <field name="email" placeholder="example@gmail.com"/>
                             <field name="contact_number" placeholder="01XXXXXX"/>
                             <field name="english_proficiency"/>
+                            <field name="course_cost"/>
                         </group>
                     </group>
 
@@ -227,7 +231,8 @@
                             </group>
                             
 
-
+                            
+                            <!-- <button string="show" type="object" name="show_data" class="oe_highlight"/> -->
 
                         
                         </page>

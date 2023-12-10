@@ -13,4 +13,5 @@ class StudentProfile(models.Model):
     accepted_faculty=fields.Char(string="Faculty", readonly=True)
     accepted_department=fields.Char(string="Department",readonly=True)
 
-    student_relation=fields.Many2one("student.registration")
+    student_relation=fields.Many2one("student.registration")    
+    course_cost=fields.Float(string="Course Cost")

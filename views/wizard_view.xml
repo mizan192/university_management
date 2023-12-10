@@ -50,12 +50,44 @@
 
                 </sheet>
                 
+                <footer>
+                    <button string="Save" type="object" class="oe_highlight" name="custom_save_method"/>
+                </footer> 
  
             </form> 
         </field>
     </record>
 
 
+    <!-- temporary profile after course selection  -->
+
+   <record id="student_profile_after_course_selection" model="ir.ui.view">
+        <field name="name">student.registration.model.form</field>
+        <field name="model">student.registration</field>
+        <field name="arch" type="xml">
+           <form>
+                <sheet>
+
+                    <gorup>
+                        <field name="name"/>      
+                        <field name="student_id"/>  
+                        <field name="accepted_faculty"/>  
+                        <field name="accepted_department"/>  
+                        <field name="course_cost"/>  
+                    </gorup>
+
+                    <notebook>
+                        <page string='Course List'>
+                            <field name='course_ids' options="{'no_create': True, 'create': false}" string=""/>
+                        </page>
+                    </notebook>
+
+
+                </sheet>
+ 
+            </form> 
+        </field>
+    </record> 
 
 
 

@@ -129,8 +129,9 @@ class StudentRegistration(models.Model):
 
     course_cost=fields.Float(string='Course Cost', default=0, readonly='1')
     credit_hour=fields.Float(string='Credit Hour')
+    
     max_credit_hour=fields.Float(string='Max Credit', compute="_set_max_credit_limit", store=True)
-
+    total_cost = fields.Float(string='Fee', readonly='1', default=0)
 
 
 
@@ -149,9 +150,6 @@ class StudentRegistration(models.Model):
 
 
   
-
-
-
 
 
 
@@ -195,21 +193,31 @@ class StudentRegistration(models.Model):
         for record in self:
             record.total_salary=record.father_salary+record.mother_salary
 
-   
 
-    def calculate_credit(self):
+
+
+
+
+
+
+
+
+
+    def calculate_credit(self,hsc_r,hsc_g):
         credit = 15
         max_cr = 26
-        if self.hsc_group=='commerce':
+        if hsc_g=='commerce':
             credit=credit+3
-        if self.hsc_group=='scienc':
+        if hsc_g=='scienc':
             credit=credit+6
-        if self.hsc_result == 5.00:
+        if hsc_r == 5.00:
             credit=credit+5
-        elif self.hsc_group>= 4.5:
+        elif hsc_r>= 4.5:
             credit=credit+3
-        elif self.hsc_group>= 4:
+        elif hsc_r>= 4:
             credit=credit+2
+        else:
+            credit=credit+1
         return credit
     
 
@@ -217,9 +225,9 @@ class StudentRegistration(models.Model):
 #    set maximum credit limit for student 
     @api.depends('hsc_result','hsc_group')
     def _set_max_credit_limit(self):
-        self.max_credit_hour=0
         for rec in self:
-            rec.max_credit_hour=self.calculate_credit()
+            count=self.calculate_credit(self.hsc_result,self.hsc_group)
+            rec.max_credit_hour=count
 
    
 
@@ -363,18 +371,25 @@ class StudentRegistration(models.Model):
             'student_id':self.student_id,
             'accepted_faculty':self.accepted_faculty,
             'accepted_department':self.accepted_department,
+            'course_cost':0,
         })
     
 
 
     # select course 
     def open_course_selection_wizard_form(self):
+        # passing One2many filed ids
+        course_id_list = self.course_ids.ids
+
         context = {
+        'default_main_model_id': self.id,
         'default_name': self.name,
         'default_student_id': self.student_id,
         'default_accepted_faculty': self.accepted_faculty,
         'default_accepted_department': self.accepted_department,
+        'default_course_ids': course_id_list,
         }
+        new_context = self._context.copy()
 
         return {
             'name': "Course Selection Panel",
@@ -383,9 +398,53 @@ class StudentRegistration(models.Model):
             'view_mode': 'form',
             'view_id': self.env.ref('university_management.course_selection_wizard_view').id,
             'target': 'new',
+            # 'target': 'current',
             'context': context,
         }
     
+
+    # custom save button for course select popup window
+    def custom_save_method(self):
+        main_model = self.env['student.registration']
+        c_ids = self.course_ids.ids
+        values_to_save = {
+            'course_ids': c_ids,
+        }
+
+        if self._context.get('active_id'):
+            main_model.browse(self._context['active_id']).write(values_to_save)
+        else:
+            new_record = main_model.create(values_to_save)
+
+        return{'type': 'ir.actions.act_window_close',}
+    
+
+        # course_id_list = self.course_ids.ids
+
+        # context = {
+        # 'default_main_model_id': self.id,
+        # 'default_name': self.name,
+        # 'default_student_id': self.student_id,
+        # 'default_accepted_faculty': self.accepted_faculty,
+        # 'default_accepted_department': self.accepted_department,
+        # 'default_course_ids': course_id_list,
+        # }
+
+        # return {
+        #     'name': "Student Registration View",
+        #     'type': 'ir.actions.act_window',
+        #     'res_model': 'student.registration',
+        #     'view_mode': 'form',
+        #     'view_id': self.env.ref('university_management.student_profile_after_course_selection').id,
+        #     'target': 'current',
+        #     'context': self._context
+        # }
+
+        
+
+
+
+
 
     #course fee calcualtion     
 
@@ -400,3 +459,68 @@ class StudentRegistration(models.Model):
         #     ValidationError("You Cannot ")
         self.course_cost=total_cost
         self.credit_hour=total_credit_hour
+
+        #update course cost in profile
+        s_id=self.student_id
+        domain = [('student_id','=',s_id)]
+        rec = self.env['student.profile'].search(domain)
+        rec.write({
+            'course_cost': self.course_cost,
+        })
+        rec = self.env['student.registration'].search(domain)
+        rec.write({
+            'course_cost': self.course_cost,
+        })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    #check existing record
+    # @api.model
+    # def check_existing_record(self,student_id):
+    #     rec = self.env['student.registration'].search([('student_id','=',student_id)])
+    #     return True if rec else False
+
+    # @api.model
+    # def create(self,vals):
+    #     if not self.student_id:
+    #         return super(StudentRegistration,self).create(vals)
+    #     record_exist=self.check_existing_record(vals['student_id'])
+        
+    #     if record_exist:
+    #         record = self.browse(record_exist.id).write(vals)
+    #     else:
+    #         record=super(StudentRegistration,self).create(vals)
+    #     return record
+
+
+    # @api.model
+    # def write(self,vals):
+    #     if not self.student_id:
+    #         return super(StudentRegistration,self).write(vals)
+    #     existing_record = self.check_existing_record(vals['student_id'])
+    #     if existing_record:
+    #         record = self.browse(existing_record.id).write(vals)
+    #     else:
+    #         record = super(StudentRegistration, self).write(vals)
+
+    #     return record
+
+    

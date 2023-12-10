@@ -11,6 +11,7 @@
                 <field name="student_id"/>  
                 <field name="accepted_faculty"/>  
                 <field name="accepted_department"/>  
+                <field name="course_cost"/>  
             </tree>
         </field>
     </record>   
