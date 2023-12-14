@@ -12,10 +12,9 @@
             <header>
                 <button string='Confirm' type='object' name='confirm_fee' class="oe_highlight" attrs="{'invisible':[('ready_to_invoiced', '==', False)]}" />
                
-                <!-- <button string='Register Payment' type='object' name='register_payment_method_action' class="oe_highlight" attrs="{'invisible':[('show_button', '==', False)]}" /> -->
+                <button string='Register Payment' type='object' name='register_payment_method_action' class="oe_highlight" attrs="{'invisible':[('show_button', '==', False)]}" />
                 
-                <!-- <button string='Print' type='object' name='print_payment_view' class="oe_highlight" attrs="{'invisible':[('ready_to_invoiced', '==', False)]}" /> -->
-               
+                
 
             </header>
 
@@ -39,7 +38,7 @@
                         <group>
                             <field name='ready_to_invoiced' invisible='1'/> 
                             <field name='currency_id' invisible='1'/>
-                            <!-- <field name='show_button' invisible='1'/> -->
+                            <field name='show_button' invisible='1'/>
                         </group>
                     </group>
 
@@ -83,6 +82,52 @@
             </form> 
         </field>
     </record> 
+
+
+
+
+    <!-- pop up window for register payment in student.account  -->
+    <record id="um_accounts_fees_registration_views" model="ir.ui.view">
+        <field name="name">student.account.view</field>
+        <field name="model">student.account</field>
+        <field name="arch" type="xml">
+        <form string="Register Payment">
+        
+        <group>
+
+            <group>
+                <field name='journal_id'/>
+                <field name='amount_paid'/>
+                <field name='payment_date'/>
+            </group>
+
+            <group>
+                <field name='memo_no'/>
+                <field name='transaction_id'/>
+                <field name='payment_phone_num'/>
+            </group>
+
+
+        </group>
+
+
+        <footer>
+            <button string="Create Payment" name="create_payments" type="object" class="oe_highlight" data-hotkey="q"/>
+            <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
+        </footer>
+
+
+
+</form> 
+</field>
+</record> 
+
+
+
+
+
+
+
 
 
 

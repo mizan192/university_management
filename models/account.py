@@ -38,8 +38,6 @@ class StudentAccount(models.Model):
         domain="[('student_id','=',student_id)]",
     )
 
-    transaction_id=fields.Char(string='Transaction ID')
-    
     INVOICE_STATUS_SELECTION = [
         ('Draft', 'Draft'),
         ('Pending', 'Pending'),
@@ -55,7 +53,20 @@ class StudentAccount(models.Model):
     )
 
 
-
+# register payment field 
+    journal_id=fields.Selection(
+        selection=[('Bank', 'Bank'),('Cash', 'Cash'),('Bkash','Bkash')],
+        default='Cash',
+        help='Select Payment Option',
+        string='Journal',
+    )
+    amount_paid=fields.Monetary(string='Amcount', currency_field='currency_id')
+    payment_date=fields.Date(string='Payment Date', default=fields.Date.today)
+    recipient_bank_account=fields.Char(string='Recipient Bank No')
+    transaction_id=fields.Char(string='Transaction ID')
+    memo_no=fields.Char(string='Memo')
+    payment_phone_num=fields.Char(string='Phone No')
+ 
 
 
     @api.depends('faculty')
@@ -102,7 +113,7 @@ class StudentAccount(models.Model):
 
     @api.onchange('due_date')
     def check_due_date(self):
-        # self.show_register_button=False
+        self.show_button=False
         
         if self.due_date==False:
             self.ready_to_invoiced=False
@@ -120,15 +131,51 @@ class StudentAccount(models.Model):
         #     print('------ course name : ', course.course_name)
         #     print('------ course cost : ', course.single_course_fee)
 
-
+# fee confirm button 
     def confirm_fee(self):
-        # self.show_button=True
+        self.show_button=True
         domain = [('student_id','=',self.student_id)]
         rec = self.env['student.profile'].search(domain)
         rec.write({'total_fee':self.total_fee})
         rec = self.env['student.registration'].search(domain)
         rec.write({'total_cost':self.total_fee,'due_date':self.due_date})
         
+
+
+# registration method button 
+    def register_payment_method_action(self):
+        context = {
+        'default_name': self.name,
+        'default_student_id': self.student_id,
+        }
+        
+
+        return {
+            'name': "Register Payment",
+            'res_model':'student.account',
+            'res_id':self.id,
+            'type': 'ir.actions.act_window',
+            'view_mode':'form',
+            'view_id':self.env.ref('university_management.um_accounts_fees_registration_views').id,
+            'target':'new',
+            'context':context,
+
+        }    
+    
+
+
+
+    # confirm payment registration 
+    def create_payments(self):
+        pass
+
+
+
+
+
+
+
+
 
     @api.model
     def create(self,vals):
@@ -154,29 +201,7 @@ class StudentAccount(models.Model):
 
 
 
-    def register_payment_method_action(self):
-        return 
-        context = {
-        'default_name': self.name,
-        'default_student_id': self.student_id,
-        'default_accepted_faculty': self.accepted_faculty,
-        'default_accepted_department': self.accepted_department,
-        }
-        
-
-        return {
-            'name': "Register Payment",
-            'res_model':'student.account',
-            'res_id':self.id,
-            'type': 'ir.actions.act_window',
-            'target':'new',
-            'context':{
-                'active_model':'student.account',
-                'active_ids':self.ids
-            },
-
-        }    
-    
+   
 
 
 
