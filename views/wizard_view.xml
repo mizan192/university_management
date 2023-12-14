@@ -59,36 +59,51 @@
     </record>
 
 
-    <!-- temporary profile after course selection  -->
 
-   <record id="student_profile_after_course_selection" model="ir.ui.view">
-        <field name="name">student.registration.model.form</field>
-        <field name="model">student.registration</field>
+    <!-- register payment popup form  -->
+
+    <!-- <record id="register_payment_account_form_view" model="ir.ui.view">
+        <field name="name">student.account</field>
+        <field name="model">student.account</field>
         <field name="arch" type="xml">
-           <form>
-                <sheet>
+            
 
-                    <gorup>
-                        <field name="name"/>      
-                        <field name="student_id"/>  
-                        <field name="accepted_faculty"/>  
-                        <field name="accepted_department"/>  
-                        <field name="course_cost"/>  
-                    </gorup>
-
-                    <notebook>
-                        <page string='Course List'>
-                            <field name='course_ids' options="{'no_create': True, 'create': false}" string=""/>
-                        </page>
-                    </notebook>
-
-
-                </sheet>
- 
-            </form> 
         </field>
+    </record> -->
+
+
+
+
+
+
+
+
+
+    <!-- account view  -->
+
+    <record id="um_students_account_tree_view" model="ir.ui.view">
+        <field name="name">student.account.model.tree</field>
+        <field name="model">student.account</field>
+        <field name="arch" type="xml">
+           <tree>
+                 <field name='name' />
+                 <field name='student_id' />
+                 <field name='department' />
+                 <field name='total_fee' />
+                 <field name='due_date' />
+            </tree> 
+        </field>
+    </record>
+
+
+
+    <record id="um_students_account_views" model="ir.actions.act_window">
+        <field name="name">student.account.view</field>
+        <field name="res_model">student.account</field>
+        <field name="view_mode">tree,form</field>
     </record> 
 
+    <!-- <menuitem  id="accounts_view_menu_id" name="Accounts" action="um_students_account_views"/> -->
 
 
 

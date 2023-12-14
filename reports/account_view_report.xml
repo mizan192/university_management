@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+
+
+    <record id="action_report_account_view" model="ir.actions.report">
+        <field name="name">account view</field>
+        <field name="model">student.account</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">university_management.report_student_account_view</field>
+        <field name="report_file">university_management.report_student_account_view</field>
+        <field name="print_report_name">'Student Fee Details'</field>
+        <!-- <field name="print_report_name">(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)</field> -->
+        <field name="binding_model_id" ref="university_management.model_student_account"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+    <template id="report_student_account_view">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                  
+
+                        
+                    <div class='row text-center'>
+                        <h2>Student Invoice status</h2> 
+                   </div> 
+    
+    
+                   <div class="row">
+                     <span style="color:lime">Student Details</span>
+                        <hr/>
+                        <div class='col-12' style='display:flex'>
+                        
+                            <div class='col-8' >
+                                
+                                <div class='col-12' style='display:flex'>
+                                    <div class='col-4'>
+                                        Name
+                                    </div>
+                                    <div class='col-8'>
+                                        : <span t-esc='doc.name' />
+                                    </div>
+                                </div>
+                                <div class='col-12' style='display:flex'>
+                                    <div class='col-4'>
+                                        Id
+                                    </div>
+                                    <div class='col-8'>
+                                        : <span t-esc='doc.student_id' />
+                                    </div>
+                                </div>
+                           
+                            </div>
+    
+    
+                            <div class='col-4'  >
+                                
+                                <div class='col-12' style='display:flex'>
+                                    <div class='col-6'>
+                                        Faculty
+                                    </div>
+                                    <div class='col-6'>
+                                        : <span t-esc='doc.faculty' />
+                                    </div>
+                                </div>
+    
+                                <div class='col-12' style='display:flex'>
+                                    <div class='col-6'>
+                                        Department
+                                    </div>
+                                    <div class='col-6'>
+                                        : <span t-esc='doc.department' />
+                                    </div>
+                                </div>
+    
+                            </div>
+    
+    
+                        </div>                   
+                    </div>
+    
+    
+                   <div class="row mt-5">
+                    <span style="color:lime">Payment Details</span>
+                    <hr/>  
+                        <div class='col-4 pl-5' style='display:flex'>
+                            <div class='col-4'>
+                                Invoice Date
+                            </div>
+                            <div class='col-8'>
+                                : <span t-esc='doc.invoice_date' />
+                            </div>
+                        </div>
+    
+                        <div class='col-4' style='display:flex'>
+                            <div class='col-4'>
+                                Due Date
+                            </div>
+                            <div class='col-8'>
+                                : <span t-esc='doc.due_date' />
+                            </div>
+                        </div>
+                        
+                        <div class='col-4' style='display:flex'>
+                            <div class='col-6'>
+                                Payment Method
+                            </div>
+                            <div class='col-6'>
+                                : <span t-esc='doc.payment_method' />
+                            </div>
+                        </div>
+    
+                </div>
+    
+    
+    
+                <div class="row mt-5">
+                    <span style="color:lime">Fee Details</span>
+                    <hr/>
+    
+                    <!-- course list  -->
+                    <div class='col-7 pr-5'>
+
+                        <table class="table table-sm">
+                            <tr>
+                                <th>Course Name</th>
+                                <!-- <th>Credit Hour</th> -->
+                                <th>Course Fee</th>
+                            </tr>
+                            <t t-set="total_course_fee" t-value="0"/>
+                            <t t-foreach="doc.course_list" t-as="course">
+                                <tr>
+                                    <td t-esc="course.course_name"/>
+                                    <!-- <td t-esc="course.credit_hour"/> -->
+                                    <td t-esc="course.single_course_fee"/>
+                                </tr>
+                                <t t-set="total_course_fee" t-value="total_course_fee + course.single_course_fee"/>
+                            </t>
+                            <tr>
+                                <td>Total</td>
+                                <td t-esc="total_course_fee"/>
+                            </tr>
+                        </table>
+
+
+                    </div>
+    
+                    <!-- fee details  -->
+                    <div class='col-5'>
+                       
+                        <div class='col-12' style='display:flex'>
+                            <div class='col-10'> 
+                                Admission Fee
+                            </div>
+                            <div class='col-2' style='text-align:end'> 
+                                <span class="font-weight-bold" t-esc='doc.admission_fee' />
+                            </div>
+                        </div>
+    
+                        <div class='col-12' style='display:flex'>
+                            <div class='col-10'> 
+                                Registration Fee
+                            </div>
+                            <div class='col-2' style='text-align:end'>  
+                                <span class="font-weight-bold text-right" t-esc='doc.registration_fee' />
+                            </div>
+                        </div>
+    
+                        <div class='col-12' style='display:flex'>
+                            <div class='col-10'> 
+                                Department Fee
+                            </div>
+                            <div class='col-2' style='text-align:end'> 
+                                <span class="font-weight-bold text-right" t-esc='doc.department_fee' />
+                            </div>
+                        </div>
+    
+                        <div class='col-12' style='display:flex'>
+                            <div class='col-10'> 
+                                Course Cost
+                            </div>
+                            <div class='col-2' style='text-align:end'> 
+                                <span class="font-weight-bold text-right" t-esc='doc.course_fee' />
+                            </div>
+                        </div>
+    
+                        <div class='col-12' style='display:flex'>
+                            <div class='col-10'> 
+                                Fine
+                            </div>
+                            <div class='col-2' style='text-align:end'> 
+                                <span class="font-weight-bold text-right" t-esc='doc.fine' />
+                            </div>
+                        </div>
+    
+                        <div class='col-12' style='display:flex'>
+                            <div class='col-10'> 
+                                Scholarship
+                                <hr/>
+                            </div>
+                            <div class='col-2' style='text-align:end'> 
+                                <span class="font-weight-bold text-right" t-esc='doc.scholarship' />
+                                <hr/>
+                            </div>
+                        </div>
+                        
+                        <div class="col-12" style="display:flex">
+                        
+                            <div class="col-10" style="text-align:center">
+                                <span style="color: blue; font-weight: bold;">Total Amount:</span>
+                            </div>
+                            <div class="col-2" style="text-align:end">
+                                <span style="font-weight: bold;" class="font-weight-bold text-right" t-esc='doc.total_fee'/>
+                            </div>
+
+                        </div>
+    
+                    </div>
+    
+
+                </div> 
+                     
+
+                        
+
+
+
+
+
+
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+   
+</odoo>
+
+
+              

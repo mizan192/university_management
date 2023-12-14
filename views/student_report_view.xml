@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+    <record id="student_reports_wizard_view" model="ir.ui.view">
+        <field name="name">student.report.model.form</field>
+        <field name="model">student.report</field>
+        <field name="arch" type="xml">
+           <form>
+                
+            <header>
+                <button string="Show Result" type="object" class="oe_highlight" name="get_students_list_vai_date"/>
+            </header>
+            <sheet>
+
+                   
+                        <group>
+                            <field name='start_date' />
+                            <field name='end_date' />
+                        </group>
+                        
+                        <group>
+                            <field name='student_id_list' />
+                        </group>
+                        
+
+                </sheet>
+                
+                <!-- <footer>
+                    <button string="Discard" type="action" class="oe_highlight" special='cancel' />
+                </footer>  -->
+ 
+            </form> 
+        </field>
+    </record>
+
+
+</odoo>

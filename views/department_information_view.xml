@@ -57,7 +57,7 @@
                             </group>
                                          
 
-                            <group>
+                            <group> 
 
                                 <group string="HSC Subject Result">
                                     <field name="hsc_math_min_grade" attrs="{'readonly':[('faculty', '!=', 'engineering')]}"/>

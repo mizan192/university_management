@@ -11,9 +11,10 @@ class CourseList(models.Model):
     course_faculty= fields.Selection([('all','All Faculty'),('engineering','Engineering'),('business', 'Business'), ('arts', 'Arts')], default='all', string='Course Faculty')
     credit_hour=fields.Float(string="Credit Hour", default=2)
     credit_hour_fee=fields.Float(string="Hour Fee", default=2000)
-    lab_fee=fields.Float(string="Lab Fee")
-    single_course_fee=fields.Float(string='Subtotal', default=0, compute="_single_course_cost", store=True)
-
+    lab_fee=fields.Monetary(string="Lab Fee")
+    single_course_fee=fields.Monetary(string='Subtotal', default=0, compute="_single_course_cost", store=True)
+    currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env['res.currency'].search([('name', '=', 'BDT')]))
+   
 
     # course selection 
     students_id=fields.Many2one(

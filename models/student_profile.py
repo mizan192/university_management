@@ -10,8 +10,13 @@ class StudentProfile(models.Model):
 
     name = fields.Char(string="Name")
     student_id=fields.Char(string='Student ID')
+    registration_id=fields.Char(string='Registration ID')
     accepted_faculty=fields.Char(string="Faculty", readonly=True)
     accepted_department=fields.Char(string="Department",readonly=True)
 
     student_relation=fields.Many2one("student.registration")    
-    course_cost=fields.Float(string="Course Cost")
+    course_cost=fields.Monetary(string="Course Cost")
+    hsc_result=fields.Float(string='HSC')
+    ssc_result=fields.Float(string='SSC')
+    currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env['res.currency'].search([('name', '=', 'BDT')]))
+    total_fee=fields.Monetary(string='Fee', readonly='1')

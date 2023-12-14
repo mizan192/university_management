@@ -17,7 +17,10 @@
         'views/course_list_view.xml',
         'views/department_migration_view.xml',
         'views/wizard_view.xml',
+        'views/students_account_view.xml',
+        'views/student_report_view.xml',
         'views/menu.xml',
+        'reports/account_view_report.xml',
     ],
     
     'installable': True,

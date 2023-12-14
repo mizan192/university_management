@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <record id="students_accounts_fees_calculation_views" model="ir.ui.view">
+        <field name="name">student.account.view</field>
+        <field name="model">student.account</field>
+        <field name="arch" type="xml">
+           <form>
+
+            <header>
+                <button string='Confirm' type='object' name='confirm_fee' class="oe_highlight" attrs="{'invisible':[('ready_to_invoiced', '==', False)]}" />
+               
+                <!-- <button string='Register Payment' type='object' name='register_payment_method_action' class="oe_highlight" attrs="{'invisible':[('show_button', '==', False)]}" /> -->
+                
+                <!-- <button string='Print' type='object' name='print_payment_view' class="oe_highlight" attrs="{'invisible':[('ready_to_invoiced', '==', False)]}" /> -->
+               
+
+            </header>
+
+
+                <sheet>
+
+                    <group string='Student Details'>
+                        <group>
+                            <field name='name' readonly='1'/>
+                            <field name='student_id' readonly='1'/>
+                        </group>
+                        <group>
+                            <field name='faculty' readonly='1'/>
+                            <field name='department' readonly='1'/>
+                        </group>
+                    </group>
+
+                    <group string='Payment Details' col='3'>
+                        <group><field name='invoice_date' /></group>
+                        <group><field name='due_date'/></group>
+                        <group>
+                            <field name='payment_method' />
+                            <field name='ready_to_invoiced' invisible='1'/> 
+                            <field name='currency_id' invisible='1'/>
+                            <!-- <field name='show_button' invisible='1'/> -->
+                        </group>
+                    </group>
+
+
+                    <!-- <div style="flex: center;"> -->
+                    <group string='Fee Details'  style="color: black; font-weight: bold; " col='2'>
+            
+                        <group/>
+                        <group> 
+                        <field name='admission_fee' class="oe_inline oe_right"/>
+                        <field name='registration_fee' class="oe_inline oe_right"/>
+                        <field name='department_fee' class="oe_inline oe_right"/>
+                        <field name='course_fee' readonly='1' class="oe_inline oe_right"/>
+                        <field name='fine' readonly='1' class="oe_inline oe_right"/>
+                        <field name='scholarship' readonly='1' class="oe_inline oe_right"/>
+                        </group>
+                    </group>
+                    <!-- class="oe_inline oe_center" -->
+                <!-- </div> -->
+
+                    <group style="float: right;">
+                        
+                        <field name='total_fee' style="color: black; font-weight: bold;" />
+                        
+                    </group>
+               
+
+                </sheet>
+ 
+            </form> 
+        </field>
+    </record> 
+
+
+
+    <!-- <record id="um_students_accounts_calculation_view_record" model="ir.actions.act_window">
+        <field name="name">student.account.view</field>
+        <field name="res_model">student.account</field>
+        <field name="view_mode">form</field>
+    </record>  -->
+
+</odoo>

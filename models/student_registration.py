@@ -2,6 +2,7 @@ from odoo import models, fields, api
 from datetime import date
 from dateutil.relativedelta import relativedelta
 from odoo.exceptions import AccessError, UserError, ValidationError
+import re
 
 class StudentRegistration(models.Model):
     _name= 'student.registration'
@@ -33,15 +34,18 @@ class StudentRegistration(models.Model):
     mother_name=fields.Char(string='Mother Name')
     father_occupation=fields.Char(string='Father Occupation')
     mother_occupation=fields.Char(string='Mother Occupation')
-    currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
+    currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env['res.currency'].search([('name', '=', 'BDT')]))
+    # currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env['res.currency'].search([('name', '=', 'USD')]))
+
     father_salary = fields.Monetary(string='Father Income', currency_field='currency_id', default=0)
     mother_salary = fields.Monetary(string='Mother Income', currency_field='currency_id', default=0)
-    total_salary = fields.Integer(string='Family Income', compute="_calculate_family_salary", store=True)
+    total_salary = fields.Monetary(string='Family Income', compute="_calculate_family_salary", currency_field='currency_id', store=True)
     f_email=fields.Char(string="Family Email")
     guardian_name=fields.Char(string='Guardian Name')
     guardian_relation = fields.Selection([('father','Father'),('mother', 'Mother'), ('brother', 'Brother'), ('sister', 'Sister')], string='Guardian Relation')
     guardian_contact=fields.Char(string='Guardian Contact')
     home_contact=fields.Char(string="Home Phone")
+
 
 # academic information 
     school_name = fields.Char(string='School Name')
@@ -77,6 +81,16 @@ class StudentRegistration(models.Model):
     codeforce_id=fields.Char(string="Codeforces Profile")
     leetcode_id=fields.Char(string="LeetCode Profile")
     github_id=fields.Char(string="Github Profile")
+
+#others
+    admission_date=fields.Date(string='Admission Date', default=fields.Date.today)
+    registration_id=fields.Char(string='Registration Id', compute='generate_registration_id', store=True)
+
+
+
+
+
+
 
     
 #department selection 
@@ -127,12 +141,12 @@ class StudentRegistration(models.Model):
         # string="select course"  
     )
 
-    course_cost=fields.Float(string='Course Cost', default=0, readonly='1')
+    course_cost=fields.Monetary(string='Course Cost', default=0, readonly='1')
     credit_hour=fields.Float(string='Credit Hour')
     
     max_credit_hour=fields.Float(string='Max Credit', compute="_set_max_credit_limit", store=True)
-    total_cost = fields.Float(string='Fee', readonly='1', default=0)
-
+    total_cost = fields.Monetary(string='Fee', readonly='1', default=0)
+    invoice_status=fields.Char(string="Invoice Status", default='not created')
 
 
     # next step : there will three one2many field 
@@ -192,6 +206,22 @@ class StudentRegistration(models.Model):
     def _calculate_family_salary(self):
         for record in self:
             record.total_salary=record.father_salary+record.mother_salary
+
+
+    @api.depends('name')
+    def generate_registration_id(self):
+        for rec in self:
+            rec.registration_id="S_"+str(rec.id)
+            print(rec.registration_id)
+
+    @api.onchange('name')
+    def check_registration_id(self):
+        if self.registration_id!=False:
+            self.registration_id=False
+       
+
+
+
 
 
 
@@ -369,15 +399,22 @@ class StudentRegistration(models.Model):
         self.env['student.profile'].create({
             'name':self.name,
             'student_id':self.student_id,
+            'registration_id':self.registration_id,
             'accepted_faculty':self.accepted_faculty,
             'accepted_department':self.accepted_department,
             'course_cost':0,
+            'hsc_result':self.hsc_result,
+            'ssc_result':self.ssc_result,
+            # 'course_list':self.course_ids
         })
     
 
 
     # select course 
     def open_course_selection_wizard_form(self):
+
+        self.invoice_status='to invoice'
+
         # passing One2many filed ids
         course_id_list = self.course_ids.ids
 
@@ -395,6 +432,7 @@ class StudentRegistration(models.Model):
             'name': "Course Selection Panel",
             'type': 'ir.actions.act_window',
             'res_model': 'student.registration',
+            'res_id':self.id,
             'view_mode': 'form',
             'view_id': self.env.ref('university_management.course_selection_wizard_view').id,
             'target': 'new',
@@ -477,6 +515,125 @@ class StudentRegistration(models.Model):
 
 
 
+    # create invoice for students 
+    # @api.model 
+    def create_invoice(self):
+        s_id=self.student_id
+        domain = [('student_id','=',s_id)]
+        rec = self.env['student.profile'].search(domain)
+    
+        # print("================================")
+        # print(s_id)
+        # print(rec.name)
+        # print(rec.student_id)
+        # print(rec.accepted_faculty)
+        # print(rec.accepted_department)
+
+
+
+        # course_id_list = self.course_ids.ids
+        context = {
+        # 'default_main_model_id': self.id,
+        'default_name': rec.name,
+        'default_student_id': s_id,
+        'default_faculty': rec.accepted_faculty,
+        'default_department': rec.accepted_department,
+        'default_course_fee': rec.course_cost,
+        # 'default_course_ids': course_id_list,
+        }
+
+        
+        return {
+            'name': "Student Account View",
+            'type': 'ir.actions.act_window',
+            'res_model': 'student.account',
+            # 'res_id':self.active_id,
+            'view_mode': 'form',
+            'view_id': self.env.ref('university_management.students_accounts_fees_calculation_views').id,
+            'target': 'current',
+            'context': context,
+        }
+    
+
+
+    def check_11_digit(self,pno):
+        # print(pno)
+        if pno[0]!='0' and pno[1]!='1' and pno[2]=='2':
+            return False
+        pattern = re.compile(r".*[a-zA-Z].*")
+        is_char=pattern.match(pno)
+        if is_char==True:
+            return False
+        return True
+
+    def check_14_digit(self,pno):
+        if pno[0]=='+' and pno[1]=='8' and pno[2]=='8' and (self.check_11_digit(pno[3:])==True):
+            return True
+        else:
+            return False
+        
+
+    @api.onchange('contact_number')
+    def check_phone_number(self):
+        if self.contact_number==False:
+            return
+        if (len(self.contact_number)==14 and self.check_14_digit(self.contact_number)==True) or (len(self.contact_number)==11 and self.check_11_digit(self.contact_number)==True):
+            phone_no="+880"
+            phone_no+=self.contact_number[4:]
+            self.contact_number=phone_no
+        else:
+            # print(self.check_11_digit(self.contact_number[3:]))
+            raise ValidationError("Enter valid phone number")
+
+
+
+
+    @api.onchange('email')
+    def check_email(self):
+        if self.email==False:
+            return
+        if len(self.email)<10:
+            mail=self.email+"@gmail.com"
+            self.email=mail
+        else:
+            last_part =self.email[10]
+            print(last_part)
+            if last_part!="@gmail.com":
+                mail=self.email+"@gmail.com"
+                self.email=mail
+
+
+
+
+    # show report 
+    # def confirm_report(self):
+    #     return {
+    #         'name': "Report View",
+    #         'type': 'ir.actions.act_window',
+    #         'res_model': 'student.report',
+    #         'view_mode': 'form',
+    #         'view_id': self.env.ref('university_management.student_reports_wizard_view').id,
+    #         'target': 'new',
+    #     }
+
+
+
+
+
+    @api.model
+    def create(self,vals):
+        # print(vals)
+        # if vals['registration_id']==False:
+        #     return super(StudentRegistration,self).create(vals)
+        if 'registration_id' not in vals.keys():
+            return super(StudentRegistration,self).create(vals)
+        reg_id = vals['registration_id']
+        record_exist = self.env['student.registration'].search(['registration_id','=',reg_id])
+
+        if record_exist:
+            rec = self.write(vals)
+        else:
+            return super(StudentRegistration,self).create(vals)
 
 
 

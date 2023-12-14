@@ -12,6 +12,7 @@
                 <field name="accepted_faculty"/>  
                 <field name="accepted_department"/>  
                 <field name="course_cost"/>  
+                <field name="total_fee" string='Total Fee'/>  
             </tree>
         </field>
     </record>   

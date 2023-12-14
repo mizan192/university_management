@@ -9,6 +9,7 @@
             <tree> 
                 <field name="name"/>      
                 <field name="student_id"/>      
+                <field name="registration_id"/>      
                 <field name="age"/>      
                 <field name="gender"/>
                 <field name="total_salary"/>    
@@ -29,16 +30,20 @@
         <field name="arch" type="xml">
             <form>
 
-                <header>
-                    <button string="Action Button Render View File" type="action" name="%(search_result_view)d" class="oe_highlight"/>
-                </header>
+               <header>
+                    <button string="Create Invoice" type="object"  name="create_invoice" context="{'active_id': active_id}" 
+                    class="oe_highlight" attrs="{'invisible': [('invoice_status', '!=', 'to invoice')]}" /> 
+                
 
-                <sheet string="Student Information">
+               </header>
+
+                <sheet>
                     <group>
                         <group col="4">
                             <field name="name" placeholder="Sunny Deol"/>
                             <field name="age"/>
                             <field name="student_id"/>
+                            <field name="registration_id"/>  
                             <field name="gender" />
                             <field name="birth_date"/>
                         </group>
@@ -48,6 +53,8 @@
                             <field name="contact_number" placeholder="01XXXXXX"/>
                             <field name="english_proficiency"/>
                             <field name="course_cost"/>
+                            <field name="invoice_status" invisible='1'/>
+                            <field name="admission_date" readonly='1'/>
                         </group>
                     </group>
 
@@ -78,6 +85,7 @@
                                 <group string="Father Information">
                                     <field name="father_name"/>
                                     <field name="father_occupation"/>
+                                    <field name="currency_id" invisible='1'/>
                                     <field name="father_salary"/>
                                 </group>
                                 <group string="Mother Information">
