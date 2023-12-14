@@ -21,6 +21,7 @@
         'views/student_report_view.xml',
         'views/menu.xml',
         'reports/account_view_report.xml',
+        'reports/admission_confirm_report.xml',
     ],
     
     'installable': True,

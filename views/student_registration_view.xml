@@ -16,11 +16,93 @@
                 <field name="ssc_result"/>      
                 <field name="hsc_result"/>      
                 <field name="course_cost"/>      
+                <field name="total_cost"/>      
                 <field name="contact_number"/>      
                 <field name="email"/>        
             </tree>
         </field>
     </record>   
+
+
+
+    <!-- kanban view  -->
+    <record id="um_student_registration_kanban_view" model="ir.ui.view">
+        <field name="name">student.registration.kanban</field>
+        <field name="model">student.registration</field>
+        <field name="arch" type="xml">
+            <kanban>
+
+                <field name="name"/>
+                <field name="student_id"/>
+                <field name="accepted_faculty"/>
+                <field name="accepted_department"/>
+                <field name="total_cost"/>
+                <field name="image"/>
+
+                <templates>
+
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_content oe_kanban_global_click o_kanban_record_has_image_fill  ">
+                            
+                            <!-- <div class="oe_kanban_image"> -->
+                            <field name="image" class="o_kanban_image_fill_left d-block oe_kanban_avatar" preview_image="image" widget="background_image" options="{'zoom': true, 'zoom_delay': 1000}"/>
+                        <!-- </div> -->
+                        
+                        <div class="card d-flex flex-column justify-content-center" style="">
+                            
+
+                            <div class="card-header" style="margin:0; padding-left:1; padding-right:1; padding-top:0; padding-bottom:0;">
+                                <h5 class="card-title" style="margin-bottom:0; padding:0; color: #009688; "><field name="name"/></h5>
+                                <p class="card-text" style="margin-bottom:0; padding:0; color: #728C00;"><strong>ID:</strong> <field name="student_id"/></p>
+                            </div>
+                            
+                            <!-- <div class="card d-flex flex-row justify-content-center" style="margin-bottom:0; padding-bottom:0">
+                                <div class="card-body ">
+                                    <p class="card-text oe_kanban_total_cost"><strong>Due Fee:</strong> <field name="total_cost"/></p>
+                                    <p class="card-text oe_kanban_total_cost"><strong>Due Date:</strong> <field name="due_date"/></p>
+                                </div>
+                                <div class="card-body ">
+                                    <p class="card-text"><strong>Faculty:</strong> <field name="accepted_faculty"/></p>
+                                    <p class="card-text"><strong>Department:</strong> <field name="accepted_department"/></p>
+                                </div>
+                            </div> -->
+
+                            <div class="card-body " style="margin:0; padding-left:1; padding-right:1; padding-top:1px; padding-bottom:0; background-color: #e0e0e0; ">
+                                <p class="card-text" style="margin-bottom:0; padding:0; color: #007bff;"><strong>Department:</strong> <field name="accepted_department"/></p>
+                                <p class="card-text" style="margin-bottom:0; padding:0; color: #e91e63;"><strong>Due:</strong> <field name="total_cost"/><span>tk</span></p>
+                            </div>
+
+                            <div class="card-footer text-muted " style="margin:0; padding-left:1; padding-right:1; padding-top:1px; padding-bottom:0;">
+                                <p class="card-text" style="margin-bottom:0; padding:0; color: #36013F;"><strong>Email:</strong> <field name="email"/></p>
+                                <p class="card-text" style="margin-bottom:0; padding:0; color:#7E354D;"><strong>Contact:</strong> <field name="contact_number"/></p>
+                            </div>
+           
+
+
+
+
+                        </div>
+
+
+                        </div>
+                    </t>
+            
+            
+                </templates>
+
+            
+            
+            </kanban>
+
+        </field>
+    </record>
+
+
+
+
+
+
+
 
 
     <!-- form view -->
@@ -33,28 +115,29 @@
                <header>
                     <button string="Create Invoice" type="object"  name="create_invoice" context="{'active_id': active_id}" 
                     class="oe_highlight" attrs="{'invisible': [('invoice_status', '!=', 'to invoice')]}" /> 
-                
+                    
+                    <!-- <button string="Report" type="object"  name="confirm_report" class="oe_highlight"/>  -->
 
                </header>
 
                 <sheet>
                     <group>
-                        <group col="4">
-                            <field name="name" placeholder="Sunny Deol"/>
-                            <field name="age"/>
-                            <field name="student_id"/>
-                            <field name="registration_id"/>  
-                            <field name="gender" />
-                            <field name="birth_date"/>
+                        <group col="4" >
+                            <field name="name" placeholder="Sunny Deol" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                            <field name="age" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                            <field name="student_id" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                            <field name="registration_id" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>  
+                            <field name="gender" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                            <field name="birth_date" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
                         </group>
                         <group>
                             <field name="image"/>
-                            <field name="email" placeholder="example@gmail.com"/>
-                            <field name="contact_number" placeholder="01XXXXXX"/>
-                            <field name="english_proficiency"/>
-                            <field name="course_cost"/>
+                            <field name="email" placeholder="example@gmail.com" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                            <field name="contact_number" placeholder="01XXXXXX" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                            <field name="english_proficiency" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                            <field name="course_cost" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
                             <field name="invoice_status" invisible='1'/>
-                            <field name="admission_date" readonly='1'/>
+                            <field name="admission_date" readonly='1' style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
                         </group>
                     </group>
 
@@ -64,15 +147,15 @@
                         <page string="Address">
                                 <group>
                                     <group>
-                                        <field name="emergency_contact"/>
-                                        <field name="nid"/>
-                                        <field name="address"/>                                    
+                                        <field name="emergency_contact" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                                        <field name="nid" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                                        <field name="address" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>                                    
                                     </group>
                                     
                                     <group>
-                                        <field name="religion"/>
-                                        <field name="nationality"/>
-                                        <field name="home_city"/>
+                                        <field name="religion" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                                        <field name="nationality" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                                        <field name="home_city" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
                                     </group>
                                 
 
@@ -266,7 +349,7 @@
     <record id="um_student_registration_view_record_idss" model="ir.actions.act_window">
         <field name="name">student registration view</field>
         <field name="res_model">student.registration</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,kanban,form</field>
     </record>
 
     <!-- <menuitem id="um_student_registration_menus_id" name="student registration" action="um_student_registration_view_record_idss"/> -->

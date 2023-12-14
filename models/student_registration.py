@@ -14,7 +14,7 @@ class StudentRegistration(models.Model):
     name=fields.Char(string='Name', required=True)
     student_id=fields.Char(string='Student ID', readonly=True)
     birth_date=fields.Date(string='Birth Date', default=fields.Date.today)
-    gender = fields.Selection([('male','Male'),('female', 'Female'), ('other', 'Other')], string='Gender')
+    gender = fields.Selection([('male','Male'),('female', 'Female'), ('other', 'Other')], string='Gender', default='male')
     image=fields.Binary(string='Image')
     age = fields.Integer(string="age", compute="_calculate_age", store=True)
     email=fields.Char(string='Email')
@@ -95,7 +95,7 @@ class StudentRegistration(models.Model):
     
 #department selection 
 
-    faculty_name=fields.Selection([('engineering','Engineering'),('business', 'business'), ('arts', 'Arts')], default='arts', string='Select Faculty' )
+    faculty_name=fields.Selection([('engineering','Engineering'),('business', 'Business'), ('arts', 'Arts')], default='arts', string='Select Faculty' )
 
     engineering_departments=fields.Many2one(
         comodel_name='engineering.faculty',
@@ -147,7 +147,7 @@ class StudentRegistration(models.Model):
     max_credit_hour=fields.Float(string='Max Credit', compute="_set_max_credit_limit", store=True)
     total_cost = fields.Monetary(string='Fee', readonly='1', default=0)
     invoice_status=fields.Char(string="Invoice Status", default='not created')
-
+    due_date=fields.Date(string='Due Date')
 
     # next step : there will three one2many field 
     # for three faculty class, according to selection 
@@ -208,11 +208,13 @@ class StudentRegistration(models.Model):
             record.total_salary=record.father_salary+record.mother_salary
 
 
+            
+
     @api.depends('name')
     def generate_registration_id(self):
         for rec in self:
             rec.registration_id="S_"+str(rec.id)
-            print(rec.registration_id)
+            
 
     @api.onchange('name')
     def check_registration_id(self):
@@ -405,6 +407,7 @@ class StudentRegistration(models.Model):
             'course_cost':0,
             'hsc_result':self.hsc_result,
             'ssc_result':self.ssc_result,
+            'image':self.image,
             # 'course_list':self.course_ids
         })
     
@@ -557,14 +560,11 @@ class StudentRegistration(models.Model):
 
 
     def check_11_digit(self,pno):
-        # print(pno)
-        if pno[0]!='0' and pno[1]!='1' and pno[2]=='2':
+        if pno[0]!='0' or pno[1]!='1' or pno[2]=='2':
             return False
         pattern = re.compile(r".*[a-zA-Z].*")
         is_char=pattern.match(pno)
-        if is_char==True:
-            return False
-        return True
+        return not is_char
 
     def check_14_digit(self,pno):
         if pno[0]=='+' and pno[1]=='8' and pno[2]=='8' and (self.check_11_digit(pno[3:])==True):
@@ -577,15 +577,21 @@ class StudentRegistration(models.Model):
     def check_phone_number(self):
         if self.contact_number==False:
             return
-        if (len(self.contact_number)==14 and self.check_14_digit(self.contact_number)==True) or (len(self.contact_number)==11 and self.check_11_digit(self.contact_number)==True):
-            phone_no="+880"
-            phone_no+=self.contact_number[4:]
+        if len(self.contact_number)==14 and self.check_14_digit(self.contact_number):
+            return
+        elif len(self.contact_number)==11 and self.check_11_digit(self.contact_number):
+            phone_no="+880"+self.contact_number
             self.contact_number=phone_no
         else:
             # print(self.check_11_digit(self.contact_number[3:]))
             raise ValidationError("Enter valid phone number")
 
 
+
+
+    # def is_valid_email(email):
+    #     pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
+    #     return bool(pattern.match(email))
 
 
     @api.onchange('email')
@@ -622,9 +628,18 @@ class StudentRegistration(models.Model):
 
     @api.model
     def create(self,vals):
-        # print(vals)
-        # if vals['registration_id']==False:
-        #     return super(StudentRegistration,self).create(vals)
+        if 'name' in vals.keys() and vals['name']:
+            name=vals['name']
+            prefix=name[4:]
+            full_name=name
+            if vals['gender']=='female':
+                if prefix!='Mrs.' and prefix!='mrs.' and prefix!='MRS.':
+                    vals['name']="Mrs."+full_name
+            else:
+                prefix=name[3:]
+                if prefix!='Mr.' and prefix!='mr.' and prefix!='MR.':
+                    vals['name']="Mr."+full_name
+
         if 'registration_id' not in vals.keys():
             return super(StudentRegistration,self).create(vals)
         reg_id = vals['registration_id']

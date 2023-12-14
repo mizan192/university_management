@@ -33,13 +33,26 @@ class StudentAccount(models.Model):
     
     show_button=fields.Boolean(default=False)
     
-    course_list=fields.Many2one(
+    student_reference=fields.Many2one(
         comodel_name='student.registration',
         domain="[('student_id','=',student_id)]",
     )
 
+    transaction_id=fields.Char(string='Transaction ID')
+    
+    INVOICE_STATUS_SELECTION = [
+        ('Draft', 'Draft'),
+        ('Pending', 'Pending'),
+        ('Paid', 'Paid'),
+        ('Cancel', 'Cancelled'),
+    ]
 
-
+    invoice_status = fields.Selection(
+        selection=INVOICE_STATUS_SELECTION,
+        string='Invoice Status',
+        default='Draft',  # Set a default value if needed
+        help='Select the status of the invoice.',
+    )
 
 
 
@@ -103,9 +116,9 @@ class StudentAccount(models.Model):
         
         print('------------------------')
 
-        for course in self.course_list:
-            print('------ course name : ', course.course_name)
-            print('------ course cost : ', course.single_course_fee)
+        # for course in self.course_list:
+        #     print('------ course name : ', course.course_name)
+        #     print('------ course cost : ', course.single_course_fee)
 
 
     def confirm_fee(self):
@@ -113,6 +126,8 @@ class StudentAccount(models.Model):
         domain = [('student_id','=',self.student_id)]
         rec = self.env['student.profile'].search(domain)
         rec.write({'total_fee':self.total_fee})
+        rec = self.env['student.registration'].search(domain)
+        rec.write({'total_cost':self.total_fee,'due_date':self.due_date})
         
 
     @api.model

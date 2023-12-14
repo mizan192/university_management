@@ -32,7 +32,7 @@
                    <div class="row">
                      <span style="color:lime">Student Details</span>
                         <hr/>
-                        <div class='col-12' style='display:flex'>
+                        <div class='col-12' style='display:flex; background-color: #f0f0f0;'>
                         
                             <div class='col-8' >
                                 
@@ -41,7 +41,7 @@
                                         Name
                                     </div>
                                     <div class='col-8'>
-                                        : <span t-esc='doc.name' />
+                                        : <span style="font-weight: bold; font-size: 14px; color: #336699; background-color: #f0f0f0;" t-esc='doc.name' />
                                     </div>
                                 </div>
                                 <div class='col-12' style='display:flex'>
@@ -49,7 +49,7 @@
                                         Id
                                     </div>
                                     <div class='col-8'>
-                                        : <span t-esc='doc.student_id' />
+                                        : <span style="font-weight: bold; font-size: 14px; color: #336699; background-color: #f0f0f0;" t-esc='doc.student_id' />
                                     </div>
                                 </div>
                            
@@ -63,7 +63,7 @@
                                         Faculty
                                     </div>
                                     <div class='col-6'>
-                                        : <span t-esc='doc.faculty' />
+                                        : <span style="font-weight: bold; font-size: 14px; color: #336699; background-color: #f0f0f0;" t-esc='doc.faculty' />
                                     </div>
                                 </div>
     
@@ -72,7 +72,7 @@
                                         Department
                                     </div>
                                     <div class='col-6'>
-                                        : <span t-esc='doc.department' />
+                                        : <span style="font-weight: bold; font-size: 14px; color: #336699; background-color: #f0f0f0;" t-esc='doc.department' />
                                     </div>
                                 </div>
     
@@ -83,7 +83,7 @@
                     </div>
     
     
-                   <div class="row mt-5">
+                   <div class="row mt-5" style='background-color: #f0f0f0;'>
                     <span style="color:lime">Payment Details</span>
                     <hr/>  
                         <div class='col-4 pl-5' style='display:flex'>
@@ -91,7 +91,7 @@
                                 Invoice Date
                             </div>
                             <div class='col-8'>
-                                : <span t-esc='doc.invoice_date' />
+                                : <span t-esc='doc.invoice_date' style="font-weight: bold; font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
                             </div>
                         </div>
     
@@ -100,7 +100,7 @@
                                 Due Date
                             </div>
                             <div class='col-8'>
-                                : <span t-esc='doc.due_date' />
+                                : <span t-esc='doc.due_date' style="font-weight: bold; font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
                             </div>
                         </div>
                         
@@ -109,7 +109,7 @@
                                 Payment Method
                             </div>
                             <div class='col-6'>
-                                : <span t-esc='doc.payment_method' />
+                                : <span t-esc='doc.payment_method' style="font-weight: bold; font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
                             </div>
                         </div>
     
@@ -117,34 +117,19 @@
     
     
     
-                <div class="row mt-5">
+                <div class="row mt-5" >
                     <span style="color:lime">Fee Details</span>
                     <hr/>
     
                     <!-- course list  -->
                     <div class='col-7 pr-5'>
-
-                        <table class="table table-sm">
-                            <tr>
-                                <th>Course Name</th>
-                                <!-- <th>Credit Hour</th> -->
-                                <th>Course Fee</th>
-                            </tr>
-                            <t t-set="total_course_fee" t-value="0"/>
-                            <t t-foreach="doc.course_list" t-as="course">
-                                <tr>
-                                    <td t-esc="course.course_name"/>
-                                    <!-- <td t-esc="course.credit_hour"/> -->
-                                    <td t-esc="course.single_course_fee"/>
-                                </tr>
-                                <t t-set="total_course_fee" t-value="total_course_fee + course.single_course_fee"/>
-                            </t>
-                            <tr>
-                                <td>Total</td>
-                                <td t-esc="total_course_fee"/>
-                            </tr>
-                        </table>
-
+                        
+                            <div class='col-10'> 
+                                Payment Status : 
+                            </div>
+                            <div class='col-10 mt-10 pt-20' style=""> 
+                                    Transaction ID :
+                            </div>    
 
                     </div>
     
@@ -156,7 +141,7 @@
                                 Admission Fee
                             </div>
                             <div class='col-2' style='text-align:end'> 
-                                <span class="font-weight-bold" t-esc='doc.admission_fee' />
+                                <span class="font-weight-bold"  style="font-weight: bold; font-size: 14px; color: #336699; background-color: #f0f0f0;" t-field='doc.admission_fee' t-field-options='{"widget": "monetary", "currency_field": "currency_id"}'/>
                             </div>
                         </div>
     
@@ -165,7 +150,7 @@
                                 Registration Fee
                             </div>
                             <div class='col-2' style='text-align:end'>  
-                                <span class="font-weight-bold text-right" t-esc='doc.registration_fee' />
+                                <span class="font-weight-bold text-right" style="font-weight: bold; font-size: 14px; color: #336699; background-color: #f0f0f0;" t-field='doc.registration_fee' t-field-options='{"widget": "monetary", "currency_field": "currency_id"}'/>
                             </div>
                         </div>
     
@@ -174,7 +159,7 @@
                                 Department Fee
                             </div>
                             <div class='col-2' style='text-align:end'> 
-                                <span class="font-weight-bold text-right" t-esc='doc.department_fee' />
+                                <span class="font-weight-bold text-right" style="font-weight: bold; font-size: 14px; color: #336699; background-color: #f0f0f0;" t-field='doc.department_fee' t-field-options='{"widget": "monetary", "currency_field": "currency_id"}'/>
                             </div>
                         </div>
     
@@ -183,7 +168,7 @@
                                 Course Cost
                             </div>
                             <div class='col-2' style='text-align:end'> 
-                                <span class="font-weight-bold text-right" t-esc='doc.course_fee' />
+                                <span class="font-weight-bold text-right" style="font-weight: bold; font-size: 14px; color: #336699; background-color: #f0f0f0;" t-field='doc.course_fee' t-field-options='{"widget": "monetary", "currency_field": "currency_id"}'/>
                             </div>
                         </div>
     
@@ -192,7 +177,7 @@
                                 Fine
                             </div>
                             <div class='col-2' style='text-align:end'> 
-                                <span class="font-weight-bold text-right" t-esc='doc.fine' />
+                                <span class="font-weight-bold text-right" style="font-weight: bold; font-size: 14px; color: #336699; background-color: #f0f0f0;" t-field='doc.fine' t-field-options='{"widget": "monetary", "currency_field": "currency_id"}'/>
                             </div>
                         </div>
     
@@ -202,7 +187,7 @@
                                 <hr/>
                             </div>
                             <div class='col-2' style='text-align:end'> 
-                                <span class="font-weight-bold text-right" t-esc='doc.scholarship' />
+                                <span class="font-weight-bold text-right" style="font-weight: bold; font-size: 14px; color: #336699; background-color: #f0f0f0;" t-field='doc.scholarship' t-field-options='{"widget": "monetary", "currency_field": "currency_id"}'/>
                                 <hr/>
                             </div>
                         </div>
@@ -213,7 +198,8 @@
                                 <span style="color: blue; font-weight: bold;">Total Amount:</span>
                             </div>
                             <div class="col-2" style="text-align:end">
-                                <span style="font-weight: bold;" class="font-weight-bold text-right" t-esc='doc.total_fee'/>
+                                <!-- <span  t-esc='doc.total_fee'/> -->
+                                <span style="font-weight: bold; font-size: 14px; color: #336699; background-color: #f0f0f0;" class="font-weight-bold text-right" t-field="doc.total_fee" t-field-options='{"widget": "monetary", "currency_field": "currency_id"}'/>
                             </div>
 
                         </div>
@@ -222,7 +208,7 @@
     
 
                 </div> 
-                     
+
 
                         
 

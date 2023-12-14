@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<odoo>
+
+
+
+    <record id="admission_form_report_views" model="ir.actions.report">
+        <field name="name">Admission view</field>
+        <field name="model">student.registration</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">university_management.report_student_admission_view</field>
+        <field name="report_file">university_management.report_student_admission_view</field>
+        <field name="print_report_name">'%s Admission Form' % (object.name)</field>
+        <!-- <field name="print_report_name">(object.state in ('draft', 'sent') and 'Quotation - %s' % (object.name)) or 'Order - %s' % (object.name)</field> -->
+        <field name="binding_model_id" ref="university_management.model_student_registration"/>
+        <field name="binding_type">report</field>
+    </record>
+
+
+    <template id="report_student_admission_view">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="doc">
+                <t t-call="web.external_layout">
+                                      
+                    <div class='row text-center'>
+                        <h2 style="color: #ffffff; background-color: #0e1738; padding: 10px; font-size: 18px;">Student Admission Confirm Form</h2> 
+                   </div> 
+                   
+                   <div class="main-container" style="background-color: #f0f0f0; padding: 10px;">
+                    <span style="margin: 5px;padding: 5px;font-weight:bold;background-color: darkslategrey;color: white;border-radius: 10px;">Student Information</span>
+                    <div class="child-container" style="background-color: #ffffff; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;">
+                        <div class="row" style="padding-left:10px">
+                            <div class="col-5">
+                                <div class="field-container" style="display:flex; padding:10px">
+                                    <div class="col-8">Name</div>
+                                    <div class="col-4">
+                                        :  <span style="font-weight:bold;color: black;background-color: teal;padding: 5px;padding-left:10px;padding-right:10px;border-radius: 5px;" t-field=" doc.name" />
+                                    </div>
+                                </div>
+
+                                <div class="field-container" style="display:flex; padding:10px">
+                                    <div class="col-8">Email</div>
+                                    <div class="col-4">
+                                        :  <span style="font-weight:bold;color: black;background-color: teal;padding: 5px;padding-left:10px;padding-right:10px;border-radius: 5px;" t-field=" doc.email" />
+                                    </div>
+                                </div>
+
+                                <div class="field-container" style="display:flex; padding:10px">
+                                    <div class="col-8">National ID</div>
+                                    <div class="col-4">
+                                        :  <span style="font-weight:bold;color: black;background-color: teal;padding: 5px;padding-left:10px;padding-right:10px;border-radius: 5px;" t-field=" doc.nid" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <!-- other info  -->
+                            <div class="col-5" style="padding-left:15px">
+                                <div class="field-container" style="display:flex; padding:10px">
+                                    <div class="col-8">Student ID</div>
+                                    <div class="col-4">
+                                        :  <span style="font-weight:bold;color: black;background-color: teal;padding: 5px;padding-left:10px;padding-right:10px;border-radius: 5px;" t-field=" doc.student_id" />
+                                    </div>
+                                </div>
+                                <div class="field-container" style="display:flex; padding:10px">
+                                    <div class="col-8">Registration ID</div>
+                                    <div class="col-4">
+                                        :  <span style="font-weight:bold;color: black;background-color: teal;padding: 5px;padding-left:10px;padding-right:10px;border-radius: 5px;" t-field=" doc.registration_id" />
+                                    </div>
+                                </div>
+                                <div class="field-container" style="display:flex; padding:10px">
+                                    <div class="col-8">Date of Admission</div>
+                                    <div class="col-4">
+                                        :  <span style="font-weight:bold;color: black;background-color: teal;padding: 5px;padding-left:10px;padding-right:10px;border-radius: 5px;" t-field=" doc.admission_date" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+ 
+                        </div>
+                    </div>
+                    
+
+
+
+
+                    
+
+
+                    <!-- another child container for academic -->
+                    <span style="margin: 5px;padding: 5px;font-weight:bold;background-color: darkslategrey;color: white;border-radius: 10px;">Academic Information</span>
+                    <div class="child-container" style="background-color: #ffffff; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;">
+                        <div class="row" style="padding-left:10px">
+                            <div class="col-4">
+                                <div class="field-container" style="display:flex; padding:10px">
+                                    <div class="col-8">HSC Group</div>
+                                    <div class="col-4">
+                                        :  <span style="font-weight:bold;color: black;background-color: teal;padding: 5px;padding-left:10px;padding-right:10px;border-radius: 5px;" t-field=" doc.hsc_group" />
+                                    </div>
+                                </div>
+                                
+
+                                <div class="field-container" style="display:flex; padding:10px">
+                                    <div class="col-8">HSC Result</div>
+                                    <div class="col-4">
+                                        :  <span style="font-weight:bold;color: black;background-color: teal;padding: 5px;padding-left:10px;padding-right:10px;border-radius: 5px;" t-field=" doc.hsc_result" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-4">
+                                <div class="field-container" style="display:flex; padding:10px">
+                                    <div class="col-8">SSC Group</div>
+                                    <div class="col-4">
+                                        :  <span style="font-weight:bold;color: black;background-color: teal;padding: 5px;padding-left:10px;padding-right:10px;border-radius: 5px;" t-field=" doc.ssc_group" />
+                                    </div>
+                                </div>
+
+                                <div class="field-container" style="display:flex; padding:10px">
+                                    <div class="col-8">SSC Result</div>
+                                    <div class="col-4">
+                                        :  <span style="font-weight:bold;color: black;background-color: teal;padding: 5px;padding-left:10px;padding-right:10px;border-radius: 5px;" t-field=" doc.ssc_result" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="col-4">
+                                <div class="field-container" style="display:flex; padding:10px">
+                                    <div class="col-8">Faculty</div>
+                                    <div class="col-4">
+                                        :  <span style="font-weight:bold;color: black;background-color: teal;padding: 5px;padding-left:10px;padding-right:10px;border-radius: 5px;" t-field=" doc.accepted_faculty" />
+                                    </div>
+                                </div>
+
+                                <div class="field-container" style="display:flex; padding:10px">
+                                    <div class="col-8">Department</div>
+                                    <div class="col-4">
+                                        :  <span style="font-weight:bold;color: black;background-color: teal;padding: 5px;padding-left:10px;padding-right:10px;border-radius: 5px;" t-field=" doc.accepted_department" />
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            
+
+ 
+                        </div>
+                    </div>
+                    
+
+                    
+                    <!-- course list  -->
+
+                    <span style="margin: 5px;padding: 5px;font-weight:bold;background-color: darkslategrey;color: white;border-radius: 10px;">Course Information</span>
+                    <div class="child-container" style="background-color: #ffffff; border: 1px solid #ddd; padding: 10px; margin-bottom: 10px;">
+                        <div class="row" style="padding-left:10px">
+                            
+                            <table class="table table-sm">
+                                <tr>
+                                    <th>Course Name</th>
+                                    <th>Credit Hour</th>
+                                    <th>Course Fee</th>
+                                </tr>
+                                <t t-set="total_fee" t-value="0"/>
+                                <t t-foreach="doc.course_ids" t-as="course">
+                                    <tr>
+                                        <td t-esc="course.course_name"/>
+                                        <td t-esc="course.credit_hour"/>
+                                        <td t-esc="course.single_course_fee"/>
+                                        
+                                    </tr>
+                                    <t t-set="total_fee" t-value="total_fee + course.single_course_fee"/>
+                                </t>
+                                <tr>
+                                    <td>Total</td>
+                                    <td t-esc="total_fee"/>
+                                </tr>
+                            </table>
+
+                            
+
+ 
+                        </div>
+                    </div>
+
+
+
+
+
+
+
+
+
+                    
+
+                </div>
+                    
+
+
+
+
+
+
+                </t>
+            </t>
+        </t>
+    </template>
+
+
+   
+</odoo>
+
+
+              
