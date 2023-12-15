@@ -21,7 +21,7 @@
 
 
     <!-- Action to open the tree view -->
-    <record id="um_arts_faculty_tree_view" model="ir.actions.act_window">
+    <record id="um_arts_faculty_tree_views" model="ir.actions.act_window">
         <field name="name">arts.faculty.tree</field>
         <field name="res_model">arts.faculty</field>
         <field name="view_mode">tree</field>

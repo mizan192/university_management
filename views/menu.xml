@@ -1,27 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-     <menuitem id="um_super_parent_menu_bar_id" name="student" sequence="2">
-        <menuitem id="um_student_registration_menus_id" name="student registration" action="um_student_registration_view_record_idss"/>
-        <menuitem id="um_department_info_menus_id" name="Department" action="um_department_information_view_record_id_two"/>
-        <menuitem  id="students_profile_info_menu_ids" name="student profile" action="um_students_profile_tree_view"/>
-        <menuitem  id="course_lists_info_menu" name="Courses" action="um_course_lists_view_recored_id"/>
-        <!-- facuclty and department menu  -->
-        <menuitem  id="faculty_info_menu" name="Faculty">
-            <menuitem  id="faculty_engineering_info_menu" name="Engineering" sequence="1" action="um_engineering_faculty_tree_view"/>
-            <menuitem  id="faculty_business_info_menu" name="Business" sequence="2" action="um_business_faculty_tree_view"/>
-            <menuitem  id="faculty_arts_info_menu" name="Arts" sequence="3" action="um_arts_faculty_tree_view"/>
+    <menuitem id="um_main_menu_id" name='University' sequence='2'>
+
+        <menuitem id="um_students_menus_id" name='Student' sequence='1'> 
+            <menuitem id="um_studentss_registration_menus_id_from_main" name="student registration" action="um_student_registration_view_record_idsss"/>
+            <menuitem  id="um_students_profile_info_menu_ids_from_main" name="student profile" action="um_students_profile_tree_views"/>
         </menuitem>
-        <!-- report menu  -->
-        <menuitem  id="accounts_view_menu_id" name="Accounts" action="um_students_account_views"/>
-        <menuitem  id="report_print_menus" name="Report" action="action_report_account_view"/>
+
+        <menuitem id="um_accounts_menus_id" name='Account' sequence='2'> 
+            <menuitem  id="um_accounts_views_menus_idsss" name="Accounts" action="um_students_accountsss_viewss"/>
+            <!-- <menuitem  id="um_accountss_transsactionss_rec_views_menus_idsss" name="Transaction Records" action="um_students_transasssction_records_idsss"/> -->
+        </menuitem>
+
+        <menuitem  id="faculty_info_menus_all" name="Faculty" sequence='6'>
+            <menuitem  id="facultys_engineering_info_menu" name="Engineering" sequence="1" action="um_engineering_faculty_tree_views"/>
+            <menuitem  id="facultys_business_info_menu" name="Business" sequence="2" action="um_business_faculty_tree_views"/>
+            <menuitem  id="facultys_arts_info_menu" name="Arts" sequence="3" action="um_arts_faculty_tree_views"/>
+        </menuitem>
+
+        <menuitem id="um_departmenstss_menuss_id" name='Department' sequence='3'> 
+            <menuitem id="um_departments_isnfo_menus_id" name="Department" action="um_department_information_view_record_id_twos"/>
+            <menuitem  id="courses_lissts_infso_menu" name="Courses" action="um_course_lists_view_recored_ids"/>
+        </menuitem>
+
+        <menuitem id="um_departments_migrations_super_view" name="Department Migration" sequence="7"> 
+            <menuitem  id="um_departments_migration_view__info_menu" name="Migration" action="um_department_migration_view_recored_ids"/>
+        </menuitem>
+
+
+    </menuitem>
+
+
+
+
+     <!-- <menuitem id="um_super_parent_menu_bar_id" name="student" sequence="2">
+        <menuitem id="um_student_registration_menus_id" name="student registration" action="um_student_registration_view_record_idsss"/>
+        <menuitem id="um_department_info_menus_id" name="Department" action="um_department_information_view_record_id_twos"/>
+        <menuitem  id="students_profile_info_menu_ids" name="student profile" action="um_students_profile_tree_views"/>
+        <menuitem  id="course_lists_info_menu" name="Courses" action="um_course_lists_view_recored_ids"/>
+        
+        
+        <menuitem id ="studens_accounts_menus" name='Account'>
+            <menuitem id="students_accounts_views_rec" name="Account" action="um_students_accountsss_viewss"/>
+            <menuitem id="students_accounts_transaction_rec_views_rec" name="Transaction Record" action="um_students_transasssction_records_idsss"/>
+        </menuitem>
+
+        <menuitem  id="faculty_info_menu" name="Faculty">
+            <menuitem  id="faculty_engineering_info_menu" name="Engineering" sequence="1" action="um_engineering_faculty_tree_views"/>
+            <menuitem  id="faculty_business_info_menu" name="Business" sequence="2" action="um_business_faculty_tree_views"/>
+            <menuitem  id="faculty_arts_info_menu" name="Arts" sequence="3" action="um_arts_faculty_tree_views"/>
+        </menuitem>
+      
+        
 
 
     </menuitem> 
 
-    <menuitem id="um_department_migration_super_view" name="Department Migration" sequence="3"> 
-        <menuitem  id="um_department_migration_view__info_menu" name="Migration" action="um_department_migration_view_recored_id"/>
-    </menuitem>
+     <menuitem id="um_department_migration_super_view" name="Department Migration" sequence="3"> 
+        <menuitem  id="um_department_migration_view__info_menu" name="Migration" action="um_department_migration_view_recored_ids"/>
+    </menuitem>  -->
 
 
     

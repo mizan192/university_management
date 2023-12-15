@@ -18,7 +18,7 @@
         'views/department_migration_view.xml',
         'views/wizard_view.xml',
         'views/students_account_view.xml',
-        'views/student_report_view.xml',
+        'views/transaction_record_view.xml',
         'views/menu.xml',
         'reports/account_view_report.xml',
         'reports/admission_confirm_report.xml',

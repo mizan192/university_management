@@ -2,7 +2,7 @@ from odoo import fields,models,api
 from odoo.exceptions import AccessError, UserError, ValidationError
 from datetime import date
 from dateutil.relativedelta import relativedelta
-
+import random
 
 class StudentAccount(models.Model):
     _name="student.account"
@@ -28,7 +28,6 @@ class StudentAccount(models.Model):
 
     invoice_date=fields.Date(string='Invoice Date', default=fields.Date.today, readonly='1')
     due_date=fields.Date(string='Due Date')
-    payment_method=fields.Selection([('cash','Cash'),('bank','Bank'),('bkash','Bkash')], string='Payment Method', default='cash')
     ready_to_invoiced=fields.Boolean(default=False)
     
     show_button=fields.Boolean(default=False)
@@ -64,41 +63,59 @@ class StudentAccount(models.Model):
     payment_date=fields.Date(string='Payment Date', default=fields.Date.today)
     recipient_bank_account=fields.Char(string='Recipient Bank No')
     transaction_id=fields.Char(string='Transaction ID')
+    record_id=fields.Char(string='Record ID')
     memo_no=fields.Char(string='Memo')
     payment_phone_num=fields.Char(string='Phone No')
- 
+    
+    fee_received = fields.Monetary(string='Received Fee', readonly='1')
+
+
+
+# other 
+    smart_button_title=fields.Char(default='Register Payment')
+    
+
+
+
+
+
+
 
 
     @api.depends('faculty')
     def _check_department_fee(self):
-        fees=12000
-        if self.faculty=='engineering':
-            fees=fees+5000
-        if self.department=='business':
-            fees=fees+2500
-        self.department_fee=fees
+        for rec in self:
+            fees=12000
+            if rec.faculty=='engineering':
+                fees=fees+5000
+            if self.department=='business':
+                fees=fees+2500
+            rec.department_fee=fees
+
 
     @api.depends('student_id')
     def _scholarship_calculation(self):
-        
-        domain = [('student_id','=',self.student_id)]
-        rec = self.env['student.profile'].search(domain)
-        discount=0
-        fees=self.admission_fee+self.registration_fee
-        hsc_result = rec.hsc_result
-        ssc_result = rec.ssc_result
-
-        if hsc_result>=5.00:
-            discount=fees
-        elif hsc_result>=4.75 and ssc_result>=5.00:
-            discount=fees-(fees*.75)
-        elif hsc_result>=4.50:
-            discount=fees-(fees*.5)
-        elif hsc_result>=4.00 and ssc_result>=4.25:
-            discount=fees-(fees*.3)
-        else:
+        return
+        for obj in self:
+            obj.scholarship=0
+            domain = [('student_id','=',obj.student_id)]
+            rec = self.env['student.profile'].search(domain)
             discount=0
-        self.scholarship=discount
+            fees=obj.admission_fee+obj.registration_fee
+            hsc_result = rec.hsc_result
+            ssc_result = rec.ssc_result
+
+            if hsc_result>=5.00:
+                discount=fees
+            elif hsc_result>=4.75 and ssc_result>=5.00:
+                discount=fees-(fees*.75)
+            elif hsc_result>=4.50:
+                discount=fees-(fees*.5)
+            elif hsc_result>=4.00 and ssc_result>=4.25:
+                discount=fees-(fees*.3)
+            else:
+                discount=0
+            obj.scholarship=discount
 
 
 
@@ -162,14 +179,61 @@ class StudentAccount(models.Model):
 
         }    
     
+    def get_random(self):
+        random_number = ''.join(str(random.randint(0, 9)) for _ in range(4))
+        return random_number
 
 
 
     # confirm payment registration 
     def create_payments(self):
-        pass
+
+        if not self.amount_paid:
+            raise ValidationError("Payment amount must be positive amount!!!")
 
 
+
+        self.fee_received+=self.amount_paid
+        self.total_fee-=self.amount_paid
+        self.invoice_status='Paid'
+
+        domain = [('student_id','=',self.student_id)]
+        rec = self.env['student.profile'].search(domain)
+        rec.write({'fee_received':self.fee_received})
+        
+        # add to  transaction record model
+        rec = self.env['student.registration'].search(domain)
+        reg_id = rec.registration_id
+        random_num = self.get_random()
+        dict_key={
+            's_name':self.name,
+            's_id':self.student_id,
+            'amount_paid':self.amount_paid,
+            'payment_date':self.payment_date,
+            'transaction_id':self.transaction_id,
+            'record_id':reg_id.lower()+"-"+random_num,
+        }
+        rec = self.env['account.transaction.record'].create(dict_key)
+        
+        
+    
+            
+
+
+
+
+    def smart_button_transaction_list_preview(self):
+        domain = [('s_id','=',self.student_id)]
+        return {
+            'name' : 'Transaction Record',
+            'type' : 'ir.actions.act_window',
+            'res_model' : 'account.transaction.record',
+            'view_mode' : 'tree',
+            # 'target' : 'new',
+            'target' : 'current',
+            'domain' : domain,
+        }
+        
 
 
 

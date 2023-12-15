@@ -66,7 +66,7 @@
 
 
     <!-- Action to open the tree view -->
-    <record id="um_department_migration_view_recored_id" model="ir.actions.act_window">
+    <record id="um_department_migration_view_recored_ids" model="ir.actions.act_window">
         <field name="name">department.migration.view</field>
         <field name="res_model">department.migration</field>
         <field name="view_mode">tree,form</field>

@@ -73,6 +73,10 @@ class CourseList(models.Model):
 
     @api.model
     def create(self,val):
+        if 'course_name' in val.keys() and val['course_name']:
+            name=val['course_name'].upper()
+            val['course_name']=name
+        
         ctx = self.env.context.copy()
         rec=super(CourseList,self.with_context(ctx)).create(val)
         self.course_add_in_faculty(rec.course_faculty,rec.course_name,rec.credit_hour,rec.credit_hour_fee,rec.lab_fee,rec.single_course_fee)

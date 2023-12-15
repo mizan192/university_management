@@ -537,11 +537,11 @@ class StudentRegistration(models.Model):
         # course_id_list = self.course_ids.ids
         context = {
         # 'default_main_model_id': self.id,
-        'default_name': rec.name,
+        'default_name': self.name,
         'default_student_id': s_id,
-        'default_faculty': rec.accepted_faculty,
-        'default_department': rec.accepted_department,
-        'default_course_fee': rec.course_cost,
+        'default_faculty': self.accepted_faculty,
+        'default_department': self.accepted_department,
+        'default_course_fee': self.course_cost,
         # 'default_course_ids': course_id_list,
         }
 

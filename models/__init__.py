@@ -10,4 +10,6 @@ from . import business_courses
 from . import arts_courses
 from . import department_migration
 from . import account
-from . import student_report
+from . import account_transaction_record
+
+from ..reports import student_report

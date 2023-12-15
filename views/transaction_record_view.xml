@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+
+    <!-- tree view          -->
+    <record id="um_student_transaction_record_view" model="ir.ui.view">
+        <field name="name">account.transaction.record.tree</field>
+        <field name="model">account.transaction.record</field>
+        <field name="arch" type="xml">
+            <tree> 
+                <field name="s_name"/>      
+                <field name="s_id"/>         
+                <field name="amount_paid"/>         
+                <field name="transaction_id"/>         
+                <field name="record_id"/>         
+                <field name="payment_date"/>         
+            </tree>
+        </field>
+    </record>   
+
+
+
+
+    <record id="um_students_transasssction_records_idsss" model="ir.actions.act_window">
+        <field name="name">account.transaction.record.tree</field>
+        <field name="res_model">account.transaction.record</field>
+        <field name="view_mode">tree</field>
+    </record>
+
+    <!-- <menuitem id="um_students_accounts_transaction_rec_views_rec" name="Transaction Record" action="um_students_transasssction_records_idsss"/> -->
+
+</odoo>

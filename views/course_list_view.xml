@@ -39,7 +39,7 @@
 
 
     <!-- Action to open the tree view -->
-    <record id="um_course_lists_view_recored_id" model="ir.actions.act_window">
+    <record id="um_course_lists_view_recored_ids" model="ir.actions.act_window">
         <field name="name">course.list.view</field>
         <field name="res_model">course.list</field>
         <field name="view_mode">tree,form</field>

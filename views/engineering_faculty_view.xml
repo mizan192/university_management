@@ -29,7 +29,7 @@
 
 
     <!-- Action to open the tree view -->
-    <record id="um_engineering_faculty_tree_view" model="ir.actions.act_window">
+    <record id="um_engineering_faculty_tree_views" model="ir.actions.act_window">
         <field name="name">engineering.faculty.tree</field>
         <field name="res_model">engineering.faculty</field>
         <field name="view_mode">tree</field>

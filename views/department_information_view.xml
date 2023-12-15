@@ -20,6 +20,89 @@
     </record>   
 
 
+
+
+
+    <!-- kanban view  -->
+    <record id="um_student_departments_kanban_view" model="ir.ui.view">
+        <field name="name">department.information.kanban</field>
+        <field name="model">department.information</field>
+        <field name="arch" type="xml">
+            <kanban>
+
+                <field name="department_name"/>
+                <field name="logo"/>
+                <field name="phone"/>
+                <field name="email"/>
+                <field name="total_students"/>
+                <field name="available_seats"/>
+
+                <templates>
+
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_content oe_kanban_global_click o_kanban_record_has_image_fill  ">
+                            
+                            <!-- <div class="oe_kanban_image"> -->
+                            <field name="logo" class="o_kanban_image_fill_left d-block oe_kanban_avatar" preview_image="logo" widget="background_image" options="{'zoom': true, 'zoom_delay': 1000}"/>
+                        <!-- </div> -->
+                        
+                        <div class="card d-flex flex-column justify-content-center" style="">
+                            
+
+                            <div class="card-header" style="margin:0; padding-left:1; padding-right:1; padding-top:0; padding-bottom:0;">
+                                <h5 class="card-title" style="margin-bottom:0; padding:0; color: #009688; "><field name="department_name"/></h5>
+                                <!-- <p class="card-text" style="margin-bottom:0; padding:0; color: #728C00;"><strong>ID:</strong> <field name="student_id"/></p> -->
+                            </div>
+                            
+                         
+
+                            <div class="card-body " style="margin:0; padding-left:1; padding-right:1; padding-top:1px; padding-bottom:0; background-color: #e0e0e0; ">
+                                <p class="card-text" style="margin-bottom:0; padding:0; color: #007bff;"><strong>Available Seats:</strong> <field name="available_seats"/></p>
+                                <p class="card-text" style="margin-bottom:0; padding:0; color: #e91e63;"><strong>Total Students:</strong> <field name="total_students"/></p>
+                            </div>
+
+                            <div class="card-footer text-muted " style="margin:0; padding-left:1; padding-right:1; padding-top:1px; padding-bottom:0;">
+                                <p class="card-text" style="margin-bottom:0; padding:0; color: #36013F;"><strong>Email:</strong> <field name="email"/></p>
+                                <p class="card-text" style="margin-bottom:0; padding:0; color:#7E354D;"><strong>Contact:</strong> <field name="phone"/></p>
+                            </div>
+           
+
+
+
+
+                        </div>
+
+
+                        </div>
+                    </t>
+            
+            
+                </templates>
+
+            
+            
+            </kanban>
+
+        </field>
+    </record>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     <!-- form view -->
     <record id="um_department_info_form_view_record_id" model="ir.ui.view">
         <field name="name">department.information.form</field>
@@ -97,10 +180,10 @@
 
 
     <!-- Action to open the tree view -->
-    <record id="um_department_information_view_record_id_two" model="ir.actions.act_window">
+    <record id="um_department_information_view_record_id_twos" model="ir.actions.act_window">
         <field name="name">department information view</field>
         <field name="res_model">department.information</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,kanban,form</field>
     </record>
 
     <!-- <menuitem id="um_department_info_menus_id" name="department information" action="um_department_information_view_record_id_two"/> -->

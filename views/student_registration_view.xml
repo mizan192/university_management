@@ -346,7 +346,7 @@
 
 
     <!-- Action to open the tree view -->
-    <record id="um_student_registration_view_record_idss" model="ir.actions.act_window">
+    <record id="um_student_registration_view_record_idsss" model="ir.actions.act_window">
         <field name="name">student registration view</field>
         <field name="res_model">student.registration</field>
         <field name="view_mode">tree,kanban,form</field>

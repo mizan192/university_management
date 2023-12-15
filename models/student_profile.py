@@ -20,5 +20,5 @@ class StudentProfile(models.Model):
     ssc_result=fields.Float(string='SSC')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env['res.currency'].search([('name', '=', 'BDT')]))
     total_fee=fields.Monetary(string='Fee', readonly='1')
-
+    fee_received=fields.Monetary(string='Fee Received', readonly='1')
     image=fields.Binary(string='Image')

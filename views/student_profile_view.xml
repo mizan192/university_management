@@ -11,7 +11,7 @@
                 <field name="student_id"/>  
                 <field name="accepted_faculty"/>  
                 <field name="accepted_department"/>  
-                <field name="course_cost"/>  
+                <field name="fee_received"/>  
                 <field name="total_fee" string='Total Fee'/>  
             </tree>
         </field>
@@ -86,7 +86,7 @@
 
 
     <!-- Action to open the tree view -->
-    <record id="um_students_profile_tree_view" model="ir.actions.act_window">
+    <record id="um_students_profile_tree_views" model="ir.actions.act_window">
         <field name="name">student.profile.tree</field>
         <field name="res_model">student.profile</field>
         <field name="view_mode">tree,kanban</field>
