@@ -50,28 +50,28 @@ class StudentRegistration(models.Model):
 # academic information 
     school_name = fields.Char(string='School Name')
     collage_name = fields.Char(string='Collage Name')
-    hsc_result=fields.Float(string="HSC Grade", default="2.00")
-    ssc_result=fields.Float(string="SSC Grade", default="2.00")
+    hsc_result=fields.Float(string="HSC Grade", default="3.50")
+    ssc_result=fields.Float(string="SSC Grade", default="3.00")
     ssc_group=fields.Selection([('science','Science'),('commerce', 'Commerce'), ('arts', 'Arts')], string='SSC Group', default='arts')
     hsc_group=fields.Selection([('science','Science'),('commerce', 'Commerce'), ('arts', 'Arts')], string='HSC Group', default='arts')
     # subject wise inforamtion for department selection
     # grade_domain=[('a+','A+'),('a','A'),('a-','A-'),('b','B'),('c','C'),('d','D')]
     grade_domain=[('5.0','A+'),('4.5','A'),('4.0','A-'),('3.5','B'),('3.0','C'),('2.0','D')]
-    hsc_math_grade=fields.Selection(grade_domain,string="HSC Math Grade", default="2.0")
-    hsc_physics_grade=fields.Selection(grade_domain,string="HSC Physics Grade", default="2.0")
-    hsc_chemisty_grade=fields.Selection(grade_domain,string="HSC Chemisty Grade", default="2.0")
-    hsc_english_grade=fields.Selection(grade_domain,string="HSC English Grade", default="2.0")
-    hsc_biology_grade=fields.Selection(grade_domain,string="HSC Biology Grade", default="2.0")
-    hsc_finance_grade=fields.Selection(grade_domain,string="HSC finance Grade", default="2.0")
-    hsc_accounting_grade=fields.Selection(grade_domain,string="HSC accounting Grade", default="2.0")
+    hsc_math_grade=fields.Selection(grade_domain,string="HSC Math Grade", default="3.0")
+    hsc_physics_grade=fields.Selection(grade_domain,string="HSC Physics Grade", default="3.0")
+    hsc_chemisty_grade=fields.Selection(grade_domain,string="HSC Chemisty Grade", default="3.0")
+    hsc_english_grade=fields.Selection(grade_domain,string="HSC English Grade", default="3.0")
+    hsc_biology_grade=fields.Selection(grade_domain,string="HSC Biology Grade", default="3.0")
+    hsc_finance_grade=fields.Selection(grade_domain,string="HSC finance Grade", default="3.0")
+    hsc_accounting_grade=fields.Selection(grade_domain,string="HSC accounting Grade", default="3.0")
     
-    ssc_math_grade=fields.Selection(grade_domain,string="SSC Math Grade", default="2.0")
-    ssc_physics_grade=fields.Selection(grade_domain,string="SSC Physics Grade", default="2.0")
-    ssc_chemisty_grade=fields.Selection(grade_domain,string="SSC Chemisty Grade", default="2.0")
-    ssc_biology_grade=fields.Selection(grade_domain,string="SSC Biology Grade", default="2.0")
-    ssc_finance_grade=fields.Selection(grade_domain,string="SSC finance Grade", default="2.0")
-    ssc_accounting_grade=fields.Selection(grade_domain,string="SSC accounting Grade", default="2.0")
-    ssc_english_grade=fields.Selection(grade_domain,string="SSC English Grade", default="2.0")
+    ssc_math_grade=fields.Selection(grade_domain,string="SSC Math Grade", default="3.0")
+    ssc_physics_grade=fields.Selection(grade_domain,string="SSC Physics Grade", default="3.0")
+    ssc_chemisty_grade=fields.Selection(grade_domain,string="SSC Chemisty Grade", default="3.0")
+    ssc_biology_grade=fields.Selection(grade_domain,string="SSC Biology Grade", default="3.0")
+    ssc_finance_grade=fields.Selection(grade_domain,string="SSC finance Grade", default="3.0")
+    ssc_accounting_grade=fields.Selection(grade_domain,string="SSC accounting Grade", default="3.0")
+    ssc_english_grade=fields.Selection(grade_domain,string="SSC English Grade", default="3.0")
     
 
 #social platform 
@@ -85,7 +85,18 @@ class StudentRegistration(models.Model):
 #others
     admission_date=fields.Date(string='Admission Date', default=fields.Date.today)
     registration_id=fields.Char(string='Registration Id', compute='generate_registration_id', store=True)
+    REG_STATUS_SELECTION = [
+        ('Draft', 'Draft'),
+        ('Reviewing', 'Reviewing'),
+        ('Enrolled', 'Enrolled'),
+    ]
 
+    registration_status = fields.Selection(
+        selection=REG_STATUS_SELECTION,
+        string='Admission Status',
+        default='Draft',  
+    )
+    web_ribbon=fields.Char(string='ADMITTED')
 
 
 
@@ -310,7 +321,7 @@ class StudentRegistration(models.Model):
     def check_department_validity(self,choosed_department,choosed_faculty):
         if choosed_department=="" or choosed_faculty=="":
             return False
-        if choosed_department.available_seats==0:
+        if choosed_department.available_seats<=0:
             return False
         if choosed_department.hsc_min_grade>self.hsc_result or choosed_department.ssc_min_grade>self.ssc_result:
             return False
@@ -326,6 +337,7 @@ class StudentRegistration(models.Model):
 
     # @api.model
     def department_check_according_to_grade(self):
+        self.registration_status='Reviewing'
         if self.is_admitted==True:
             raise ValidationError("You have alreadey admitted in a department!!!")
         choosed_department=""
@@ -393,8 +405,10 @@ class StudentRegistration(models.Model):
 
 
 
+
     # after confirm seat will be decrease 
     def confirm_department_registration(self):
+        self.registration_status='Enrolled'
         if self.is_admitted==True:
             raise ValidationError("You have alreadey admitted in a department!!!")
         self.is_admitted=True
@@ -418,7 +432,6 @@ class StudentRegistration(models.Model):
 
     # select course 
     def open_course_selection_wizard_form(self):
-
         self.invoice_status='to invoice'
 
         # passing One2many filed ids
@@ -494,14 +507,14 @@ class StudentRegistration(models.Model):
 
     @api.onchange('course_ids')
     def calculate_course_cost_and_credit_hour(self):
-        total_cost=0
+        cost=0
         total_credit_hour=0
         for rec in self.course_ids:
-            total_cost=total_cost+rec.lab_fee+(rec.credit_hour*rec.credit_hour_fee)
+            cost=cost+rec.lab_fee+(rec.credit_hour*rec.credit_hour_fee)
             total_credit_hour=total_credit_hour+rec.credit_hour
         # if self.credit_hour>self.max_credit_hour:
         #     ValidationError("You Cannot ")
-        self.course_cost=total_cost
+        self.course_cost=cost
         self.credit_hour=total_credit_hour
 
         #update course cost in profile
@@ -527,13 +540,6 @@ class StudentRegistration(models.Model):
         s_id=self.student_id
         domain = [('student_id','=',s_id)]
         rec = self.env['student.profile'].search(domain)
-    
-        # print("================================")
-        # print(s_id)
-        # print(rec.name)
-        # print(rec.student_id)
-        # print(rec.accepted_faculty)
-        # print(rec.accepted_department)
 
 
 
@@ -552,8 +558,8 @@ class StudentRegistration(models.Model):
         return {
             'name': "Student Account View",
             'type': 'ir.actions.act_window',
+            # 'res_id':self.id,
             'res_model': 'student.account',
-            # 'res_id':self.active_id,
             'view_mode': 'form',
             'view_id': self.env.ref('university_management.students_accounts_fees_calculation_views').id,
             'target': 'current',

@@ -10,7 +10,7 @@
 
         <menuitem id="um_accounts_menus_id" name='Account' sequence='2'> 
             <menuitem  id="um_accounts_views_menus_idsss" name="Accounts" action="um_students_accountsss_viewss"/>
-            <!-- <menuitem  id="um_accountss_transsactionss_rec_views_menus_idsss" name="Transaction Records" action="um_students_transasssction_records_idsss"/> -->
+            <menuitem  id="um_accountss_transsactionss_rec_views_menus_idsss" name="Transaction Records" action="um_students_transasssction_records_idsss"/>
         </menuitem>
 
         <menuitem  id="faculty_info_menus_all" name="Faculty" sequence='6'>

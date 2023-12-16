@@ -20,8 +20,7 @@ class StudentAccount(models.Model):
     department_fee=fields.Monetary(string='Department Fee', compute='_check_department_fee', store = True)
     fine=fields.Monetary(string='Fine', default=0)
     scholarship=fields.Monetary(string='Scholarship', compute='_scholarship_calculation', store=True)
-    total_fee=fields.Monetary(string='Total Fee', compute='_calculate_total_Fee', currency_field='currency_id', store=True)
-
+   
     student_relation = fields.Many2one('student.profile')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env['res.currency'].search([('name', '=', 'BDT')]))
     
@@ -31,6 +30,7 @@ class StudentAccount(models.Model):
     ready_to_invoiced=fields.Boolean(default=False)
     
     show_button=fields.Boolean(default=False)
+    web_ribbon=fields.Char(string='PAID')
     
     student_reference=fields.Many2one(
         comodel_name='student.registration',
@@ -39,9 +39,9 @@ class StudentAccount(models.Model):
 
     INVOICE_STATUS_SELECTION = [
         ('Draft', 'Draft'),
-        ('Pending', 'Pending'),
+        ('Posted', 'Posted'),
+        ('Unpaid', 'Unpaid'),
         ('Paid', 'Paid'),
-        ('Cancel', 'Cancelled'),
     ]
 
     invoice_status = fields.Selection(
@@ -68,6 +68,8 @@ class StudentAccount(models.Model):
     payment_phone_num=fields.Char(string='Phone No')
     
     fee_received = fields.Monetary(string='Received Fee', readonly='1')
+    fee = fields.Monetary(string='Fee', readonly='1')
+    total_fee=fields.Monetary(string='Total Fee', compute='_calculate_total_Fee', currency_field='currency_id', store=True)
 
 
 
@@ -123,6 +125,7 @@ class StudentAccount(models.Model):
     def _calculate_total_Fee(self):
         for rec in self:
             rec.total_fee=rec.admission_fee+rec.course_fee+rec.registration_fee+rec.department_fee+rec.fine-rec.scholarship
+            rec.fee=rec.total_fee
         # self.total_fee=self.admission_fee+self.course_fee+self.registration_fee+self.department_fee+self.fine-self.scholarship
 
     
@@ -130,7 +133,7 @@ class StudentAccount(models.Model):
     @api.onchange('due_date')
     def check_due_date(self):
         self.show_button=False
-        
+        self.invoice_status='Draft'
         if self.due_date==False:
             self.ready_to_invoiced=False
         
@@ -150,11 +153,18 @@ class StudentAccount(models.Model):
 # fee confirm button 
     def confirm_fee(self):
         self.show_button=True
+        self.invoice_status='Posted'
+        
+    #    update total_fee 
         domain = [('student_id','=',self.student_id)]
-        rec = self.env['student.profile'].search(domain)
-        rec.write({'total_fee':self.total_fee})
         rec = self.env['student.registration'].search(domain)
-        rec.write({'total_cost':self.total_fee,'due_date':self.due_date})
+        cost = rec.total_cost+self.fee
+        rec.write({'total_cost':cost,'due_date':self.due_date})
+
+        rec = self.env['student.profile'].search(domain)
+        cost = rec.total_fee+self.fee
+        rec.write({'total_fee':cost})
+
         
 
 
@@ -189,17 +199,26 @@ class StudentAccount(models.Model):
 
         if not self.amount_paid:
             raise ValidationError("Payment amount must be positive amount!!!")
-
+        if self.amount_paid and self.amount_paid>self.total_fee:
+            raise ValidationError("Payment can't be more than your current due!!!")
 
 
         self.fee_received+=self.amount_paid
         self.total_fee-=self.amount_paid
-        self.invoice_status='Paid'
+        if self.total_fee<=0:
+            self.invoice_status='Paid'
+        else:
+            self.invoice_status='Unpaid'
 
         domain = [('student_id','=',self.student_id)]
+        rec = self.env['student.registration'].search(domain)
+        cost = rec.total_cost-self.amount_paid
+        rec.write({'total_cost':cost,'due_date':self.due_date})
         rec = self.env['student.profile'].search(domain)
-        rec.write({'fee_received':self.fee_received})
-        
+        cost = rec.total_fee-self.amount_paid
+        rec.write({'total_fee':cost})
+ 
+
         # add to  transaction record model
         reg_id = self.env['student.registration'].search([('student_id','=',self.student_id)]).registration_id
         
@@ -246,6 +265,9 @@ class StudentAccount(models.Model):
 
     @api.model
     def create(self,vals):
+        
+        print(vals)
+
         if 'student_id' not in vals.keys():
             return super(StudentAccount,self).create(vals)
         s_id = vals['student_id']
@@ -256,6 +278,22 @@ class StudentAccount(models.Model):
         else:
             return super(StudentAccount,self).create(vals)
 
+    # @api.model
+    # def create(self,vals):
+    #     print('-------------------------------')
+    #     print(vals)
+
+    #     if 'student_id' not in vals.keys():
+    #         print('---------student_id_not_preset--------')
+    #         return super(StudentAccount,self).create(vals)
+    #     s_id = vals['student_id']
+    #     record_exist = self.env['student.account'].search(['student_id','=',s_id])
+
+    #     if record_exist:
+    #         print('----------------write----------')
+    #         rec = self.write(vals)
+    #     else:
+    #         return super(StudentAccount,self).create(vals)
 
 
 

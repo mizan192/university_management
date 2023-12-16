@@ -1,24 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     
+
+    <record id="um_student_registration_search_view_record_id" model="ir.ui.view">
+        <field name="name">student.registration.search</field>
+        <field name="model">student.registration</field>
+        <field name="arch" type="xml">
+                <search string="Employees">
+                <!-- 
+                    <field name="name" string="Student" filter_domain="['|','|','|', ('guradian_name', 'ilike', self),,('student_id', 'ilike', self),,('email', 'ilike', self), ('name', 'ilike', self)]"/>
+                    <field name="student_id"/>
+                    <field name="registration_id"/>
+                    <field name="gender"/>
+                    <separator/>
+                    <filter string="Arts Department" name="accepted_department" domain="[('accepted_department', '=', 'arts')]"/>
+                    <filter string="Business Department" name="accepted_department" domain="[('accepted_department', '=', 'business')]"/>
+                    <filter string="Engineering Department" name="accepted_department" domain="[('accepted_department', '=', 'engineering')]"/>
+                    <separator/> -->
+                    <!-- <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                    
+                    <searchpanel>
+                        <field name="company_id" groups="base.group_multi_company" icon="fa-building" enable_counters="1"/>
+                        <field name="department_id" icon="fa-users" enable_counters="1"/>
+                    </searchpanel> -->
+
+                    <!-- <group expand="0" string="Group By">
+                        <filter name="gender" string="Male" domain="[]" context="{'gender': 'male'}"/>
+                        <filter name="gender" string="Female" domain="[]" context="{'gender': 'female'}"/>
+                    </group> -->
+
+            </search>
+        </field>
+    </record>
+
+
+
+    
     <!-- tree view          -->
     <record id="um_student_registration_tree_view_record_id" model="ir.ui.view">
         <field name="name">student.registration.tree</field>
         <field name="model">student.registration</field>
         <field name="arch" type="xml">
             <tree> 
-                <field name="name"/>      
-                <field name="student_id"/>      
-                <field name="registration_id"/>      
-                <field name="age"/>      
-                <field name="gender"/>
-                <field name="total_salary"/>    
-                <field name="ssc_result"/>      
-                <field name="hsc_result"/>      
-                <field name="course_cost"/>      
-                <field name="total_cost"/>      
+                <field name="name" decoration-success="1==1"/>      
+                <field name="student_id" decoration-info="1==1"/>      
+                <field name="registration_id" decoration-muted="1==1"/>      
+                <field name="age" decoration-primary="1==1"/>      
+                <field name="gender" decoration-danger="1==1"/>
+                <field name="total_salary" decoration-warning="1==1"/>    
+                <field name="ssc_result" decoration-info="1==1"/>      
+                <field name="hsc_result" decoration-info="1==1"/>      
+                <!-- <field name="course_cost"/>       -->
+                <field name="total_cost" decoration-warning="1==1"/>      
                 <field name="contact_number"/>      
-                <field name="email"/>        
+                <field name="email" decoration-muted="1==1"/>        
+                <field name="registration_status" widget="badge" decoration-success="registration_status == 'Enrolled'" decoration-warning="registration_status=='Reviewing'" decoration-info="registration_status == 'Draft'"/>
             </tree>
         </field>
     </record>   
@@ -118,9 +154,22 @@
                     
                     <!-- <button string="Report" type="object"  name="confirm_report" class="oe_highlight"/>  -->
 
+                    <field name="registration_status" widget="statusbar" statusbar_visible="Draft,Reviewing,Enrolled"/>
+                
                </header>
 
                 <sheet>
+
+
+
+                <widget name="web_ribbon" title="Admitted" attrs="{'invisible': [('registration_status', '!=', 'Enrolled')]}"/>
+                
+
+
+
+
+
+
                     <group>
                         <group col="4" >
                             <field name="name" placeholder="Sunny Deol" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>

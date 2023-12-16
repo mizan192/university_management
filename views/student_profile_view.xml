@@ -7,12 +7,12 @@
         <field name="model">student.profile</field>
         <field name="arch" type="xml">
             <tree> 
-                <field name="name"/>      
-                <field name="student_id"/>  
-                <field name="accepted_faculty"/>  
-                <field name="accepted_department"/>  
-                <field name="fee_received"/>  
-                <field name="total_fee" string='Total Fee'/>  
+                <field name="name" decoration-success="1==1"/>      
+                <field name="student_id" decoration-info="1==1"/>       
+                <field name="accepted_faculty" decoration-primary="1==1"/>  
+                <field name="accepted_department" decoration-info="1==1"/>  
+                <field name="fee_received" decoration-success="1==1"/>  
+                <field name="total_fee" string='Total Fee' decoration-warning="1==1"/>  
             </tree>
         </field>
     </record>   
