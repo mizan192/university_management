@@ -8,6 +8,7 @@
         <field name="arch" type="xml">
             <tree> 
                 <field name="department_name"/>      
+                <field name="department_code"/>      
                 <field name="faculty"/>      
                 <field name="available_seats"/>
                 <field name="total_students"/>

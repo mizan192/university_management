@@ -12,7 +12,7 @@ class EngineeringFaculty(models.Model):
     hsc_min_grade=fields.Float(string="HSC Grade Required", default="3.50")
     ssc_min_grade=fields.Float(string="SSC Grade Required", default="3.00")
     total_students=fields.Integer(string="Total Student")
-    
+    department_code=fields.Char(string="Code")
     hsc_math_min_grade=fields.Char(string="HSC Math Grade")
     hsc_physics_min_grade=fields.Char(string="HSC physics Grade")
     hsc_chemisty_min_grade=fields.Char(string="HSC chemisty Grade")

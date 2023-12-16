@@ -95,7 +95,6 @@ class StudentAccount(models.Model):
 
     @api.depends('student_id')
     def _scholarship_calculation(self):
-        return
         for obj in self:
             obj.scholarship=0
             domain = [('student_id','=',obj.student_id)]
@@ -202,9 +201,13 @@ class StudentAccount(models.Model):
         rec.write({'fee_received':self.fee_received})
         
         # add to  transaction record model
-        rec = self.env['student.registration'].search(domain)
-        reg_id = rec.registration_id
+        reg_id = self.env['student.registration'].search([('student_id','=',self.student_id)]).registration_id
+        
+        # reg_id = rec.registration_id
+        
+        
         random_num = self.get_random()
+
         dict_key={
             's_name':self.name,
             's_id':self.student_id,

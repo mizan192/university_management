@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <!-- popup window for admit date wise searching  -->
+
+    <record id="search_student_admit_date_interval" model="ir.ui.view">
+        <field name="name">student.report.model.form</field>
+        <field name="model">student.report</field>
+        <field name="arch" type="xml">
+           <form string=''>
+                
+                <sheet>
+
+                    <group>
+                        
+                        <field name='start_date'/>
+                        <field name='end_date'/>
+
+
+                    </group>
+                
+
+
+                </sheet>
+                
+                <footer>
+                    <button string="Save" type="object" class="oe_highlight" name="search_student_via_admit_date"/>
+                </footer> 
+ 
+            </form> 
+        </field>
+    </record>
+
+
+
+
+
+
+</odoo>

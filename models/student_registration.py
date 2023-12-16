@@ -377,6 +377,9 @@ class StudentRegistration(models.Model):
         record = self.env["department.information"].search(domain)
         new_seats=record.available_seats-1
         student_count=record.total_students+1
+        
+        # print("-------------student count ------------", record.total_students)
+
         record.write({'available_seats':new_seats,'total_students':student_count})
         # update in faculty based table 
         f_name = self.accepted_faculty+".faculty"

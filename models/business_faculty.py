@@ -12,7 +12,7 @@ class BusinessFaculty(models.Model):
     hsc_min_grade=fields.Float(string="HSC Grade Required", default="3.50")
     ssc_min_grade=fields.Float(string="SSC Grade Required", default="3.00")
     
-    
+    department_code=fields.Char(string="Code")
     hsc_english_min_grade=fields.Char(string="HSC English Grade")
     hsc_finance_min_grade=fields.Char(string="HSC Finance Grade")
     hsc_accounting_min_grade=fields.Char(string="HSC Accounting Grade")

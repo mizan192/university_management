@@ -12,19 +12,12 @@ class CourseList(models.TransientModel):
     student_id_list=fields.Text(string='Id list')
 
 
+    # def search_student_via_admit_date(self):
+    #     domain=[('admission_date','>=',self.start_date),('admission_date','<=',self.end_date)]
+    #     student_ids = self.env['student.registration'].search(domain)
 
-    def get_students_list_vai_date(self):
-        domain=[('admission_date', '>=', self.start_date), ('admission_date', '<=', self.end_date)]
-        rec = self.env['student.registration'].search(domain)
-        print("----------------- id list ---------------------")
-        print(rec)
+    #     return self.env.ref("university_management.student_list_date_interval").report_
 
-        record_list=""
-        for single_rec in rec:
-            s_id = single_rec.student_id
-            if s_id:
-                line="ID No. : "+s_id+"\n"
-                record_list=record_list+line
-        self.student_id_list=record_list
+
 
 
