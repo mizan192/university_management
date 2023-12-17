@@ -10,7 +10,7 @@ class StudentAccount(models.Model):
 
 
     name=fields.Char(string='Name')
-    student_id=fields.Char(string='Id')
+    
     faculty=fields.Char(string='Faculty')
     department=fields.Char(string='Department')
     course_fee=fields.Monetary(string='Course Cost',  readonly='1')
@@ -23,7 +23,7 @@ class StudentAccount(models.Model):
    
     student_relation = fields.Many2one('student.profile')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env['res.currency'].search([('name', '=', 'BDT')]))
-    
+    from_registration=fields.Boolean(default=False)
 
     invoice_date=fields.Date(string='Invoice Date', default=fields.Date.today, readonly='1')
     due_date=fields.Date(string='Due Date')
@@ -36,6 +36,14 @@ class StudentAccount(models.Model):
         comodel_name='student.registration',
         domain="[('student_id','=',student_id)]",
     )
+
+    student_id=fields.Char(string='Id')
+    # registration_id = fields.Many2one(
+    #     comodel_name='student.profile'
+    # )
+
+
+
 
     INVOICE_STATUS_SELECTION = [
         ('Draft', 'Draft'),
@@ -79,6 +87,12 @@ class StudentAccount(models.Model):
 
 
 
+
+
+    # @api.onchange('student_id')
+    # def upgrade_student_data(self):
+    #     self.name=self.student_id.name
+        
 
 
 
@@ -215,8 +229,8 @@ class StudentAccount(models.Model):
         cost = rec.total_cost-self.amount_paid
         rec.write({'total_cost':cost,'due_date':self.due_date})
         rec = self.env['student.profile'].search(domain)
-        cost = rec.total_fee-self.amount_paid
-        rec.write({'total_fee':cost})
+        cost = rec.fee_received+self.amount_paid
+        rec.write({'fee_received':cost})
  
 
         # add to  transaction record model

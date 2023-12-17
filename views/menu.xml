@@ -28,6 +28,9 @@
             <menuitem  id="um_departments_migration_view__info_menu" name="Migration" action="um_department_migration_view_recored_ids"/>
         </menuitem>
 
+        <!-- <menuitem id="um_reports_menus_id" name='Reports'>
+            <menuitem id="um_reports_search_via_date_intervals" name='Admission Date based Students list' action='um_students_report_actions_id' />
+        </menuitem> -->
 
     </menuitem>
 

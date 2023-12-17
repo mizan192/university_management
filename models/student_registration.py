@@ -7,7 +7,7 @@ import re
 class StudentRegistration(models.Model):
     _name= 'student.registration'
     _description='Student registration'
-    _rec_name="name"
+    _rec_name="registration_id"
 
 
 # personal information 
@@ -96,6 +96,10 @@ class StudentRegistration(models.Model):
         string='Admission Status',
         default='Draft',  
     )
+    students_profile_relation = fields.Many2one(
+        comodel_name='student.profile',
+    )
+
     web_ribbon=fields.Char(string='ADMITTED')
 
 
@@ -389,7 +393,7 @@ class StudentRegistration(models.Model):
         record = self.env["department.information"].search(domain)
         new_seats=record.available_seats-1
         student_count=record.total_students+1
-        
+        s_count = str(student_count)
         # print("-------------student count ------------", record.total_students)
 
         record.write({'available_seats':new_seats,'total_students':student_count})
@@ -401,7 +405,8 @@ class StudentRegistration(models.Model):
         rec.write({'available_seats':new_seats,'total_students':student_count})
 
         #set student id while confirm : department_name_student_count
-        self.student_id=self.accepted_department+"_"+str(student_count)
+        s_id=self.accepted_department+"_"+s_count
+        self.student_id=str(s_id)
 
 
 
@@ -539,7 +544,7 @@ class StudentRegistration(models.Model):
     def create_invoice(self):
         s_id=self.student_id
         domain = [('student_id','=',s_id)]
-        rec = self.env['student.profile'].search(domain)
+        rec = self.env['student.registration'].search(domain)
 
 
 
@@ -551,6 +556,7 @@ class StudentRegistration(models.Model):
         'default_faculty': self.accepted_faculty,
         'default_department': self.accepted_department,
         'default_course_fee': self.course_cost,
+        'default_from_registration':True,
         # 'default_course_ids': course_id_list,
         }
 

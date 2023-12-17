@@ -27,8 +27,10 @@
                     
                     <!-- group  -->
                     <group expand="0" string="Group By">
+                        <filter name="group_by_name" string="Student Account History" domain="[]" context="{'group_by': 'name'}"/>
                         <filter name="group_by_invoice_status" string="Invoice Status" domain="[]" context="{'group_by': 'invoice_status'}"/>
                         <filter name="group_by_department" string="Department" domain="[]" context="{'group_by': 'department'}"/>
+                        
                 
                     </group>
 
@@ -204,8 +206,10 @@
 
                     <group string='Student Details'>
                         <group>
+                            <field name='from_registration' invisible='1'/>
+                            <!-- <field name='registration_id' display_name='True' options="{'no_create':True}" attrs="{'invisible':[('from_registration', '==', True)]}"  style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/> -->
                             <field name='name' readonly='1' style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
-                            <field name='student_id' readonly='1' style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                            <field name='student_id' attrs="{'readonly':[('from_registration', '==', True)]}" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
                         </group>
                         <group>
                             <field name='faculty' readonly='1' style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>

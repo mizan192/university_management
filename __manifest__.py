@@ -22,7 +22,7 @@
         'views/menu.xml',
         'reports/account_view_report.xml',
         'reports/admission_confirm_report.xml',
-        # 'reports/student_search_report.xml',
+        'reports/student_search_report.xml',
     ],
     
     'installable': True,
