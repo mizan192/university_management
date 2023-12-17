@@ -1,6 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     
+    <!-- search view  -->
+    <record id="um_student_profile_search_view_record_id" model="ir.ui.view">
+        <field name="name">student.profile.search</field>
+        <field name="model">student.profile</field>
+        <field name="arch" type="xml">
+                <search>
+                    <!-- searchable field  -->
+                    <field name="name"  filter_domain="['|','|','|','|','|',('name', 'ilike', self), ('student_id', 'ilike', self),('accepted_faculty', 'ilike', self),('accepted_department', 'ilike', self),('fee_received', 'ilike', self),('total_fee', 'ilike', self)]"/>
+                    <field name="student_id"/>
+                    <field name="accepted_faculty"/>
+                    <field name="accepted_department"/>
+                    <field name="fee_received"/>
+                    <field name="total_fee"/>
+
+
+                    <!-- filter  -->
+                    <filter string="Arts Faculty" name="filter_arts" domain="[('accepted_faculty', '=', 'arts')]"/>
+                    <filter string="Business Faculty" name="filter_business" domain="[('accepted_faculty', '=', 'business')]"/>
+                    <filter string="Engineering Faculty" name="filter_engineering" domain="[('accepted_faculty', '=', 'engineering')]"/>
+                    <separator/>
+                    <filter string="Fee Above 30000" name="filter_total_fee" domain="[('total_fee', '>=', 30000)]"/>
+                    <filter string="Fee Above 50000" name="filter_total_fee" domain="[('total_fee', '>=', 50000)]"/>
+                    <filter string="Fee Received Above 10000" name="filter_fee_received" domain="[('fee_received', '>=', 10000)]"/>
+                    <filter string="Fee Received Above 30000" name="filter_fee_received" domain="[('fee_received', '>=', 30000)]"/>
+                                
+                    
+                    <!-- group  -->
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_accepted_faculty" string="Faculty" domain="[]" context="{'group_by': 'accepted_faculty'}"/>
+                        <filter name="group_by_accepted_department" string="Department" domain="[]" context="{'group_by': 'accepted_department'}"/>
+                    </group>
+
+                 
+
+
+
+               
+            </search>
+        </field>
+    </record>
+
+
     <!-- tree view          -->
     <record id="um_students_profile_view_record" model="ir.ui.view">
         <field name="name">student.profile.tree</field>

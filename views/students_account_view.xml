@@ -2,6 +2,41 @@
 
 <odoo>
 
+    <record id="um_student_account_search_view_record_id" model="ir.ui.view">
+        <field name="name">student.account.search</field>
+        <field name="model">student.account</field>
+        <field name="arch" type="xml">
+                <search>
+                    <!-- searchable field  -->
+                    <field name="name"  filter_domain="['|','|','|','|','|',('name', 'ilike', self),('student_id', 'ilike', self),('department', 'ilike', self), ('invoice_status', 'ilike', self),('fee', 'ilike', self),('fee_received', 'ilike', self)]"/>
+                    <field name="student_id"/>
+                    <field name="department"/>
+                    <field name="fee"/>
+                    <field name="invoice_status"/>
+                    <field name="fee_received"/>
+
+
+                    <!-- filter  -->
+                    <filter string="Fee Above 30000" name="filter_fee" domain="[('fee', '>=', 30000)]"/>
+                    <filter string="Fee Above 50000" name="filter_fee" domain="[('fee', '>=', 50000)]"/>
+                    <separator />
+                    <filter string="Received Fee Above 20000" name="filter_fee_received" domain="[('fee_received', '>=', 20000)]"/>
+                    <filter string="Received Fee Above 40000" name="filter_fee_received" domain="[('fee_received', '>=', 40000)]"/>
+                    <separator />
+                    
+                    
+                    <!-- group  -->
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_invoice_status" string="Invoice Status" domain="[]" context="{'group_by': 'invoice_status'}"/>
+                        <filter name="group_by_department" string="Department" domain="[]" context="{'group_by': 'department'}"/>
+                
+                    </group>
+
+               
+            </search>
+        </field>
+    </record>
+
     
 
     <!-- account view  -->

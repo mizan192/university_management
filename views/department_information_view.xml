@@ -1,6 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     
+    <!-- search view  -->
+    <record id="um_student_department_search_view_record_id" model="ir.ui.view">
+        <field name="name">department.information.search</field>
+        <field name="model">department.information</field>
+        <field name="arch" type="xml">
+                <search>
+                    <!-- searchable field  -->
+                    <field name="department_name"  filter_domain="['|','|','|','|',('department_name', 'ilike', self), ('faculty', 'ilike', self),('available_seats', 'ilike', self),('total_students', 'ilike', self),('email', 'ilike', self)]"/>
+                    <field name="faculty"/>
+                    <field name="available_seats"/>
+                    <field name="total_students"/>
+                    <field name="email"/>
+
+
+                    <!-- filter  -->
+                    <filter string="Arts Faculty" name="filter_arts" domain="[('faculty', '=', 'arts')]"/>
+                    <filter string="Business Faculty" name="filter_business" domain="[('faculty', '=', 'business')]"/>
+                    <filter string="Engineering Faculty" name="filter_engineering" domain="[('faculty', '=', 'engineering')]"/>
+                    <separator/>
+                    <filter string="Available Seats 100+" name="filter_available_seats" domain="[('available_seats', '>=', 100)]"/>
+                    <filter string="Available Seats 50+" name="filter_available_seats" domain="[('available_seats', '>=', 50)]"/>
+                    <filter string="Available Seats 20+" name="filter_available_seats" domain="[('available_seats', '>=', 20)]"/>
+                    <separator />
+                    <filter string="Students 30+" name="filter_total_students" domain="[('total_students', '>=', 30)]"/>
+                    <filter string="Students 10+" name="filter_total_students" domain="[('total_students', '>=', 10)]"/>
+                    <filter string="Students 5+" name="filter_total_students" domain="[('total_students', '>=', 5)]"/>
+                    
+                    <!-- group  -->
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_faculty" string="Faculty" domain="[]" context="{'group_by': 'faculty'}"/>
+                        <filter name="group_by_available_seats" string="Available Seats" domain="[]" context="{'group_by': 'available_seats'}"/>
+                    </group>
+
+                 
+
+
+
+               
+            </search>
+        </field>
+    </record>
+
+
     <!-- tree view          -->
     <record id="um_department_info_tree_view_record_id" model="ir.ui.view">
         <field name="name">department.information.tree</field>

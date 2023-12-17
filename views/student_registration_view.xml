@@ -1,34 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     
-
+<!-- search view  -->
     <record id="um_student_registration_search_view_record_id" model="ir.ui.view">
         <field name="name">student.registration.search</field>
         <field name="model">student.registration</field>
         <field name="arch" type="xml">
-                <search string="Employees">
-                <!-- 
-                    <field name="name" string="Student" filter_domain="['|','|','|', ('guradian_name', 'ilike', self),,('student_id', 'ilike', self),,('email', 'ilike', self), ('name', 'ilike', self)]"/>
+                <search>
+                    <!-- searchable field  -->
+                    <field name="name"  filter_domain="['|','|','|','|','|',('name', 'ilike', self), ('registration_status', 'ilike', self),('student_id', 'ilike', self),('email', 'ilike', self), ('gender', 'ilike', self),('contact_number', 'ilike', self)]"/>
                     <field name="student_id"/>
                     <field name="registration_id"/>
                     <field name="gender"/>
+                    <field name="registration_status"/>
+                    <field name="email"/>
+                    <field name="contact_number"/>
+
+                    <!-- filter  -->
+                    <filter string="Admission Draft" name="filter_draft" domain="[('registration_status', '=', 'Draft')]"/>
+                    <filter string="Admission Reviewing" name="filter_reviewing" domain="[('registration_status', '=', 'Reviewing')]"/>
+                    <filter string="Admission Enrolled" name="filter_enrolled" domain="[('registration_status', '=', 'Enrolled')]"/>
+                    <separator />
+                    <filter string="Arts Faculty" name="filter_arts" domain="[('accepted_faculty', '=', 'arts')]"/>
+                    <filter string="Business Faculty" name="filter_business" domain="[('accepted_faculty', '=', 'business')]"/>
+                    <filter string="Engineering Faculty" name="filter_engineering" domain="[('accepted_faculty', '=', 'engineering')]"/>
                     <separator/>
-                    <filter string="Arts Department" name="accepted_department" domain="[('accepted_department', '=', 'arts')]"/>
-                    <filter string="Business Department" name="accepted_department" domain="[('accepted_department', '=', 'business')]"/>
-                    <filter string="Engineering Department" name="accepted_department" domain="[('accepted_department', '=', 'engineering')]"/>
-                    <separator/> -->
-                    <!-- <filter string="Archived" name="inactive" domain="[('active', '=', False)]"/>
+                    <filter string="Fee Above 30000" name="filter_total_cost" domain="[('total_cost', '>=', 30000)]"/>
+                    <filter string="Fee Above 50000" name="filter_total_cost" domain="[('total_cost', '>=', 50000)]"/>
+                    <separator />
+                    <filter string="Male" name="filter_male" domain="[('gender', '=', 'male')]"/>
+                    <filter string="Female" name="filter_female" domain="[('gender', '=', 'female')]"/>
+                    <separator/>
                     
-                    <searchpanel>
-                        <field name="company_id" groups="base.group_multi_company" icon="fa-building" enable_counters="1"/>
-                        <field name="department_id" icon="fa-users" enable_counters="1"/>
-                    </searchpanel> -->
+                    <!-- group  -->
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_gender" string="Gender" domain="[]" context="{'group_by': 'gender'}"/>
+                        <filter name="group_by_registration_status" string="Admission Status" domain="[]" context="{'group_by': 'registration_status'}"/>
+                        <filter name="group_by_accepted_faculty" string="Faculty" domain="[]" context="{'group_by': 'accepted_faculty'}"/>
+                        <filter name="group_by_accepted_department" string="Department" domain="[]" context="{'group_by': 'accepted_department'}"/>
+                    </group>
 
-                    <!-- <group expand="0" string="Group By">
-                        <filter name="gender" string="Male" domain="[]" context="{'gender': 'male'}"/>
-                        <filter name="gender" string="Female" domain="[]" context="{'gender': 'female'}"/>
-                    </group> -->
+                 
 
+
+
+               
             </search>
         </field>
     </record>
