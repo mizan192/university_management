@@ -73,4 +73,23 @@
 
 
 
+
+
+
+<!-- 
+      view_action = self.env.ref('university_management.action_course_select').read()[0]
+        return view_action
+    <record id="action_course_select" model="ir.actions.act_window">
+        <field name="name">Course Select</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">department.migration</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record> -->
+
+
+
+
+
+
 </odoo>

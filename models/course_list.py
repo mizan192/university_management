@@ -22,6 +22,12 @@ class CourseList(models.Model):
         # string="Students list"  
     )
 
+    migrated_students_id=fields.Many2one(
+        comodel_name='department.migration',
+        # string="Students list"  
+    )
+
+
 
     # calculate single course cost depending on credit_hour,credit_hour_fee,lab_fee
     @api.depends('credit_hour','credit_hour_fee','lab_fee')
@@ -74,8 +80,8 @@ class CourseList(models.Model):
     @api.model
     def create(self,val):
         if 'course_name' in val.keys() and val['course_name']:
-            name=val['course_name'].upper()
-            val['course_name']=name
+            name=val['course_name']
+            val['course_name']=name.upper()
         
         ctx = self.env.context.copy()
         rec=super(CourseList,self.with_context(ctx)).create(val)

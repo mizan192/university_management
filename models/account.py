@@ -199,8 +199,8 @@ class StudentAccount(models.Model):
             'view_id':self.env.ref('university_management.um_accounts_fees_registration_views').id,
             'target':'new',
             'context':context,
-
         }    
+    
     
     def get_random(self):
         random_number = ''.join(str(random.randint(0, 9)) for _ in range(4))

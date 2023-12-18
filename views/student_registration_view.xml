@@ -332,7 +332,7 @@
                         <page string="Department Select">
                            <group>
                             <group string='Choose Faculty'>
-                                <field name="faculty_name" placeholder="select your desired faculty" widget="selection"/>
+                                <field name="faculty_name" placeholder="select your desired faculty" />
                                 
                                 <!-- <field name="select_department" widget="selection" options="{'no_create':True}"/> -->
 

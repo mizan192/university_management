@@ -117,7 +117,8 @@ class DepartmentInformation(models.Model):
         if ('department_name' in val.keys() and 'email' not in val.keys()) or ('department_name' in val.keys() and 'email' in val.keys() and val['email']==False):
             dname=val['department_name']
             val['email']=dname.lower()+"@gmail.com"
-            print('---------------------------ai')   
+            val['department_name']=dname.upper()
+            # print('---------------------------ai')   
 
         ctx = self.env.context.copy()
         rec=super(DepartmentInformation,self.with_context(ctx)).create(val)
@@ -131,11 +132,11 @@ class DepartmentInformation(models.Model):
 
 
     # duplicate record check 
-    @api.constrains('department_name')
-    def _check_duplicate_name(self):
-        for record in self:
-            if record.search_count([('department_name', 'ilike', record.department_name)]) > 1:
-                raise ValidationError("Duplicate record with the same name found!")
+    # @api.constrains('department_name')
+    # def _check_duplicate_name(self):
+    #     for record in self:
+    #         if record.department_name and record.search_count([('department_name', 'ilike', record.department_name)]) > 1:
+    #             raise ValidationError("Duplicate record with the same name found!")
 
     
 
