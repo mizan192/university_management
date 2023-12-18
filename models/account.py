@@ -38,6 +38,7 @@ class StudentAccount(models.Model):
     )
 
     student_id=fields.Char(string='Id')
+    registration_id=fields.Char(string='Reg. Id')
     # registration_id = fields.Many2one(
     #     comodel_name='student.profile'
     # )
@@ -166,6 +167,10 @@ class StudentAccount(models.Model):
 
 # fee confirm button 
     def confirm_fee(self):
+        # print('----------------reg-------')
+        # print(self.registration_id)
+
+
         self.show_button=True
         self.invoice_status='Posted'
         
@@ -187,6 +192,7 @@ class StudentAccount(models.Model):
         context = {
         'default_name': self.name,
         'default_student_id': self.student_id,
+        'default_registration_id': self.registration_id,
         }
         
 
@@ -210,6 +216,7 @@ class StudentAccount(models.Model):
 
     # confirm payment registration 
     def create_payments(self):
+        print("-------------------", self.registration_id)
 
         if not self.amount_paid:
             raise ValidationError("Payment amount must be positive amount!!!")
@@ -234,11 +241,17 @@ class StudentAccount(models.Model):
  
 
         # add to  transaction record model
-        reg_id = self.env['student.registration'].search([('student_id','=',self.student_id)]).registration_id
+        # if self.registration_id:
+        #     reg_id=self.registration_id
+        # else:
+        #     reg_id = self.env['student.registration'].search([('student_id','=',self.student_id)]).registration_id
         
         # reg_id = rec.registration_id
         
-        
+        reg_id = self.registration_id
+        if not reg_id:
+            reg_id="memo_no"
+
         random_num = self.get_random()
 
         dict_key={

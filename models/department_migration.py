@@ -29,7 +29,7 @@ class DepartmentMigration(models.Model):
     )
     student_new_id=fields.Char(string='New ID')
     course_cost = fields.Monetary()
-
+    invoice_status=fields.Char(string="Invoice Status", default='not created')
 
 
 # select switched faculty and department 
@@ -59,6 +59,8 @@ class DepartmentMigration(models.Model):
     is_admitted=fields.Boolean(default=False)
     department_obj =fields.Char(string="Object")
 
+    web_ribbon=fields.Char(string='MIGRATION CONFIRM')
+
 
     REG_STATUS_SELECTION = [
         ('Draft', 'Draft'),
@@ -71,14 +73,20 @@ class DepartmentMigration(models.Model):
         string='Admission Status',
         default='Draft',  
     )
-    # course_ids=fields.One2many(
-    #     comodel_name='course.list',
-    #     inverse_name='migrated_students_id',
-    #     domain="['|',('course_faculty', '=', 'all'),('course_faculty', '=', accepted_faculty)]",
-    #     # string="select course"  
-    # )
 
+    # record_ids = self.env['course.list'].search([]).ids
+    # def get_ids(self):
+    #     return self.env['course.list'].search([]).ids
+    
+    course_ids=fields.One2many(
+        comodel_name='course.list',
+        inverse_name='migrated_students_id',
+        
+        domain="['|',('course_faculty', '=', 'all'),('course_faculty', '=', accepted_faculty)]",
 
+    )
+
+    
 
 
 
@@ -93,6 +101,9 @@ class DepartmentMigration(models.Model):
         self.previous_department=self.reg_id.accepted_department
         self.previous_faculty=self.reg_id.accepted_faculty
         self.due=self.reg_id.total_cost
+
+        # print(self.reg_id.course_ids.course_name)
+
 
     @api.depends('reg_id')
     def retrive_student_details(self):
@@ -251,12 +262,14 @@ class DepartmentMigration(models.Model):
     
 
     def course_selection_method(self):
+        self.invoice_status='to invoice'
         context={
             'default_name':self.name,
             'default_accepted_faculty':self.accepted_faculty,
             'default_accepted_department':self.accepted_department,
             'default_student_new_id':self.student_new_id,
             'default_course_cost':self.course_cost,
+            'default_course_ids':self.course_ids.ids,
         }
         return {
             'name': "Course Selection",
@@ -268,3 +281,77 @@ class DepartmentMigration(models.Model):
             'target':'new',
             'context':context,
         } 
+    
+    @api.onchange('course_ids')
+    def course_cost_and_credit_hour(self):
+        cost=0
+        total_credit_hour=0
+        for rec in self.course_ids:
+            cost=cost+rec.lab_fee+(rec.credit_hour*rec.credit_hour_fee)
+            total_credit_hour=total_credit_hour+rec.credit_hour
+        # if self.credit_hour>self.max_credit_hour:
+        #     ValidationError("You Cannot ")
+        self.course_cost=cost
+        # self.credit_hour=total_credit_hour
+
+        #update course cost in profile
+        s_id=self.reg_id.registration_id
+        domain = [('registration_id','=',s_id)]
+        rec = self.env['student.profile'].search(domain)
+        rec.write({
+            'course_cost': self.course_cost,
+        })
+        rec = self.env['student.registration'].search(domain)
+        rec.write({
+            'course_cost': self.course_cost,
+        })
+
+   
+    def confirm_course_selection(self):
+        main_model = self.env['department.migration']
+        c_ids = self.course_ids.ids
+        values_to_save = {
+            'course_ids': c_ids,
+        }
+        if self._context.get('active_id'):
+            main_model.browse(self._context['active_id']).write(values_to_save)
+        else:
+            new_record = main_model.create(values_to_save)
+
+        return{'type': 'ir.actions.act_window_close',}
+    
+
+    def create_invoice(self):
+        # print('-------from miag----------')
+        # print(self.reg_id.registration_id)
+        s_id=self.student_new_id
+
+        # domain = [('student_id','=',s_id)]
+        # rec = self.env['student.registration'].search(domain)
+
+
+
+        # course_id_list = self.course_ids.ids
+        context = {
+        # 'default_main_model_id': self.id,
+        'default_name': self.name,
+        'default_student_id': s_id,
+        'default_registration_id':self.reg_id.registration_id,
+        'default_faculty': self.accepted_faculty,
+        'default_department': self.accepted_department,
+        'default_course_fee': self.course_cost,
+        'default_from_registration':True,
+        # 'default_course_ids': course_id_list,
+        }
+
+        
+        return {
+            'name': "Student Account View",
+            'type': 'ir.actions.act_window',
+            # 'res_id':self.id,
+            'res_model': 'student.account',
+            'view_mode': 'form',
+            'view_id': self.env.ref('university_management.students_accounts_fees_calculation_views').id,
+            'target': 'current',
+            'context': context,
+        }

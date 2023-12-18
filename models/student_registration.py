@@ -473,6 +473,8 @@ class StudentRegistration(models.Model):
             'course_ids': c_ids,
         }
 
+        print(c_ids)
+
         if self._context.get('active_id'):
             main_model.browse(self._context['active_id']).write(values_to_save)
         else:
@@ -553,6 +555,7 @@ class StudentRegistration(models.Model):
         # 'default_main_model_id': self.id,
         'default_name': self.name,
         'default_student_id': s_id,
+        'default_registration_id': self.registration_id,
         'default_faculty': self.accepted_faculty,
         'default_department': self.accepted_department,
         'default_course_fee': self.course_cost,

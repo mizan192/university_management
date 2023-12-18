@@ -22,7 +22,19 @@
          <field name="arch" type="xml">
             <form> 
                 
+                <header>
+                    <button string="Create Invoice" type="object"  name="create_invoice" context="{'active_id': active_id}" 
+                    class="oe_highlight" attrs="{'invisible': [('invoice_status', '!=', 'to invoice')]}" /> 
+                    
+                    <field name="registration_status" widget="statusbar" statusbar_visible="Draft,Reviewing,Enrolled"/>
+                </header>
+
+
                 <sheet>
+                    <widget name="web_ribbon" title="MIGRATION CONFIRM" attrs="{'invisible': [('registration_status', '!=', 'Enrolled')]}"/>
+                
+
+
                     <group >
                         <group >
                             <field style="font-size: 14px; color: #336699; background-color: #f0f0f0;" name="reg_id" string='Reg. No' placeholder="Student registration id"  options="{'no_create':True}" />
@@ -37,7 +49,7 @@
                             <field name="admission_date" readonly='1' style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
                             <field name="previous_faculty" readonly='1' widget="upper" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
                             <field name="previous_department" readonly='1' widget="upper" options='{"uppercase": true}' style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
-                           
+                            <field name='invoice_status' invisible='1'/>
                         </group>
                     </group>
 
@@ -126,14 +138,14 @@
                 </group>        
                 
                 <group string="Course Selection Panel">
-                    <!-- <field name="course_ids" display_name='True' widget="many2many_tags" options="{'no_create':True}" string="select course"/> -->
+                    <field name="course_ids" display_name='True' widget="many2many_tags" options="{'no_create':True}" string="select course"/>
                     
                 </group>
 
                 <notebook>
                     <page string="Selected Courses">
                         <group>
-                            <!-- <field name='course_ids' options="{'no_create': True, 'create': false}" string=""/> -->
+                            <field name='course_ids' options="{'no_create': True, 'create': false}" string=""/>
                         
                         </group>
 
@@ -154,10 +166,10 @@
            
 
 
-        <!-- <footer>
-            <button string="Create Payment" name="create_payments" type="object" class="oe_highlight" data-hotkey="q"/>
+        <footer>
+            <button string="Confirm" name="confirm_course_selection" type="object" class="oe_highlight" data-hotkey="q"/>
             <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
-        </footer> -->
+        </footer>
 
 
         
