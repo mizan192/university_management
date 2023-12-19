@@ -7,15 +7,109 @@
         <field name="model">department.migration</field>
         <field name="arch" type="xml">
             <tree > 
-                <field name="name"/>
-                <field name="student_id" string='Past ID'/>
-                <field name="student_new_id" string='New ID'/>
-                <field name="previous_faculty"/>
-                <field name="previous_department"/>
+                <field name="name" decoration-success="1==1"/>
+                <field name="student_id" string='Past ID' decoration-primary="1==1"/>
+                <field name="student_new_id" string='New ID' decoration-warning="1==1"/>
+                <field name="previous_faculty" decoration-info="1==1"/>
+                <field name="previous_department" decoration-info="1==1"/>
+                <field name="registration_status" string='Status' widget="badge" decoration-success="registration_status == 'Enrolled'" decoration-warning="registration_status=='Reviewing'" decoration-info="registration_status == 'Draft'"/>
             </tree>
         </field>
     </record>   
 
+
+    
+    
+    
+    <!-- kanban view  -->
+
+    <record id="um_student_migration_kanban_view" model="ir.ui.view">
+        <field name="name">department.migration.kanban</field>
+        <field name="model">department.migration</field>
+        <field name="arch" type="xml">
+            <kanban>
+
+                <field name="name"/>
+                <field name="student_new_id"/>
+                <field name="accepted_faculty"/>
+                <field name="accepted_department"/>
+                <field name="previous_faculty"/>
+                <field name="previous_department"/>
+                <field name="image"/>
+                <field name="email"/>
+
+                <templates>
+
+                    <t t-name="kanban-box">
+                        <div t-attf-class="oe_kanban_content oe_kanban_global_click o_kanban_record_has_image_fill  ">
+                            
+                            <!-- <div class="oe_kanban_image"> -->
+                            <field name="image" class="o_kanban_image_fill_left d-block oe_kanban_avatar" preview_image="image" widget="background_image" options="{'zoom': true, 'zoom_delay': 1000}"/>
+                        <!-- </div> -->
+                        
+                        <div class="card d-flex flex-column justify-content-center" style="">
+                            
+
+                            <div class="card-header" style="margin:0; padding-left:1; padding-right:1; padding-top:0; padding-bottom:0;">
+                                <h5 class="card-title" style="margin-bottom:0; padding:0; color: #009688; "><field name="name"/></h5>
+                                <p class="card-text" style="margin-bottom:0; padding:0; color: #728C00;"><strong>ID:</strong> <field name="student_new_id"/></p>
+                            </div>
+                            
+                            <!-- <div class="card d-flex flex-row justify-content-center" style="margin-bottom:0; padding-bottom:0">
+                                <div class="card-body ">
+                                    <p class="card-text oe_kanban_total_cost"><strong>Due Fee:</strong> <field name="total_cost"/></p>
+                                    <p class="card-text oe_kanban_total_cost"><strong>Due Date:</strong> <field name="due_date"/></p>
+                                </div>
+                                <div class="card-body ">
+                                    <p class="card-text"><strong>Faculty:</strong> <field name="accepted_faculty"/></p>
+                                    <p class="card-text"><strong>Department:</strong> <field name="accepted_department"/></p>
+                                </div>
+                            </div> -->
+
+                            <div class="card-body " style="margin:0; padding-left:1; padding-right:1; padding-top:1px; padding-bottom:0; background-color: #e0e0e0; ">
+                                <p class="card-text" style="margin-bottom:0; padding:0; color: #007bff;"><strong>Faculty:</strong> <field name="accepted_faculty"/></p>
+                                <p class="card-text" style="margin-bottom:0; padding:0; color: #007bff;"><strong>Department:</strong> <field name="accepted_department"/></p>
+                            </div>
+
+                            <div class="card-footer text-muted " style="margin:0; padding-left:1; padding-right:1; padding-top:1px; padding-bottom:0;">
+                                <p class="card-text" style="margin-bottom:0; padding:0; color: #007bff;"><strong>Past Dep.:</strong> <field name="previous_department"/></p>
+                                <p class="card-text" style="margin-bottom:0; padding:0; color: #36013F;"><strong>Email:</strong> <field name="email"/></p>
+                                <!-- <p class="card-text" style="margin-bottom:0; padding:0; color:#7E354D;"><strong>Contact:</strong> <field name="contact_number"/></p> -->
+                            </div>
+           
+
+
+
+
+                        </div>
+
+
+                        </div>
+                    </t>
+            
+            
+                </templates>
+
+            
+            </kanban>
+
+        </field>
+    </record>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <!-- form view  -->
     <record id="um_department_migration_form_view_record" model="ir.ui.view">
         <field name="name">department.migration.form</field>
         <field name="model">department.migration</field>
@@ -106,11 +200,11 @@
 
 
 
-    <!-- Action to open the tree view -->
+    <!-- Action to open the  view -->
     <record id="um_department_migration_view_recored_ids" model="ir.actions.act_window">
         <field name="name">department.migration.view</field>
         <field name="res_model">department.migration</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,kanban,form</field>
     </record>
 
     <!-- <menuitem  id="um_department_migration_view__info_menu" name="Migration" action="um_department_migration_view_recored_id"/> -->

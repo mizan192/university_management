@@ -24,7 +24,7 @@ class StudentAccount(models.Model):
     student_relation = fields.Many2one('student.profile')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env['res.currency'].search([('name', '=', 'BDT')]))
     from_registration=fields.Boolean(default=False)
-
+    migration_fee=fields.Monetary(string='Migration Fee', compute='_migration_fee_calculation', store=True)
     invoice_date=fields.Date(string='Invoice Date', default=fields.Date.today, readonly='1')
     due_date=fields.Date(string='Due Date')
     ready_to_invoiced=fields.Boolean(default=False)
@@ -134,16 +134,40 @@ class StudentAccount(models.Model):
             obj.scholarship=discount
 
 
-
+    @api.depends('student_id')
+    def _migration_fee_calculation(self):
+        for rec in self:
+            if not rec.from_registration:
+                rec.migration_fee=0
+            else:
+                cost =2000
+                if rec.faculty=='engineering':
+                    cost+=4000
+                else:
+                    cost+=2000
+                rec.migration_fee=cost
 
     @api.depends('student_id')
     def _calculate_total_Fee(self):
         for rec in self:
-            rec.total_fee=rec.admission_fee+rec.course_fee+rec.registration_fee+rec.department_fee+rec.fine-rec.scholarship
+            cost=rec.course_fee+rec.registration_fee+rec.department_fee+rec.fine-rec.scholarship
+            if not rec.from_registration:
+                cost+=rec.admission_fee
+            else:
+                cost+=rec.migration_fee
+            rec.total_fee=cost
             rec.fee=rec.total_fee
         # self.total_fee=self.admission_fee+self.course_fee+self.registration_fee+self.department_fee+self.fine-self.scholarship
 
-    
+    @api.onchange('student_id')
+    def show_total_fee(self):
+        cost=self.course_fee+self.registration_fee+self.department_fee+self.fine-self.scholarship
+        if not self.from_registration:
+            cost+=self.admission_fee
+        else:
+            cost+=self.migration_fee
+        self.total_fee=cost
+        self.fee=self.total_fee
 
     @api.onchange('due_date')
     def check_due_date(self):
