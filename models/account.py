@@ -42,7 +42,7 @@ class StudentAccount(models.Model):
     # registration_id = fields.Many2one(
     #     comodel_name='student.profile'
     # )
-
+    
 
 
 

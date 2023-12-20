@@ -109,7 +109,7 @@
                                 Payment Method
                             </div>
                             <div class='col-6'>
-                                : <span t-esc='doc.payment_method' style="font-weight: bold; font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                                : <span t-esc='doc.journal_id' style="font-weight: bold; font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
                             </div>
                         </div>
     

@@ -41,7 +41,9 @@
                     </group>
 
                  
-
+                    <!-- <searchpanel>
+                        <field name="registration_status" select="multi" enable_counters="1"/>
+                    </searchpanel> -->
 
 
                
@@ -67,6 +69,8 @@
                 <field name="admission_date" decoration-warning="1==1"/>    
                 <field name="ssc_result" decoration-info="1==1"/>      
                 <field name="hsc_result" decoration-info="1==1"/>      
+                <field name="accepted_faculty" decoration-success="1==1"/>      
+                <field name="accepted_department" decoration-success="1==1"/>      
                 <!-- <field name="course_cost"/>       -->
                 <field name="total_cost" string="Due" decoration-warning="1==1"/>      
                 <field name="contact_number"/>      

@@ -136,7 +136,8 @@ class StudentRegistration(models.Model):
         string="department select"  
     )
 
-    
+    pre_faculty=fields.Char()
+    pre_department=fields.Char()
     accepted_faculty=fields.Char(string="Faculty", readonly=True)
     accepted_department=fields.Char(string="Department",readonly=True)
     congres_group=fields.Char(default="not_confirm")
@@ -365,6 +366,9 @@ class StudentRegistration(models.Model):
             self.accepted_department=choosed_department.department_name
             self.congres_group="congress"
             self.department_obj=choosed_department.id
+            self.pre_department=self.accepted_department
+            self.pre_faculty=self.accepted_faculty
+
             
 
 
@@ -607,25 +611,19 @@ class StudentRegistration(models.Model):
 
 
 
-    # def is_valid_email(email):
-    #     pattern = re.compile(r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$')
-    #     return bool(pattern.match(email))
+    def is_valid_email(self,email):
+        pattern = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z]+\.[a-zA-Z]{1,3}$')
+        return bool(pattern.match(email))
 
 
     @api.onchange('email')
     def check_email(self):
         if self.email==False:
             return
-        if len(self.email)<10:
-            mail=self.email+"@gmail.com"
-            self.email=mail
+        if not self.is_valid_email(self.email):
+            raise ValidationError('email format is not correct!!')
         else:
-            last_part =self.email[10]
-            print(last_part)
-            if last_part!="@gmail.com":
-                mail=self.email+"@gmail.com"
-                self.email=mail
-
+            self.email=self.email
 
 
 

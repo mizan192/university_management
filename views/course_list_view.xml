@@ -7,12 +7,12 @@
         <field name="model">course.list</field>
         <field name="arch" type="xml">
             <tree> 
-                <field name="course_name"/>      
-                <field name="course_faculty"/>      
-                <field name="credit_hour"/>      
-                <field name="credit_hour_fee"/>      
-                <field name="lab_fee"/>      
-                <field name="single_course_fee"/>      
+                <field name="course_name" decoration-success="1==1"/>      
+                <field name="course_faculty" decoration-primary="1==1"/>      
+                <field name="credit_hour" decoration-warning="1==1"/>      
+                <field name="credit_hour_fee" decoration-danger="1==1" />      
+                <field name="lab_fee" decoration-warning="1==1"/>      
+                <field name="single_course_fee" decoration-info="1==1"/>      
             </tree>
         </field>
     </record>   
@@ -24,12 +24,12 @@
             <form> 
                 <sheet>
                     <group>
-                        <field name="course_name"/>      
-                        <field name="course_faculty"/>      
-                        <field name="credit_hour"/>      
-                        <field name="credit_hour_fee"/>      
-                        <field name="lab_fee"/>      
-                        <field name="single_course_fee"/>
+                        <field name="course_name" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>      
+                        <field name="course_faculty" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>      
+                        <field name="credit_hour" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>      
+                        <field name="credit_hour_fee" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>      
+                        <field name="lab_fee" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>      
+                        <field name="single_course_fee" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
                     </group>
                 </sheet>
             </form>

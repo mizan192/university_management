@@ -23,6 +23,8 @@
         'reports/account_view_report.xml',
         'reports/admission_confirm_report.xml',
         'reports/student_search_report.xml',
+        'reports/migrated_students_report.xml',
+        'reports/students_due_report.xml',
     ],
     
     'installable': True,

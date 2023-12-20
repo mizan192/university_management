@@ -238,8 +238,8 @@
                         </group>
                         
                         <group >  
-                        <field name='admission_fee' attrs="{'invisible': [('from_registration', '==', True)]}"  class="oe_inline oe_right" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
-                        <field name='migration_fee' attrs="{'invisible': [('from_registration', '==', False)]}" class="oe_inline oe_right" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                        <field name='admission_fee' attrs="{'invisible': [('from_registration', '==', False)]}"  class="oe_inline oe_right" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                        <field name='migration_fee' attrs="{'invisible': [('from_registration', '==', True)]}" class="oe_inline oe_right" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
                         <field name='registration_fee' class="oe_inline oe_right" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
                         <field name='department_fee' class="oe_inline oe_right" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
                         <field name='course_fee' readonly='1' class="oe_inline oe_right" style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>

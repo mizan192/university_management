@@ -8,12 +8,12 @@
         <field name="model">account.transaction.record</field>
         <field name="arch" type="xml">
             <tree> 
-                <field name="s_name"/>      
-                <field name="s_id"/>         
-                <field name="amount_paid"/>         
-                <field name="transaction_id"/>         
-                <field name="record_id"/>         
-                <field name="payment_date"/>         
+                <field name="s_name" decoration-success="1==1"/>      
+                <field name="s_id" decoration-primary="1==1"/>         
+                <field name="amount_paid" decoration-warning="1==1"/>         
+                <field name="transaction_id" decoration-info="1==1"/>         
+                <field name="record_id" decoration-primary="1==1"/>         
+                <field name="payment_date" decoration-success="1==1"/>         
             </tree>
         </field>
     </record>   

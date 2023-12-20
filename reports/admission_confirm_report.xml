@@ -166,22 +166,25 @@
                                     <th>Course Fee</th>
                                 </tr>
                                 <t t-set="total_fee" t-value="0"/>
+                                <t t-set="total_credit_hour" t-value="0"/>
                                 <t t-foreach="doc.course_ids" t-as="course">
                                     <tr>
                                         <td t-esc="course.course_name"/>
                                         <td t-esc="course.credit_hour"/>
-                                        <td t-esc="course.single_course_fee"/>
+                                        <td> <span t-esc="course.single_course_fee" /> <span>&#x09F3;</span> </td>
                                         
                                     </tr>
                                     <t t-set="total_fee" t-value="total_fee + course.single_course_fee"/>
+                                    <t t-set="total_credit_hour" t-value="total_credit_hour + course.credit_hour"/>
                                 </t>
                                 <tr>
                                     <td>Total</td>
-                                    <td t-esc="total_fee"/>
+                                    <td t-esc="total_credit_hour"/>
+                                    <td> <span>Total : </span> <span t-esc="total_fee" /> <span>&#x09F3;</span> </td>
                                 </tr>
                             </table>
 
-                            
+                          
 
  
                         </div>

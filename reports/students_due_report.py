@@ -2,9 +2,9 @@ from odoo import fields,models,api
 from odoo.exceptions import AccessError, UserError, ValidationError
 
 
-class StudentReport(models.TransientModel):
-    _name="student.report"
-    _description="student report"
+class DueReport(models.TransientModel):
+    _name="due.report"
+    _description="student due report"
 
 
     STATUS_SELECTION = [

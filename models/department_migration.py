@@ -31,7 +31,8 @@ class DepartmentMigration(models.Model):
     course_cost = fields.Monetary()
     invoice_status=fields.Char(string="Invoice Status", default='not created')
 
-
+    # migration_date = fields.Date(default=fields.date.today)
+    
 # select switched faculty and department 
  
     faculty_choice=fields.Selection([('engineering','Engineering'),('business', 'Business'), ('arts', 'Arts')], string='Select Faculty', default='arts')
@@ -340,7 +341,7 @@ class DepartmentMigration(models.Model):
         'default_faculty': self.accepted_faculty,
         'default_department': self.accepted_department,
         'default_course_fee': self.course_cost,
-        'default_from_registration':True,
+        'default_from_registration':False,
         # 'default_course_ids': course_id_list,
         }
 

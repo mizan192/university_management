@@ -28,9 +28,11 @@
             <menuitem  id="um_departments_migration_view__info_menu" name="Migration" action="um_department_migration_view_recored_ids"/>
         </menuitem>
 
-        <!-- <menuitem id="um_reports_menus_id" name='Reports'>
-            <menuitem id="um_reports_search_via_date_intervals" name='Admission Date based Students list' action='um_students_report_actions_id' />
-        </menuitem> -->
+        <menuitem id="um_reports_menus_id" name='Reports'>
+            <menuitem id="um_reports_search_via_date_intervals" name='Faculty Student Summary' action='um_students_report_actions_id' />
+            <menuitem name="Migrated Student Summary" id ="migrated_students_menu_id" action="migrated_students_reports_xml_id"/> 
+
+        </menuitem>
 
     </menuitem>
 

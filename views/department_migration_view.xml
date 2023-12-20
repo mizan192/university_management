@@ -10,9 +10,11 @@
                 <field name="name" decoration-success="1==1"/>
                 <field name="student_id" string='Past ID' decoration-primary="1==1"/>
                 <field name="student_new_id" string='New ID' decoration-warning="1==1"/>
-                <field name="previous_faculty" decoration-info="1==1"/>
+                <field name="accepted_department" decoration-info="1==1" string="New Department"/>
                 <field name="previous_department" decoration-info="1==1"/>
+                <!-- <field name="migration_date" decoration-warning="1==1"/> -->
                 <field name="registration_status" string='Status' widget="badge" decoration-success="registration_status == 'Enrolled'" decoration-warning="registration_status=='Reviewing'" decoration-info="registration_status == 'Draft'"/>
+
             </tree>
         </field>
     </record>   
@@ -137,6 +139,7 @@
                             <field name="email" readonly='1' style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
                             <field name="due" readonly='1' style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
                             <field name="student_new_id" readonly='1' string='New ID' style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                            <!-- <field name='migration_date' string='Date'/>  -->
                         </group>
                         <group>
                             <field name="image" widget="image" class="oe_left oe_avatar oe_small_image img-fluid"/>

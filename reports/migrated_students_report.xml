@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-
-    <!-- student searching for faculty wise via admit date interval  -->
-    <record id="search_student_admit_date_intervals" model="ir.ui.view">
+    <record id="migrated_students_reports" model="ir.ui.view">
         <field name="name">student summary</field>
-        <field name="model">student.report</field>
+        <field name="model">migration.report</field>
         <field name="arch" type="xml">
            <form string='Students List Between Date Interval'>
                 
@@ -15,12 +13,9 @@
                         <div class="col-md-6 ">
                             <group>
                                 
-
-                                <!-- <field placeholder='department name' name='department_name' string='Select Department' options="{'no_create':True}"  style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/> -->
-                                <!-- <field placeholder='admission status' name='admission_status' string='Admission Status' style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/> -->
-                                <field name='faculty_name' string='Faculty Name' style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
-                                <field name='start_date' style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
-                                <field name='end_date' style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                                <field placeholder='department name' name='department_name' string='Select Department' options="{'no_create':True}"  style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                                <!-- <field name='start_date' style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                                <field name='end_date' style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/> -->
 
 
                             </group>
@@ -33,7 +28,7 @@
                 </sheet>
                 
                 <footer>
-                    <button string="Save" type="object" class="oe_highlight" name="search_student_via_admit_date_for_faculty"/>
+                    <button string="Save" type="object" class="oe_highlight" name="migrated_students_in_date_inteval"/>
                     <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
                          
                 </footer>
@@ -43,38 +38,39 @@
         </field>
     </record>
     
-    <record id="um_students_report_actions_id" model="ir.actions.act_window">
-        <field name="name">student.report.form</field>
-        <field name="res_model">student.report</field>
+    <record id="migrated_students_reports_xml_id" model="ir.actions.act_window">
+        <field name="name">migration.report</field>
+        <field name="res_model">migration.report</field>
         <field name="target">new</field>
         <field name="view_mode">form</field>
     </record>
 
 
+    <!-- <menuitem name="Migrated Student Summary" id ="migrated_students_menu_id" action="migrated_students_reports_xml_id"/>  -->
 
 
-    <!-- template for student searching for faculty wise via admit date interval  -->
+     <!-- template for student searching for faculty wise via admit date interval  -->
 
-    <record id="action_report_students_search_date_view" model="ir.actions.report">
-        <field name="name">Student Summary</field>
-        <field name="model">student.report</field>
+     <record id="action_report_migrated_students_rec" model="ir.actions.report">
+        <field name="name">Migrated Student Summary</field>
+        <field name="model">migration.report</field>
         <field name="report_type">qweb-html</field>
-        <field name="report_name">university_management.report_student_date_wise_search_view</field>
-        <field name="report_file">university_management.report_student_date_wise_search_view</field>
-        <field name="print_report_name">'Student Summary of %s Faculty' %(object.faculty_name)</field>
+        <field name="report_name">university_management.report_migrated_student_date_wise_search_view</field>
+        <field name="report_file">university_management.report_migrated_student_date_wise_search_view</field>
+        <field name="print_report_name">'Migrated Student Summary' </field>
         <!-- <field name="print_report_name">'Student List From %s to %s Date Interval' % (object.start_date) %(object.end_date)</field> -->
-        <field name="binding_model_id" ref="university_management.model_student_report"/>
+        <field name="binding_model_id" ref="university_management.model_migration_report"/>
         <field name="binding_type">report</field>
     </record>
 
        
 
-    <template id="report_student_date_wise_search_view">
+    <template id="report_migrated_student_date_wise_search_view">
         <t t-call="web.html_container">
           <t t-call="web.external_layout">
                        
                     <div class='row text-center'>
-                        <h2>Enrolled Student Summary for <span t-esc="faculty" /> </h2> 
+                        <h2>MigrattedStudent Summary for <span t-esc="faculty" /> </h2> 
                         <h4>Date Interval is <span t-esc="start_date"/> to <span t-esc="end_date"/>   </h4> 
                    </div> 
     
@@ -83,7 +79,7 @@
                         <tr style="font-weight:bold;color: black;background-color: teal;padding:2px;">
                             <th>Name</th>
                             <th>ID</th>
-                            <th>Department</th>
+                            <th>Previous Department</th>
                             <th>Due</th>
                             <!-- <th>Status</th> -->
                         </tr>
@@ -91,7 +87,7 @@
                         <tr t-foreach="data_line" t-as="line" style="background-color:azure">
                             <td t-esc="line['name']" />
                             <td t-esc="line['id']" />
-                            <td t-esc="line['department']" />
+                            <td t-esc="line['pre_department']" />
                             <td t-esc="line['due']" t-field-options='{"widget": "monetary", "currency_field": "currency_id"}'/>
                             <!-- <td t-esc="line['status']" /> -->
                         </tr>
@@ -101,6 +97,7 @@
             </t>
         </t>
     </template>
+
 
 
 

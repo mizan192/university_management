@@ -168,12 +168,16 @@ class DepartmentInformation(models.Model):
             raise ValidationError("Enter valid phone number")
 
 
-    def is_valid_email(email):
-        pattern = r'^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$'
-        match = re.match(pattern, email)
-        return bool(match)
+    def is_valid_email(self,email):
+        pattern = re.compile(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z]+\.[a-zA-Z]{1,3}$')
+        return bool(pattern.match(email))
 
-    # @api.onchange('email')
-    # def check_email(self):
-    #     if not self.is_valid_email(self.email):
-    #         raise ValidationError('Email format is not correct')
+
+    @api.onchange('email')
+    def check_email(self):
+        if self.email==False:
+            return
+        if not self.is_valid_email(self.email):
+            raise ValidationError('email format is not correct!!')
+        else:
+            self.email=self.email

@@ -7,13 +7,13 @@
         <field name="model">arts.faculty</field>
         <field name="arch" type="xml">
             <tree> 
-                <field name="department_name"/>      
-                <field name="available_seats"/>      
-                <field name="total_students"/>      
-                <field name="hsc_min_grade"/>
-                <field name="ssc_min_grade"/>            
-                <field name="hsc_english_min_grade"/>
-                <field name="ssc_english_min_grade"/>      
+                <field name="department_name" decoration-success="1==1"/>      
+                <field name="available_seats" decoration-primary="1==1"/>      
+                <field name="total_students" decoration-info="1==1"/>      
+                <field name="hsc_min_grade" decoration-warning="1==1"/>
+                <field name="ssc_min_grade" decoration-primary="1==1"/>            
+                <field name="hsc_english_min_grade" decoration-warning="1==1"/>
+                <field name="ssc_english_min_grade" decoration-primary="1==1"/>      
             </tree>
         </field>
     </record>   
