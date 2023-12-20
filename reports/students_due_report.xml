@@ -1,5 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
+
+    <!-- student searching for faculty wise via admit date interval  -->
+    <record id="search_student_due_wise_repo" model="ir.ui.view">
+        <field name="name">student summary</field>
+        <field name="model">due.report</field>
+        <field name="arch" type="xml">
+           <form string=''>
+                
+            
+                <sheet>
+                    <div class="row justify-content-center">
+                        <div class="col-md-6 ">
+                            <group>
+                                
+
+                                <!-- <field placeholder='department name' name='department_name' string='Select Department' options="{'no_create':True}"  style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/> -->
+                                <!-- <field placeholder='admission status' name='admission_status' string='Admission Status' style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/> -->
+                                <field placeholder='department name' name='department_name' string='Select Department' options="{'no_create':True}"  style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+                                <!-- <field name='start_date' style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/> -->
+                                <field name='due' style="font-size: 14px; color: #336699; background-color: #f0f0f0;"/>
+
+
+                            </group>
+
+                        
+                        </div>
+                       
+                 </div>
+                
+                </sheet>
+                
+                <footer>
+                    <button string="Save" type="object" class="oe_highlight" name="search_student_due_wise"/>
+                    <button string="Cancel" class="btn btn-secondary" special="cancel" data-hotkey="z"/>
+                         
+                </footer>
+             
+ 
+            </form> 
+        </field>
+    </record>
     
+    <record id="um_students_due_report_actions_id" model="ir.actions.act_window">
+        <field name="name">due.report.form</field>
+        <field name="res_model">due.report</field>
+        <field name="target">new</field>
+        <field name="view_mode">form</field>
+    </record>
+    <menuitem name="Most Due Student Summary" id ="most_due_students_menu_id" action="um_students_due_report_actions_id"/> 
+
+
+
+
+    <!-- template for student searching for faculty wise via admit date interval  -->
+
+    <record id="action_reporst_for_due" model="ir.actions.report">
+        <field name="name">Student Summary</field>
+        <field name="model">due.report</field>
+        <field name="report_type">qweb-html</field>
+        <field name="report_name">university_management.report_student_due_wise_search_view</field>
+        <field name="report_file">university_management.report_student_due_wise_search_view</field>
+        <field name="print_report_name">'Most Dued Students'</field>
+        <!-- <field name="print_report_name">'Student List From %s to %s Date Interval' % (object.start_date) %(object.end_date)</field> -->
+        <field name="binding_model_id" ref="university_management.model_due_report"/>
+        <field name="binding_type">report</field>
+    </record>
+
+       
+
+    <template id="report_student_due_wise_search_view">
+        <t t-call="web.html_container">
+          <t t-call="web.external_layout">
+                       
+                    <div class='row text-center'>
+                        <h2>Most Due Student Summary for <span t-esc="faculty" /> </h2> 
+                   </div> 
+    
+                   
+                   <table class="table table-sm">
+                        <tr style="font-weight:bold;color: black;background-color: teal;padding:2px;">
+                            <th>Name</th>
+                            <th>ID</th>
+                            <th>Due</th>
+                            <!-- <th>Status</th> -->
+                        </tr>
+
+                        <tr t-foreach="data_line" t-as="line" style="background-color:azure">
+                            <td t-esc="line['name']" />
+                            <td t-esc="line['id']" />
+                            <!-- <td t-esc="line['department']" /> -->
+                            <td t-esc="line['due']" t-field-options='{"widget": "monetary", "currency_field": "currency_id"}'/>
+                            <!-- <td t-esc="line['status']" /> -->
+                        </tr>
+
+                   </table>
+                   
+            </t>
+        </t>
+    </template>
+
+
+
+
 </odoo>

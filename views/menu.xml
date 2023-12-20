@@ -31,6 +31,7 @@
         <menuitem id="um_reports_menus_id" name='Reports'>
             <menuitem id="um_reports_search_via_date_intervals" name='Faculty Student Summary' action='um_students_report_actions_id' />
             <menuitem name="Migrated Student Summary" id ="migrated_students_menu_id" action="migrated_students_reports_xml_id"/> 
+            <!-- <menuitem name="Most Due Student Summary" id ="most_due_students_menu_id" action="um_students_due_report_actions_id"/>  -->
 
         </menuitem>
 
