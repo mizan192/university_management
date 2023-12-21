@@ -1,6 +1,36 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
+    <record id="um_student_account_transaction_view_record_id" model="ir.ui.view">
+        <field name="name">account.transaction.record.search</field>
+        <field name="model">account.transaction.record</field>
+        <field name="arch" type="xml">
+                <search>
+                    <!-- searchable field  -->
+                    <field name="s_name"  filter_domain="['|','|',('s_name', 'ilike', self),('s_id', 'ilike', self),('record_id', 'ilike', self)]"/>
+                    <field name="s_id"/>
+                    <field name="record_id"/>
+            
+
+
+                    <!-- filter  -->
+                    <filter string="Amount Above 30000" name="amount_paid" domain="[('amount_paid', '>=', 30000)]"/>
+                    
+                    
+                    <!-- group  -->
+                    <group expand="0" string="Group By">
+                        <filter name="group_by_s_name" string="Student Account History" domain="[]" context="{'group_by': 's_name'}"/>
+                        <filter name="group_by_payment_date" string="Transaction Date" domain="[]" context="{'group_by': 'payment_date'}"/>
+                        
+                
+                    </group>
+
+               
+            </search>
+        </field>
+    </record>
+
+
 
     <!-- tree view          -->
     <record id="um_student_transaction_record_view" model="ir.ui.view">

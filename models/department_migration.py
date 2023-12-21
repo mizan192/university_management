@@ -29,8 +29,9 @@ class DepartmentMigration(models.Model):
     )
     student_new_id=fields.Char(string='New ID')
     course_cost = fields.Monetary()
+    migration_fee = fields.Monetary()
     invoice_status=fields.Char(string="Invoice Status", default='not created')
-
+    
     # migration_date = fields.Date(default=fields.date.today)
     
 # select switched faculty and department 
@@ -259,6 +260,7 @@ class DepartmentMigration(models.Model):
             'accepted_department':self.accepted_department,
             'student_id':self.student_new_id,
         })
+        
 
     
 
@@ -330,7 +332,13 @@ class DepartmentMigration(models.Model):
         # domain = [('student_id','=',s_id)]
         # rec = self.env['student.registration'].search(domain)
 
-
+        fee=2000
+        if self.accepted_faculty=='engineering':
+            fee+=5000
+        elif self.accepted_faculty=='business':
+            fee+=3000
+        else:
+            fee+=1500
 
         # course_id_list = self.course_ids.ids
         context = {
@@ -342,6 +350,8 @@ class DepartmentMigration(models.Model):
         'default_department': self.accepted_department,
         'default_course_fee': self.course_cost,
         'default_from_registration':False,
+        'default_migration_fee':fee,
+        'default_admission_fee':0,
         # 'default_course_ids': course_id_list,
         }
 

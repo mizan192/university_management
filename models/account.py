@@ -9,13 +9,14 @@ class StudentAccount(models.Model):
     _description="Students account"
 
 
+
     name=fields.Char(string='Name')
     
     faculty=fields.Char(string='Faculty')
     department=fields.Char(string='Department')
     course_fee=fields.Monetary(string='Course Cost',  readonly='1')
 
-    admission_fee=fields.Monetary(string='Admission Fee', default=20000, readonly='1')  
+    admission_fee=fields.Monetary(string='Admission Fee', readonly='1')  
     registration_fee=fields.Monetary(string='Registration Fee', default=5000, readonly='1')
     department_fee=fields.Monetary(string='Department Fee', compute='_check_department_fee', store = True)
     fine=fields.Monetary(string='Fine', default=0)
@@ -24,7 +25,7 @@ class StudentAccount(models.Model):
     student_relation = fields.Many2one('student.profile')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env['res.currency'].search([('name', '=', 'BDT')]))
     from_registration=fields.Boolean(default=False)
-    migration_fee=fields.Monetary(string='Migration Fee', compute='_migration_fee_calculation', store=True)
+    migration_fee=fields.Monetary(string='Migration Fee', readonly='1')
     invoice_date=fields.Date(string='Invoice Date', default=fields.Date.today, readonly='1')
     due_date=fields.Date(string='Due Date')
     ready_to_invoiced=fields.Boolean(default=False)
@@ -90,12 +91,6 @@ class StudentAccount(models.Model):
 
 
 
-    # @api.onchange('student_id')
-    # def upgrade_student_data(self):
-    #     self.name=self.student_id.name
-        
-
-
 
 
 
@@ -117,57 +112,68 @@ class StudentAccount(models.Model):
             domain = [('student_id','=',obj.student_id)]
             rec = self.env['student.profile'].search(domain)
             discount=0
-            fees=obj.admission_fee+obj.registration_fee
+            fees=5000
             hsc_result = rec.hsc_result
             ssc_result = rec.ssc_result
 
             if hsc_result>=5.00:
-                discount=fees
+                discount=5000
             elif hsc_result>=4.75 and ssc_result>=5.00:
-                discount=fees-(fees*.75)
+                discount=fees*.75
             elif hsc_result>=4.50:
-                discount=fees-(fees*.5)
+                discount=fees*.5
             elif hsc_result>=4.00 and ssc_result>=4.25:
-                discount=fees-(fees*.3)
+                discount=fees*.3
             else:
                 discount=0
-            obj.scholarship=discount
+            obj.scholarship=discount*(-1)
 
 
-    @api.depends('student_id')
-    def _migration_fee_calculation(self):
+    # @api.depends('student_id')
+    # def _migration_fee_calculation(self):
+    #     for rec in self:
+    #         if rec.from_registration:
+    #             rec.migration_fee=0
+    #         else:
+    #             cost =2000
+    #             if rec.faculty=='engineering':
+    #                 cost+=4000
+    #             else:
+    #                 cost+=2000
+    #             rec.migration_fee=cost
+
+   
+
+        
+    # @api.depends('student_id')
+    def _calculate_total_Fee(self):
         for rec in self:
-            if not rec.from_registration:
-                rec.migration_fee=0
-            else:
-                cost =2000
-                if rec.faculty=='engineering':
-                    cost+=4000
-                else:
-                    cost+=2000
-                rec.migration_fee=cost
+            cost=rec.course_fee+rec.registration_fee+rec.department_fee+rec.fine+rec.scholarship
+            cost+=rec.admission_fee
+            cost+=rec.migration_fee
+            rec.total_fee=cost
+            rec.fee=rec.total_fee
+            # print(rec.total_fee)
+
+        # self.total_fee=self.admission_fee+self.course_fee+self.registration_fee+self.department_fee+self.fine+self.scholarship
+
 
     @api.depends('student_id')
     def _calculate_total_Fee(self):
-        for rec in self:
-            cost=rec.course_fee+rec.registration_fee+rec.department_fee+rec.fine-rec.scholarship
-            if not rec.from_registration:
-                cost+=rec.admission_fee
-            else:
-                cost+=rec.migration_fee
-            rec.total_fee=cost
-            rec.fee=rec.total_fee
-        # self.total_fee=self.admission_fee+self.course_fee+self.registration_fee+self.department_fee+self.fine-self.scholarship
+        cost=self.course_fee+self.registration_fee+self.department_fee+self.fine+self.scholarship
+        cost+=self.admission_fee
+        cost+=self.migration_fee
+        self.total_fee=cost
+        self.fee=self.total_fee
 
     @api.onchange('student_id')
     def show_total_fee(self):
-        cost=self.course_fee+self.registration_fee+self.department_fee+self.fine-self.scholarship
-        if not self.from_registration:
-            cost+=self.admission_fee
-        else:
-            cost+=self.migration_fee
+        cost=self.course_fee+self.registration_fee+self.department_fee+self.fine+self.scholarship
+        cost+=self.admission_fee
+        cost+=self.migration_fee
         self.total_fee=cost
         self.fee=self.total_fee
+
 
     @api.onchange('due_date')
     def check_due_date(self):
@@ -314,20 +320,20 @@ class StudentAccount(models.Model):
 
 
 
-    @api.model
-    def create(self,vals):
+    # @api.model
+    # def create(self,vals):
         
-        print(vals)
+    #     print(vals)
 
-        if 'student_id' not in vals.keys():
-            return super(StudentAccount,self).create(vals)
-        s_id = vals['student_id']
-        record_exist = self.env['student.account'].search(['student_id','=',s_id])
-
-        if record_exist:
-            rec = self.write(vals)
-        else:
-            return super(StudentAccount,self).create(vals)
+    #     if 'student_id' not in vals.keys():
+    #         return super(StudentAccount,self).create(vals)
+    #     s_id = vals['student_id']
+    #     record_exist = self.env['student.account'].search(['student_id','=',s_id])
+    #     return super(StudentAccount,self).create(vals)
+    #     if record_exist:
+    #         rec = self.write(vals)
+    #     else:
+    #         return super(StudentAccount,self).create(vals)
 
     # @api.model
     # def create(self,vals):

@@ -552,8 +552,13 @@ class StudentRegistration(models.Model):
         domain = [('student_id','=',s_id)]
         rec = self.env['student.registration'].search(domain)
 
-
-
+        fee=18000
+        if self.accepted_faculty=='engineering':
+            fee+=7000
+        elif self.accepted_faculty=='business':
+            fee+=4000
+        else:
+            fee+=2500
         # course_id_list = self.course_ids.ids
         context = {
         # 'default_main_model_id': self.id,
@@ -564,6 +569,8 @@ class StudentRegistration(models.Model):
         'default_department': self.accepted_department,
         'default_course_fee': self.course_cost,
         'default_from_registration':True,
+        'default_migration_fee':0,
+        'default_admission_fee':fee,
         # 'default_course_ids': course_id_list,
         }
 
@@ -593,17 +600,23 @@ class StudentRegistration(models.Model):
             return True
         else:
             return False
-        
+    
+    def is_valid_phone(self,num):
+        pattern = r'^01[3456789][0-9]{8}$'
+        return bool(re.match(pattern, num))
+
 
     @api.onchange('contact_number')
     def check_phone_number(self):
         if self.contact_number==False:
             return
-        if len(self.contact_number)==14 and self.check_14_digit(self.contact_number):
-            return
-        elif len(self.contact_number)==11 and self.check_11_digit(self.contact_number):
-            phone_no="+880"+self.contact_number
-            self.contact_number=phone_no
+        # if len(self.contact_number)==14 and self.check_14_digit(self.contact_number):
+        #     return
+        # elif len(self.contact_number)==11 and self.check_11_digit(self.contact_number):
+        #     phone_no="+88"+self.contact_number
+        #     self.contact_number=phone_no
+        if self.is_valid_phone(self.contact_number):
+            self.contact_number=self.contact_number
         else:
             # print(self.check_11_digit(self.contact_number[3:]))
             raise ValidationError("Enter valid phone number")
